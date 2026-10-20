@@ -17,7 +17,7 @@
 ## Phase 0 — 개발 환경
 
 - [x] 개발 환경 결정 — Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic ([ADR-0002](adr/0002-dev-environment.md))
-- [ ] 개발 PC에 환경 설치 후 [setup.md](setup.md) 확인 날짜 기록
+- [x] 개발 PC에 환경 설치 후 [setup.md](setup.md) 확인 날짜 기록 (2026-10-21)
 - [ ] 작업자추종로봇 과제의 JetAuto Gazebo 모델(`wf_gazebo`) 재사용 범위 확인
 - [ ] 매핑용 실내 world 만들기 (복도·방·문이 있는 구조, 치수를 아는 도면 기준)
 - [x] 로컬 저장소 생성, 문서 뼈대·기여 규칙 작성
