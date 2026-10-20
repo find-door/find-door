@@ -54,6 +54,31 @@ sudo apt-get install gz-harmonic
 sudo apt-get install ros-humble-ros-gzharmonic
 ```
 
+### 설치 확인
+
+```bash
+source /opt/ros/humble/setup.bash
+ros2 pkg list | grep ros_gz          # ros_gz, ros_gz_bridge, ros_gz_sim ... 출력
+gz sim --versions                    # 8.x (= Harmonic)
+
+# Gazebo → ROS /clock 브리지 확인 (터미널 3개)
+gz sim -s -r empty.sdf
+ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
+ros2 topic echo --once /clock        # sec/nanosec가 출력되면 정상
+```
+
+개발 PC 확인 결과 (2026-10-21):
+
+| 항목 | 버전 |
+|---|---|
+| OS | Ubuntu 22.04.5 LTS |
+| ROS 2 | `ros-humble-desktop` 0.10.0 |
+| Gazebo | Gazebo Sim 8.15.0 (`libgz-sim8`, Harmonic) |
+| ros_gz | `ros-humble-ros-gzharmonic` 0.244.12 (Fortress용 `ros-humble-ros-gz*` 미설치 ✅) |
+| 빌드 도구 | `colcon`, `rosdep` 설치됨 |
+
+> `gz-harmonic` 메타패키지 없이 `libgz-sim8`만으로도 위 확인은 통과했습니다. GUI 등 추가 도구가 필요하면 `sudo apt-get install gz-harmonic`.
+
 ### 4. 프로젝트 의존성
 
 ```bash
@@ -98,4 +123,4 @@ sudo apt-get install ros-humble-ros-gzharmonic
 
 「증상 → 원인 → 해결 명령」 형식으로 추가합니다.
 
-> 확인 상태: 🔍 (마지막으로 위 명령을 실제 실행해 본 날짜)
+> 확인 상태: 설치·설치 확인 — 2026-10-21 개발 PC에서 확인 / 빌드·실행 — 🔍 (패키지 생성 후)
