@@ -1,0 +1,10 @@
+
+# <type>(<scope>): <요약 50자 이내, 마침표 없음>
+#
+# <본문: 무엇을, 왜 — 72자 줄바꿈>
+#
+# <꼬리말: Refs #이슈 / BREAKING CHANGE: ...>
+#
+# type : feat | fix | docs | refactor | test | exp | perf | chore | release(릴리스 병합 전용)
+# scope: gazebo | slam | semantic | eval | adr | docs | repo
+# 자세한 규칙: CONTRIBUTING.md
