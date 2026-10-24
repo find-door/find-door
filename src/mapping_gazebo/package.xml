@@ -10,6 +10,8 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <!-- Robot model, sensors and bridge come from the research workspace (overlay). See ADR-0003. -->
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch</exec_depend>
   <exec_depend>wf_gazebo</exec_depend>
   <exec_depend>ros_gz_sim</exec_depend>
 

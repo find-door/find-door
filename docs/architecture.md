@@ -17,7 +17,7 @@
 flowchart LR
   subgraph Sensors["센서 (실물 또는 Gazebo)"]
     L["2D LiDAR<br>/scan"]
-    O["휠 오도메트리<br>/odom"]
+    O["오도메트리<br>/odom"]
     I["IMU<br>/imu_data"]
     C["RGB-D 카메라<br>/camera/*"]
   end
@@ -51,12 +51,16 @@ flowchart LR
 
 ## 3. 패키지 구성 (안)
 
+현재 구현된 실행 경계와 실제 센서 이름은 [초기 인터페이스 계약](interfaces.md)을 따릅니다.
+`mapping_slam`은 slam_toolbox 초기 기준선이며 최종 알고리즘 선택은 아직 미정입니다.
+`mapping_eval`은 입력 계약 검사부터 구현하고, 정확도 평가와 `mapping_semantic`은 후속 작업입니다.
+
 | 패키지 | 역할 | 주요 입력 | 주요 출력 | 단계 |
 |---|---|---|---|---|
 | `mapping_gazebo` | 매핑용 실내 world, 로봇 스폰·브리지 launch | `wf_gazebo` 모델 | 시뮬 센서 토픽 | 0 |
 | `mapping_slam` | SLAM 파라미터·launch, 지도 저장 | `/scan`, TF `odom→base_footprint` (후보별 상이) | `/map`, TF `map→odom` | 1 |
 | `mapping_semantic` | 객체 인식, 지도 좌표 투영, 객체 지도 관리 | 카메라 이미지·depth·`CameraInfo`, TF | 객체 마커, 객체 목록 | 2 |
-| `mapping_eval` | 도면 대비 지도 오차, 위치 오차, 성능 측정 | 저장된 지도, rosbag, 정답 도면 | 평가 리포트 | 1~2 |
+| `mapping_eval` | 현재: 입력 계약 검사 / 예정: 정확도·성능 평가 | 센서·TF·지도 / 향후 rosbag·정답 도면 | 검사 결과·종료 코드 / 향후 평가 리포트 | 1~2 |
 
 > 🔍 미정: Python만 쓸지, 성능 병목(투영 등)에 C++ 노드를 둘지.
 
@@ -113,7 +117,7 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 
 - depth가 RGB에 정렬(registered)되어 있는지, 왜곡 보정(rectified) 여부
 - depth 인코딩·단위 (`16UC1` mm / `32FC1` m) 와 무효값(0, NaN) 처리
-- 투영 기준 프레임: `camera_optical_frame` (REP 103 광학 좌표 규약)
+- 투영 기준 프레임: `camera_color_optical_frame` (REP 103 광학 좌표 규약)
 
 ## 6. 단계별 진화
 
@@ -138,6 +142,8 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 | 결정됨: `wf_gazebo` 재사용 | 오버레이 의존 (`worker_following_ws`) | [ADR-0003](adr/0003-wf-gazebo-reuse.md) |
 
 ## 8. 알려진 위험
+
+- 현재 시뮬은 VelocityControl과 Gazebo 자세 기반 odom을 사용하므로 휠 미끄러짐·엔코더 오차를 재현하지 않습니다
 
 - LiDAR 5 Hz(시뮬 설정) → 빠르게 움직이면 지도 번짐 가능
 - 메카넘 바퀴 미끄러짐 → 오도메트리 오차가 SLAM 품질에 영향

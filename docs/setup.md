@@ -82,7 +82,8 @@ ros2 topic echo --once /clock        # sec/nanosec가 출력되면 정상
 ### 4. 프로젝트 의존성
 
 ```bash
-# 🔍 SLAM 패키지 등 — SLAM ADR 결정 후 추가
+# 초기 SLAM 기준선. Fortress용 ros_gz를 추가 설치하지 않음
+sudo apt-get install ros-humble-slam-toolbox
 ```
 
 ## 빌드
@@ -92,7 +93,7 @@ ros2 topic echo --once /clock        # sec/nanosec가 출력되면 정상
 ```bash
 source /opt/ros/humble/setup.bash
 source ~/worker_following_ws/install/setup.bash
-cd ~/lab2/prometheus-mapping
+# 현재 checkout 또는 worktree 루트에서 실행
 colcon build --symlink-install
 ```
 
@@ -103,7 +104,7 @@ colcon build --symlink-install
 ```bash
 source /opt/ros/humble/setup.bash
 source ~/worker_following_ws/install/setup.bash
-source ~/lab2/prometheus-mapping/install/setup.bash
+source install/setup.bash  # 현재 checkout/worktree 루트
 ```
 
 ```bash
@@ -142,3 +143,21 @@ world 도면과 기대 센서값은 [mapping_gazebo README](../src/mapping_gazeb
 - **`libEGL warning: egl: failed to create dri2 screen`** (GUI 없이 실행할 때) → 센서 토픽이 정상으로 나오면 무시해도 됨. 센서가 안 나오면 `headless_rendering:=false`
 
 > 확인 상태: 설치·설치 확인 — 2026-10-21 개발 PC에서 확인 / 빌드·시뮬레이션 실행(터미널 1, `gui:=false`) — 2026-10-21 확인 / SLAM·RViz2 — 🔍
+
+## 초기 패키지 구조 실행
+
+[인터페이스 계약](interfaces.md), [SLAM 실행·지도 저장](../src/mapping_slam/README.md),
+[입력 검사](../src/mapping_eval/README.md)를 참고합니다.
+
+```bash
+# Codex 검증용 격리: 관련 터미널마다 동일하게 설정
+export ROS_DOMAIN_ID=12 GZ_PARTITION=codex
+ros2 launch mapping_slam simulation.launch.py
+# 별도 터미널에서 환경 준비 후
+ros2 run mapping_eval check_interfaces --timeout 30 --require-map
+```
+
+통합 launch를 사용하면 위 시뮬 단독 launch를 함께 실행하지 않습니다.
+
+초기 패키지 빌드·통합 SLAM·지도 저장/재로딩은 2026-10-25 확인했습니다.
+검증 범위와 제한은 [평가 기록](evaluation.md#초기-패키지-연결-검증--2026-10-25)에 남겼습니다.

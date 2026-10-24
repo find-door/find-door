@@ -64,6 +64,7 @@ prometheus-mapping/
 ├── .github/               # PR 템플릿
 ├── docs/
 │   ├── architecture.md    # 시스템 구조, TF·토픽 설계
+│   ├── interfaces.md      # 초기 센서·TF·실행 계약
 │   ├── roadmap.md         # 단계별 목표·체크리스트
 │   ├── hardware.md        # 로봇·센서 사양
 │   ├── setup.md           # 개발 환경·실행 방법
@@ -71,9 +72,9 @@ prometheus-mapping/
 │   └── adr/               # 설계 결정 기록 (ADR)
 └── src/                   # ROS 2 패키지
     ├── mapping_gazebo/    # 매핑용 실내 world·launch ✅
-    ├── mapping_slam/      # SLAM 설정·launch (예정)
+    ├── mapping_slam/      # SLAM 기준선 설정·단독/통합 launch
     ├── mapping_semantic/  # 카메라 객체 인식 → 지도 표시 (예정)
-    └── mapping_eval/      # 지도 정확도 평가 도구 (예정)
+    └── mapping_eval/      # 입력 계약 검사 (정확도 평가는 예정)
 ```
 
 ## 빠른 시작
@@ -82,8 +83,10 @@ prometheus-mapping/
 source /opt/ros/humble/setup.bash
 source ~/worker_following_ws/install/setup.bash   # wf_gazebo (연구과제, 오버레이)
 colcon build --symlink-install && source install/setup.bash
-ros2 launch mapping_gazebo indoor.launch.py
+ros2 launch mapping_slam simulation.launch.py
 ```
+
+slam_toolbox 설치가 필요합니다. 초기 인터페이스는 [docs/interfaces.md](docs/interfaces.md)를 따릅니다.
 
 자세한 내용은 [docs/setup.md](docs/setup.md), world 도면은 [mapping_gazebo README](src/mapping_gazebo/README.md).
 

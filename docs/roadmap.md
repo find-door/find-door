@@ -28,6 +28,10 @@
 
 ## Phase 1 — 2D SLAM (지상 로봇)
 
+- [x] slam_toolbox 초기 기준선 launch·파라미터 및 [인터페이스 계약](interfaces.md) 작성
+- [x] 입력 수신·프레임·시간·TF·지도 메시지 검사 도구 구현
+- 정확도 평가는 아래 실험에서 별도 수행하며, 기준선 구현을 알고리즘 최종 선정으로 간주하지 않습니다.
+
 - [ ] SLAM 알고리즘 비교·선택 (slam_toolbox / Cartographer / Hector) → ADR 작성
   - Hector는 upstream이 ROS 1 기반이고 루프 클로저가 없음 → ROS 2 포트 존재 여부 확인 후 조건부 후보로 비교
 - [ ] 시뮬레이션에서 2D 지도 생성 → 도면 대비 오차 측정
