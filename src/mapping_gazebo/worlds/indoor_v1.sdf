@@ -1,0 +1,137 @@
+<?xml version="1.0" ?>
+<!--
+  indoor_v1: corridor (10.0 x 2.0 m) + two rooms, three 1.0 m doorways, one loop.
+  Interior faces are on round coordinates; see mapping_gazebo/README.md for the floor plan.
+  Walls: 0.1 m thick, 2.0 m high. Robot spawn: (1.0, 1.0), yaw 0.
+-->
+<sdf version="1.9">
+  <world name="indoor_v1">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane><normal>0 0 1</normal><size>100 100</size></plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane><normal>0 0 1</normal><size>100 100</size></plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="walls">
+      <static>true</static>
+      <link name="link">
+      <collision name="outer_south_collision">
+        <pose>5.0 -0.05 1.0 0 0 0</pose>
+        <geometry><box><size>10.2 0.1 2.0</size></box></geometry>
+      </collision>
+      <visual name="outer_south_visual">
+        <pose>5.0 -0.05 1.0 0 0 0</pose>
+        <geometry><box><size>10.2 0.1 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="outer_north_collision">
+        <pose>5.0 6.05 1.0 0 0 0</pose>
+        <geometry><box><size>10.2 0.1 2.0</size></box></geometry>
+      </collision>
+      <visual name="outer_north_visual">
+        <pose>5.0 6.05 1.0 0 0 0</pose>
+        <geometry><box><size>10.2 0.1 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="outer_west_collision">
+        <pose>-0.05 3.0 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 6.0 2.0</size></box></geometry>
+      </collision>
+      <visual name="outer_west_visual">
+        <pose>-0.05 3.0 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 6.0 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="outer_east_collision">
+        <pose>10.05 3.0 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 6.0 2.0</size></box></geometry>
+      </collision>
+      <visual name="outer_east_visual">
+        <pose>10.05 3.0 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 6.0 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="corridor_wall_1_collision">
+        <pose>1.0 2.05 1.0 0 0 0</pose>
+        <geometry><box><size>2.0 0.1 2.0</size></box></geometry>
+      </collision>
+      <visual name="corridor_wall_1_visual">
+        <pose>1.0 2.05 1.0 0 0 0</pose>
+        <geometry><box><size>2.0 0.1 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="corridor_wall_2_collision">
+        <pose>5.0 2.05 1.0 0 0 0</pose>
+        <geometry><box><size>4.0 0.1 2.0</size></box></geometry>
+      </collision>
+      <visual name="corridor_wall_2_visual">
+        <pose>5.0 2.05 1.0 0 0 0</pose>
+        <geometry><box><size>4.0 0.1 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="corridor_wall_3_collision">
+        <pose>9.0 2.05 1.0 0 0 0</pose>
+        <geometry><box><size>2.0 0.1 2.0</size></box></geometry>
+      </collision>
+      <visual name="corridor_wall_3_visual">
+        <pose>9.0 2.05 1.0 0 0 0</pose>
+        <geometry><box><size>2.0 0.1 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="room_divider_1_collision">
+        <pose>5.05 3.05 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 1.9 2.0</size></box></geometry>
+      </collision>
+      <visual name="room_divider_1_visual">
+        <pose>5.05 3.05 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 1.9 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      <collision name="room_divider_2_collision">
+        <pose>5.05 5.5 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 1.0 2.0</size></box></geometry>
+      </collision>
+      <visual name="room_divider_2_visual">
+        <pose>5.05 5.5 1.0 0 0 0</pose>
+        <geometry><box><size>0.1 1.0 2.0</size></box></geometry>
+        <material><ambient>0.7 0.7 0.65 1</ambient><diffuse>0.7 0.7 0.65 1</diffuse></material>
+      </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

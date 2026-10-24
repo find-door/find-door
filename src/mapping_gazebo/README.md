@@ -1,0 +1,67 @@
+# mapping_gazebo
+
+매핑용 실내 Gazebo Harmonic world와 launch입니다. 로봇 모델·센서·브리지는 연구과제 `wf_gazebo`를 **오버레이로** 사용합니다 ([ADR-0003](../../docs/adr/0003-wf-gazebo-reuse.md)). 이 저장소에는 `wf_gazebo` 파일을 복사하지 않습니다.
+
+## 빌드
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/worker_following_ws/install/setup.bash   # wf_gazebo (먼저 빌드되어 있어야 함)
+cd ~/lab2/prometheus-mapping
+colcon build --symlink-install
+source install/setup.bash
+```
+
+## 실행
+
+```bash
+# Gazebo 창 포함
+ros2 launch mapping_gazebo indoor.launch.py
+
+# 서버만 (GUI 없음)
+ros2 launch mapping_gazebo indoor.launch.py gui:=false
+```
+
+| 인자 | 기본값 | 설명 |
+|---|---|---|
+| `world` | `worlds/indoor_v1.sdf` | world SDF 절대 경로 |
+| `gui` | `true` | `false`면 서버만 실행 |
+| `headless_rendering` | `true` | `gui:=false`일 때만 사용. EGL을 못 쓰는 PC는 `false` |
+| `x`, `y`, `yaw` | `1.0`, `1.0`, `0.0` | 로봇 스폰 위치 (복도 시작점) |
+
+주행·센서 확인 명령은 `wf_gazebo/README.md`와 같습니다 (`teleop_twist_keyboard`, `ros2 topic hz /scan` 등).
+
+## indoor_v1 도면 (평가 정답 데이터)
+
+Phase 1 지도 정확도 평가의 기준입니다. **좌표는 모두 벽의 안쪽 면** 기준이며, 벽 두께 0.1 m, 높이 2.0 m입니다.
+
+```text
+ y
+ 6.0 ┌──────────────────────┬───────────────────────┐
+     │                      │                       │
+     │       Room A         │        Room B         │
+     │   5.0 × 3.9 m        D3 (y 4.0–5.0)  4.9 × 3.9 m
+     │                      │                       │
+ 2.1 ├────┐    ┌────────────┴───────┐    ┌──────────┤
+ 2.0 │    D1   │                    D2   │          │
+     │ (x 2–3)       Corridor 10.0 × 2.0 m (x 7–8)  │
+     │  ● 스폰 (1.0, 1.0)                           │
+ 0.0 └──────────────────────────────────────────────┘
+     0.0  2.0  3.0          5.0 5.1    7.0  8.0   10.0  x
+```
+
+| 공간 | x 범위 (m) | y 범위 (m) | 크기 (m) |
+|---|---|---|---|
+| 복도 | 0.0 – 10.0 | 0.0 – 2.0 | 10.0 × 2.0 |
+| Room A | 0.0 – 5.0 | 2.1 – 6.0 | 5.0 × 3.9 |
+| Room B | 5.1 – 10.0 | 2.1 – 6.0 | 4.9 × 3.9 |
+
+| 문 | 위치 | 폭 (m) | 연결 |
+|---|---|---|---|
+| D1 | 복도 벽(y 2.0–2.1), x 2.0 – 3.0 | 1.0 | 복도 ↔ Room A |
+| D2 | 복도 벽(y 2.0–2.1), x 7.0 – 8.0 | 1.0 | 복도 ↔ Room B |
+| D3 | 방 사이 벽(x 5.0–5.1), y 4.0 – 5.0 | 1.0 | Room A ↔ Room B |
+
+- 루프: 복도 → D1 → Room A → D3 → Room B → D2 → 복도 (루프 클로저 시험용)
+- 스폰 (1.0, 1.0), yaw 0에서 LiDAR(로봇 원점 기준 +0.011 m) 기대 거리: 전방 8.989 m(동쪽 벽), 좌 1.0 m(복도 벽), 우 1.0 m(남쪽 벽), 후방 1.011 m(서쪽 벽)
+- 시뮬레이션의 `/odom`은 **world 원점 기준**입니다. 스폰 직후 `/odom` 위치가 (1.0, 1.0)이고, 1 m 전진하면 x ≈ 2.0이 됩니다 (2026-10-21 확인). 실물 로봇의 오도메트리는 출발점이 원점이므로, 실물 지도와 도면을 비교할 때는 출발점 오프셋을 따로 맞춰야 합니다

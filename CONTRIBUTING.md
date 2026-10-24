@@ -46,7 +46,7 @@ GitHub 저장소 설정 (원격 생성 후):
 | `feat/` | 새 기능 | `feat/indoor-world`, `feat/slam-toolbox-launch` |
 | `fix/` | 버그 수정 | `fix/tf-camera-frame` |
 | `exp/` | 실험·비교 (병합 안 할 수도 있음) | `exp/cartographer-vs-slam-toolbox` |
-| `docs/` | 문서·ADR | `docs/adr-0003-slam-algorithm` |
+| `docs/` | 문서·ADR | `docs/adr-0004-slam-algorithm` |
 | `refactor/` | 동작 변화 없는 구조 개선 | `refactor/semantic-node-split` |
 | `chore/` | 빌드·설정·CI | `chore/gitignore-ros2` |
 | `hotfix/` | 릴리스(`main`) 긴급 수정 | `hotfix/map-save-crash` |
@@ -105,7 +105,7 @@ Refs #3
 ```
 
 ```text
-docs(adr): ADR-0003 SLAM 알고리즘으로 slam_toolbox 선택
+docs(adr): ADR-0004 SLAM 알고리즘으로 slam_toolbox 선택
 ```
 
 ```text

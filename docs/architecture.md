@@ -18,7 +18,7 @@ flowchart LR
   subgraph Sensors["센서 (실물 또는 Gazebo)"]
     L["2D LiDAR<br>/scan"]
     O["휠 오도메트리<br>/odom"]
-    I["IMU<br>/imu"]
+    I["IMU<br>/imu_data"]
     C["RGB-D 카메라<br>/camera/*"]
   end
 
@@ -66,28 +66,30 @@ REP 105 관례를 따릅니다.
 
 ```text
 map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint ──▶ base_link
-                                                            ├──▶ laser_frame
-                                                            ├──▶ camera_link ──▶ camera_optical_frame
+                                                            ├──▶ lidar_frame ──▶ lidar_sim_frame
+                                                            ├──▶ camera_link0 ──▶ camera_color_optical_frame
                                                             └──▶ imu_link
 ```
+
+프레임 이름은 `wf_gazebo` 시뮬레이션에서 확인한 값입니다 (2026-10-21, `tf2_tools view_frames`). `/scan`의 `frame_id`는 `lidar_sim_frame`입니다. 실물 드라이버의 프레임 이름은 로봇 확인 후 맞춥니다 🔍
 
 | 변환 | 발행 주체 | 정적/동적 |
 |---|---|---|
 | `map → odom` | SLAM 노드 | 동적 |
-| `odom → base_footprint` | 실물: 로봇 드라이버 또는 융합 노드 / 시뮬: Gazebo 플러그인 🔍 | 동적 |
+| `odom → base_footprint` | 실물: 로봇 드라이버 또는 융합 노드 🔍 / 시뮬: Gazebo 플러그인 (브리지 경유) | 동적 |
 | `base_footprint → base_link` | `robot_state_publisher` (URDF) | 정적 (지상 로봇) |
 | `base_link → 센서 프레임` | `robot_state_publisher` (URDF), 실물은 외부 보정 결과로 갱신 (Phase 2) | 정적 |
 
 - `/odom` 메시지의 `header.frame_id = odom`, `child_frame_id = base_footprint`로 TF와 일치시킵니다
 - 드론 단계(Phase 4)에서는 `base_footprint → base_link`가 자세·고도에 따라 변하므로 프레임 구성을 별도로 설계합니다
-- 프레임 이름은 `wf_gazebo` 모델 기준으로 확정 예정 🔍
+- 시뮬레이션의 `odom` 원점은 스폰 위치가 아니라 **world 원점**입니다 (실물은 출발점이 원점)
 
 ## 4-1. 시간·동기화
 
 - 시뮬레이션: Gazebo → ROS 단방향 `/clock` 브리지, 모든 노드 `use_sim_time:=true`
 - TF 조회는 현재 시각이 아니라 **센서 메시지의 타임스탬프** 기준으로 합니다
 - RGB·depth는 `message_filters`로 동기화 (허용 오차 🔍)
-- `ros_gz_bridge` 토픽별 방향·QoS는 `mapping_gazebo`의 브리지 설정 파일에 기록 🔍
+- `ros_gz_bridge` 토픽별 방향은 `wf_gazebo/config/gz_bridge.yaml`을 그대로 씁니다 ([ADR-0003](adr/0003-wf-gazebo-reuse.md)). 큰 영상의 BEST_EFFORT 프레임 손실을 막는 Fast DDS 설정(`fastdds_bridge.xml`)도 브리지 노드에 적용되어 있습니다
 
 ## 5. 토픽 인터페이스 (안)
 
@@ -96,15 +98,16 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 | `/clock` | `rosgraph_msgs/msg/Clock` | Gazebo (브리지) | 시뮬 전용 |
 | `/scan` | `sensor_msgs/msg/LaserScan` | LiDAR | 시뮬 5 Hz |
 | `/odom` | `nav_msgs/msg/Odometry` | 로봇 드라이버 / Gazebo | 시뮬 20 Hz |
-| `/imu` | `sensor_msgs/msg/Imu` | IMU | 시뮬 100 Hz |
-| `/camera/color/image_raw` | `sensor_msgs/msg/Image` | 카메라 | 시뮬 640×480, 15 Hz |
-| `/camera/color/camera_info` | `sensor_msgs/msg/CameraInfo` | 카메라 | 내부 보정값 (투영에 필수) |
-| `/camera/depth/image_raw` | `sensor_msgs/msg/Image` | 카메라 | 시뮬 0.2~10 m |
+| `/imu_data` | `sensor_msgs/msg/Imu` | IMU | 시뮬 100 Hz |
+| `/camera/color/image_raw` | `sensor_msgs/msg/Image` | 카메라 | 시뮬 640×480, 15 Hz, `rgb8` |
+| `/camera/camera_info` | `sensor_msgs/msg/CameraInfo` | 카메라 | 내부 보정값 (투영에 필수). 컬러·depth 공용 |
+| `/camera/depth/image_raw` | `sensor_msgs/msg/Image` | 카메라 | 시뮬 0.2~10 m, `32FC1`(m), 컬러와 정렬됨 |
+| `/cmd_vel` | `geometry_msgs/msg/Twist` | teleop / 상위 노드 | 로봇 속도 명령 |
 | `/map` | `nav_msgs/msg/OccupancyGrid` | SLAM | |
 | `/semantic/objects` | 🔍 미정 (커스텀 msg 또는 `vision_msgs/msg/Detection3DArray`) | `mapping_semantic` | 객체 종류·위치·신뢰도 |
 | `/semantic/markers` | `visualization_msgs/msg/MarkerArray` | `mapping_semantic` | RViz 표시용 |
 
-> 실제 토픽 이름은 실물 드라이버·`wf_gazebo` 설정 확인 후 확정 🔍
+> 시뮬레이션 토픽 이름·주기는 `wf_gazebo`에서 확인한 값입니다 (2026-10-21, `/scan` 5.0 Hz, `/odom` 19.9 Hz, `/imu_data` 100 Hz, 컬러 영상 14.2 Hz). 실물 드라이버 토픽 이름은 로봇 확인 후 맞춥니다 🔍
 
 카메라→지도 투영 입력 계약 (Phase 2에서 확정 🔍):
 
@@ -125,13 +128,14 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 
 | 항목 | 선택지 | ADR |
 |---|---|---|
-| SLAM 알고리즘 | slam_toolbox / Cartographer / Hector SLAM (ROS 1 기반·루프 클로저 없음 → ROS 2 포트 확인이 필요한 조건부 후보) | 0003 (예정) |
-| 카메라 융합 방식 | 객체 인식 후 지도 투영 / RTAB-Map 등 통합 SLAM | 0004 (예정) |
-| LiDAR 장착 방향 (3D) | 수평 / 세로 / 비스듬히(30~45°) / 수평+세로 2개 | 0005 (예정) |
-| 객체 인식 모델 | 🔍 (Jetson 실시간 동작 여부 기준) | 0006 (예정) |
-| 객체 지도 갱신 정책 | 루프 클로저 시 재투영 / 완성된 지도 위 위치 추정 모드로 제한 / 사람 등 동적 객체 만료·중복 병합·저장 형식 | 0007 (예정) |
+| SLAM 알고리즘 | slam_toolbox / Cartographer / Hector SLAM (ROS 1 기반·루프 클로저 없음 → ROS 2 포트 확인이 필요한 조건부 후보) | 0004 (예정) |
+| 카메라 융합 방식 | 객체 인식 후 지도 투영 / RTAB-Map 등 통합 SLAM | 0005 (예정) |
+| LiDAR 장착 방향 (3D) | 수평 / 세로 / 비스듬히(30~45°) / 수평+세로 2개 | 0006 (예정) |
+| 객체 인식 모델 | 🔍 (Jetson 실시간 동작 여부 기준) | 0007 (예정) |
+| 객체 지도 갱신 정책 | 루프 클로저 시 재투영 / 완성된 지도 위 위치 추정 모드로 제한 / 사람 등 동적 객체 만료·중복 병합·저장 형식 | 0008 (예정) |
 | 결정됨: 개발 플랫폼 | JetAuto (지상 로봇) | [ADR-0001](adr/0001-dev-platform-jetauto.md) |
 | 결정됨: 개발 환경 | Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic | [ADR-0002](adr/0002-dev-environment.md) |
+| 결정됨: `wf_gazebo` 재사용 | 오버레이 의존 (`worker_following_ws`) | [ADR-0003](adr/0003-wf-gazebo-reuse.md) |
 
 ## 8. 알려진 위험
 

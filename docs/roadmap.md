@@ -18,11 +18,12 @@
 
 - [x] 개발 환경 결정 — Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic ([ADR-0002](adr/0002-dev-environment.md))
 - [x] 개발 PC에 환경 설치 후 [setup.md](setup.md) 확인 날짜 기록 (2026-10-21)
-- [ ] 작업자추종로봇 과제의 JetAuto Gazebo 모델(`wf_gazebo`) 재사용 범위 확인
-- [ ] 매핑용 실내 world 만들기 (복도·방·문이 있는 구조, 치수를 아는 도면 기준)
+- [x] 작업자추종로봇 과제의 JetAuto Gazebo 모델(`wf_gazebo`) 재사용 범위 확인 — 오버레이로 의존 ([ADR-0003](adr/0003-wf-gazebo-reuse.md))
+- [x] 매핑용 실내 world 만들기 (복도·방·문이 있는 구조, 치수를 아는 도면 기준) — `mapping_gazebo/worlds/indoor_v1.sdf`
 - [x] 로컬 저장소 생성, 문서 뼈대·기여 규칙 작성
 - [ ] GitHub 원격 저장소 생성 (공개 범위 확인 후)
-- [ ] ROS 2 워크스페이스·패키지 뼈대 생성
+- [x] ROS 2 워크스페이스·패키지 뼈대 생성 — `mapping_gazebo`
+- [ ] 실내 world에서 시뮬레이션 주행 확인 — GUI 없이 확인 완료(2026-10-21), Gazebo 창·RViz2 화면 확인 남음
 - [ ] 연구과제 자원(JetAuto, `wf_gazebo`) 사용 및 GitHub 공개 범위를 교수님께 확인
 
 ## Phase 1 — 2D SLAM (지상 로봇)

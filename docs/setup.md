@@ -19,7 +19,7 @@
 
 | 항목 | 출처·접근 경로 | 버전 / revision |
 |---|---|---|
-| `wf_gazebo` (연구과제 모델·센서 설정) | 🔍 (공개 범위 확인 후) | 🔍 |
+| `wf_gazebo` (연구과제 모델·센서 설정) | 로컬 `~/worker_following_ws/src/wf_gazebo` (오버레이, [ADR-0003](adr/0003-wf-gazebo-reuse.md)) | git 미관리 → 버전 대신 확인 날짜 기록: 2026-10-21 (`rosorin.gz.xacro` 수정 시각 2026-10-15) |
 | 로봇 URDF·메시 (Hiwonder) | 🔍 | 🔍 |
 | JetPack / L4T | — | 🔍 |
 | 실물 로봇·센서 드라이버 | 🔍 | 🔍 |
@@ -87,15 +87,28 @@ ros2 topic echo --once /clock        # sec/nanosec가 출력되면 정상
 
 ## 빌드
 
+`wf_gazebo`(연구과제)를 오버레이로 사용하므로 `worker_following_ws`가 먼저 빌드되어 있어야 합니다 ([ADR-0003](adr/0003-wf-gazebo-reuse.md)).
+
 ```bash
-# 🔍 예: colcon build --symlink-install
+source /opt/ros/humble/setup.bash
+source ~/worker_following_ws/install/setup.bash
+cd ~/lab2/prometheus-mapping
+colcon build --symlink-install
 ```
 
 ## 실행 — 시뮬레이션
 
+새 터미널마다 아래 3줄을 먼저 실행합니다.
+
 ```bash
-# 터미널 1 — Gazebo + 로봇
-# 🔍
+source /opt/ros/humble/setup.bash
+source ~/worker_following_ws/install/setup.bash
+source ~/lab2/prometheus-mapping/install/setup.bash
+```
+
+```bash
+# 터미널 1 — Gazebo + 로봇 (indoor_v1 world, 복도 시작점 스폰)
+ros2 launch mapping_gazebo indoor.launch.py          # GUI 없이: gui:=false
 
 # 터미널 2 — SLAM
 # 🔍
@@ -104,8 +117,10 @@ ros2 topic echo --once /clock        # sec/nanosec가 출력되면 정상
 # 🔍
 
 # 터미널 4 — 주행 (teleop)
-# 🔍
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p speed:=0.1 -p turn:=0.2
 ```
+
+world 도면과 기대 센서값은 [mapping_gazebo README](../src/mapping_gazebo/README.md)에 있습니다.
 
 ## 실행 — 실물 JetAuto
 
@@ -123,4 +138,7 @@ ros2 topic echo --once /clock        # sec/nanosec가 출력되면 정상
 
 「증상 → 원인 → 해결 명령」 형식으로 추가합니다.
 
-> 확인 상태: 설치·설치 확인 — 2026-10-21 개발 PC에서 확인 / 빌드·실행 — 🔍 (패키지 생성 후)
+- **launch를 Ctrl+C가 아닌 방법으로 끄면 `gz sim`이 남음** → 다음 실행 때 토픽이 섞임 → `pkill -INT -f '^gz sim'`
+- **`libEGL warning: egl: failed to create dri2 screen`** (GUI 없이 실행할 때) → 센서 토픽이 정상으로 나오면 무시해도 됨. 센서가 안 나오면 `headless_rendering:=false`
+
+> 확인 상태: 설치·설치 확인 — 2026-10-21 개발 PC에서 확인 / 빌드·시뮬레이션 실행(터미널 1, `gui:=false`) — 2026-10-21 확인 / SLAM·RViz2 — 🔍

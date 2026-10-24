@@ -69,16 +69,23 @@ prometheus-mapping/
 │   ├── setup.md           # 개발 환경·실행 방법
 │   ├── evaluation.md      # 평가 지표·실험 기록
 │   └── adr/               # 설계 결정 기록 (ADR)
-└── src/                   # 🔍 미정 — ROS 2 패키지 (Phase 0에서 생성)
-    ├── mapping_gazebo/    # 매핑용 실내 world·launch
-    ├── mapping_slam/      # SLAM 설정·launch
-    ├── mapping_semantic/  # 카메라 객체 인식 → 지도 표시
-    └── mapping_eval/      # 지도 정확도 평가 도구
+└── src/                   # ROS 2 패키지
+    ├── mapping_gazebo/    # 매핑용 실내 world·launch ✅
+    ├── mapping_slam/      # SLAM 설정·launch (예정)
+    ├── mapping_semantic/  # 카메라 객체 인식 → 지도 표시 (예정)
+    └── mapping_eval/      # 지도 정확도 평가 도구 (예정)
 ```
 
 ## 빠른 시작
 
-> 🔍 미정 — Phase 0 완료 후 작성. [docs/setup.md](docs/setup.md) 참고.
+```bash
+source /opt/ros/humble/setup.bash
+source ~/worker_following_ws/install/setup.bash   # wf_gazebo (연구과제, 오버레이)
+colcon build --symlink-install && source install/setup.bash
+ros2 launch mapping_gazebo indoor.launch.py
+```
+
+자세한 내용은 [docs/setup.md](docs/setup.md), world 도면은 [mapping_gazebo README](src/mapping_gazebo/README.md).
 
 ## 검증 결과
 
