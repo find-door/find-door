@@ -74,7 +74,7 @@ prometheus-mapping/
     ├── mapping_gazebo/    # 매핑용 실내 world·launch ✅
     ├── mapping_slam/      # SLAM 기준선 설정·단독/통합 launch
     ├── mapping_semantic/  # 카메라 객체 인식 → 지도 표시 (예정)
-    └── mapping_eval/      # 입력 계약 검사 (정확도 평가는 예정)
+    └── mapping_eval/      # 입력 검사·자동 시뮬 주행·지도 기하 평가
 ```
 
 ## 빠른 시작

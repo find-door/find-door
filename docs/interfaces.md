@@ -10,7 +10,7 @@
 |---|---|---|
 | `mapping_gazebo` | 실내 world, 외부 launch wrapper | 로봇 모델·센서·브리지 구현 |
 | `mapping_slam` | SLAM 설정, 단독·통합 launch | 센서 드라이버, odom·고정 TF 발행 |
-| `mapping_eval` | 입력 계약 검사 CLI | 로봇 제어, SLAM 알고리즘, 지도 정확도 평가(후속 작업) |
+| `mapping_eval` | 입력 검사, 시뮬 전용 경로 주행·반복 실행, 지도 기하 평가 | 실물 제어기, SLAM 알고리즘, 독립적인 ATE |
 | `mapping_semantic` (예정) | 검출·깊이 투영·객체 지도 | 현재는 패키지·커스텀 메시지를 생성하지 않음 |
 
 ## 센서·출력 토픽
@@ -72,3 +72,11 @@ Codex 검증은 `ROS_DOMAIN_ID=12`, `GZ_PARTITION=codex`로 격리합니다.
 핵심 입력 수신·프레임·시간 진행·TF 연결·지도 메시지를 검사합니다.
 이는 지도 정확도, 카메라 보정, 모든 TF 발행자 중복, 실제 센서 주파수 검증을 대신하지 않습니다.
 정확도 평가는 [evaluation.md](evaluation.md), 시맨틱 메시지 설계는 ADR-0005·0008에서 진행합니다.
+
+## 시뮬레이션 평가용 명령
+
+`drive_route`는 `geometry_msgs/msg/Twist`를 `/cmd_vel`로 최대 20 Hz 발행합니다.
+외부 VelocityControl의 body XY 제어를 사용하며 실물에는 실행하지 않습니다.
+초기 odom 시각의 map→odom 역변환을 고정하고, 각 odom 시각의 map→base_footprint를
+기록합니다. `run_benchmark`의 반복 실행·정답선·품질 기준은
+[시뮬레이션 평가 절차](simulation-evaluation.md)에 정의합니다.

@@ -1,3 +1,5 @@
+from glob import glob
+
 from setuptools import find_packages, setup
 
 package_name = 'mapping_eval'
@@ -9,6 +11,7 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml', 'README.md']),
+        ('share/' + package_name + '/config', glob('config/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -18,6 +21,12 @@ setup(
     license='TBD',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': ['check_interfaces = mapping_eval.check_interfaces:main'],
+        'console_scripts': [
+            'check_interfaces = mapping_eval.check_interfaces:main',
+            'evaluate_map = mapping_eval.evaluate_map:main',
+            'drive_route = mapping_eval.drive_route:main',
+            'analyze_trajectory = mapping_eval.trajectory_metrics:main',
+            'run_benchmark = mapping_eval.run_benchmark:main',
+        ],
     },
 )

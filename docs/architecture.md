@@ -53,14 +53,15 @@ flowchart LR
 
 현재 구현된 실행 경계와 실제 센서 이름은 [초기 인터페이스 계약](interfaces.md)을 따릅니다.
 `mapping_slam`은 slam_toolbox 초기 기준선이며 최종 알고리즘 선택은 아직 미정입니다.
-`mapping_eval`은 입력 계약 검사부터 구현하고, 정확도 평가와 `mapping_semantic`은 후속 작업입니다.
+`mapping_eval`은 입력 검사와 [시뮬레이션 지도 기하 평가](simulation-evaluation.md)를 구현했습니다.
+실물 평가와 `mapping_semantic`은 후속 작업입니다.
 
 | 패키지 | 역할 | 주요 입력 | 주요 출력 | 단계 |
 |---|---|---|---|---|
 | `mapping_gazebo` | 매핑용 실내 world, 로봇 스폰·브리지 launch | `wf_gazebo` 모델 | 시뮬 센서 토픽 | 0 |
 | `mapping_slam` | SLAM 파라미터·launch, 지도 저장 | `/scan`, TF `odom→base_footprint` (후보별 상이) | `/map`, TF `map→odom` | 1 |
 | `mapping_semantic` | 객체 인식, 지도 좌표 투영, 객체 지도 관리 | 카메라 이미지·depth·`CameraInfo`, TF | 객체 마커, 객체 목록 | 2 |
-| `mapping_eval` | 현재: 입력 계약 검사 / 예정: 정확도·성능 평가 | 센서·TF·지도 / 향후 rosbag·정답 도면 | 검사 결과·종료 코드 / 향후 평가 리포트 | 1~2 |
+| `mapping_eval` | 입력 검사·시뮬 주행·지도 기하 평가 / 예정: 실물·성능 평가 | 센서·TF·지도·정답선·경로 | 검사 결과·cmd_vel·지도 지표·rosbag·궤적 잔차 | 1~2 |
 
 > 🔍 미정: Python만 쓸지, 성능 병목(투영 등)에 C++ 노드를 둘지.
 
