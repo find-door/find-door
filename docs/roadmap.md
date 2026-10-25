@@ -21,7 +21,7 @@
 - [x] 작업자추종로봇 과제의 JetAuto Gazebo 모델(`wf_gazebo`) 재사용 범위 확인 — 오버레이로 의존 ([ADR-0003](adr/0003-wf-gazebo-reuse.md))
 - [x] 매핑용 실내 world 만들기 (복도·방·문이 있는 구조, 치수를 아는 도면 기준) — `mapping_gazebo/worlds/indoor_v1.sdf`
 - [x] 로컬 저장소 생성, 문서 뼈대·기여 규칙 작성
-- [ ] GitHub 원격 저장소 생성 (공개 범위 확인 후)
+- [x] GitHub Private 원격 저장소 생성 — 공개 전환 승인과 분리
 - [x] ROS 2 워크스페이스·패키지 뼈대 생성 — `mapping_gazebo`
 - [ ] 실내 world에서 시뮬레이션 주행 확인 — GUI 없이 확인 완료(2026-10-21), Gazebo 창·RViz2 화면 확인 남음
 - [ ] 연구과제 자원(JetAuto, `wf_gazebo`) 사용 및 GitHub 공개 범위를 교수님께 확인
@@ -58,3 +58,8 @@
 - [ ] 휠 오도메트리 없는 운동 추정 (VIO 또는 LiDAR 기반)
 - [ ] 드론 시뮬레이션 또는 핸드헬드 리그로 드론 움직임 흉내내기
 - [ ] (확장) 연기 환경 — 열화상 카메라 융합 검토, 여러 대 지도 병합
+
+## 로봇 도착 전 소프트웨어 준비
+
+[작업 범위와 상태](prehardware-plan.md)에 실행·재생·시맨틱 합성 검증·CI를 정리합니다.
+[실물 인수 절차](robot-acceptance.md)는 하드웨어 도착 후 별도로 수행합니다.

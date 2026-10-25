@@ -16,11 +16,13 @@
 | 센서 | 실물 모델·사양 | 시뮬레이션 설정값 | 장착 위치 (시뮬) |
 |---|---|---|---|
 | 2D LiDAR | 🔍 | 360°, 360빔, 0.15~12 m, 5 Hz | (0.011, 0, 0.164) m, `base_footprint` 기준, 수평 |
-| RGB-D 카메라 | 🔍 | 640×480, 15 Hz, 수평 FOV 1.14 rad, 0.2~10 m | 광학 프레임 (0.082, 0, 0.092) m |
-| IMU | 🔍 | 100 Hz | (0.040, −0.015, 0.078) m |
-| 휠 오도메트리 | 🔍 | `/odom` 20 Hz | — |
+| RGB-D 카메라 | 🔍 | 640×480, 15 Hz, 수평 FOV 1.14 rad, 0.2~10 m | 광학 프레임 (0.082373, 0.000079, 0.119864) m, `base_footprint` 기준 |
+| IMU | 🔍 | 100 Hz | (0.040, −0.015, 0.078) m, `base_footprint` 기준 |
+| 오도메트리 | 엔코더·융합 방식 🔍 | Gazebo `OdometryPublisher`의 `/odom` 20 Hz | 시뮬레이션 자세 기반 |
 
-> 카메라·IMU 장착 위치의 기준 프레임(`base_link`/`base_footprint`)은 URDF에서 재확인 필요 🔍
+2026-10-25 외부 `wf_gazebo/urdf/mecanum.xacro` 및 `rosorin.gz.xacro`를 읽어 기준 프레임을 확인했습니다. `base_link`는 `base_footprint`보다 0.028 m 높습니다. 카메라 광학 프레임 높이 0.091864 m는 `base_link` 기준이며, 표의 0.119864 m는 `base_footprint` 기준입니다. `camera_link0`에서 광학 프레임까지 x=0.025 m, rpy=(-π/2, 0, -π/2) 변환이 추가됩니다.
+
+시뮬레이션 차체는 `VelocityControl`, 오도메트리는 `OdometryPublisher`를 사용합니다. 엔코더·휠 미끄러짐·실물 IMU 융합의 검증 결과가 아닙니다. 실물 장착 치수와 보정은 [로봇 인수 절차](robot-acceptance.md)에서 별도로 확인합니다.
 
 ## 매핑 관점에서 확인할 것
 

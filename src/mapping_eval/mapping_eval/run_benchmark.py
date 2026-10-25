@@ -31,16 +31,21 @@ def stop_process(child):
             os.killpg(child.pid, sig)
         except ProcessLookupError:
             child.poll()
-            return
+            return True
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             child.poll()  # 종료한 그룹 리더를 회수하되 자식도 별도로 기다린다.
             try:
                 os.killpg(child.pid, 0)
             except ProcessLookupError:
-                return
+                return True
             time.sleep(0.1)
     child.poll()
+    try:
+        os.killpg(child.pid, 0)
+    except ProcessLookupError:
+        return True
+    return False
 
 
 def main(args=None):
@@ -186,12 +191,19 @@ def main(args=None):
                                        'route': drive, 'metrics': metrics,
                                        'quality_gate': gates, 'quality_pass': all(gates.values())})
             finally:
+                failures = []
                 for child in reversed(active):
-                    stop_process(child)
+                    try:
+                        if stop_process(child) is False:
+                            failures.append(str(child.pid))
+                    except Exception as exc:
+                        failures.append(str(exc))
                 active.clear()
                 for handle in handles:
                     handle.close()
                 handles.clear()
+                if failures:
+                    raise RuntimeError('프로세스 정리 실패: ' + ', '.join(failures))
             (output / 'manifest.json').write_text(json.dumps(report, indent=2, ensure_ascii=False))
         report['status'] = 'completed'
         report['quality_pass'] = all(row['quality_pass'] for row in report['runs'])

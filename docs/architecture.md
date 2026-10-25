@@ -54,7 +54,7 @@ flowchart LR
 현재 구현된 실행 경계와 실제 센서 이름은 [초기 인터페이스 계약](interfaces.md)을 따릅니다.
 `mapping_slam`은 slam_toolbox 초기 기준선이며 최종 알고리즘 선택은 아직 미정입니다.
 `mapping_eval`은 입력 검사와 [시뮬레이션 지도 기하 평가](simulation-evaluation.md)를 구현했습니다.
-실물 평가와 `mapping_semantic`은 후속 작업입니다.
+`mapping_semantic`은 색상 표적 또는 외부 Detection2DArray와 RGB-D를 관측 시각 TF로 투영하고 정적 객체를 관리합니다. NanoDet CPU 검출 노드를 별도로 제공합니다. 실물 정확도·Jetson 성능은 미검증입니다.
 
 | 패키지 | 역할 | 주요 입력 | 주요 출력 | 단계 |
 |---|---|---|---|---|
@@ -93,7 +93,7 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 
 - 시뮬레이션: Gazebo → ROS 단방향 `/clock` 브리지, 모든 노드 `use_sim_time:=true`
 - TF 조회는 현재 시각이 아니라 **센서 메시지의 타임스탬프** 기준으로 합니다
-- RGB·depth는 `message_filters`로 동기화 (허용 오차 🔍)
+- RGB·depth·CameraInfo는 exact-time 동기화하며, 외부 검출 모드는 Detection2DArray까지 4방향 동기화합니다. 실물 허용 오차 변경은 보정·정렬 확인 후 별도 검증합니다 🔍
 - `ros_gz_bridge` 토픽별 방향은 `wf_gazebo/config/gz_bridge.yaml`을 그대로 씁니다 ([ADR-0003](adr/0003-wf-gazebo-reuse.md)). 큰 영상의 BEST_EFFORT 프레임 손실을 막는 Fast DDS 설정(`fastdds_bridge.xml`)도 브리지 노드에 적용되어 있습니다
 
 ## 5. 토픽 인터페이스 (안)
@@ -109,15 +109,15 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 | `/camera/depth/image_raw` | `sensor_msgs/msg/Image` | 카메라 | 시뮬 0.2~10 m, `32FC1`(m), 컬러와 정렬됨 |
 | `/cmd_vel` | `geometry_msgs/msg/Twist` | teleop / 상위 노드 | 로봇 속도 명령 |
 | `/map` | `nav_msgs/msg/OccupancyGrid` | SLAM | |
-| `/semantic/objects` | 🔍 미정 (커스텀 msg 또는 `vision_msgs/msg/Detection3DArray`) | `mapping_semantic` | 객체 종류·위치·신뢰도 |
+| `/semantic/objects` | `vision_msgs/msg/Detection3DArray` | `mapping_semantic` | 정적 객체·표면 대표점·마지막 관측 score |
 | `/semantic/markers` | `visualization_msgs/msg/MarkerArray` | `mapping_semantic` | RViz 표시용 |
 
 > 시뮬레이션 토픽 이름·주기는 `wf_gazebo`에서 확인한 값입니다 (2026-10-21, `/scan` 5.0 Hz, `/odom` 19.9 Hz, `/imu_data` 100 Hz, 컬러 영상 14.2 Hz). 실물 드라이버 토픽 이름은 로봇 확인 후 맞춥니다 🔍
 
-카메라→지도 투영 입력 계약 (Phase 2에서 확정 🔍):
+현재 카메라→지도 투영 계약 ([구현 상세](../src/mapping_semantic/README.md)):
 
-- depth가 RGB에 정렬(registered)되어 있는지, 왜곡 보정(rectified) 여부
-- depth 인코딩·단위 (`16UC1` mm / `32FC1` m) 와 무효값(0, NaN) 처리
+- RGB에 정렬된 depth와 무왜곡 pinhole CameraInfo만 허용
+- depth `32FC1` m, 0·NaN·inf·0.2–10m 밖 깊이 거부. `16UC1` mm 변환은 실물 연결 전에 별도 검증
 - 투영 기준 프레임: `camera_color_optical_frame` (REP 103 광학 좌표 규약)
 
 ## 6. 단계별 진화
@@ -149,3 +149,12 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 - LiDAR 5 Hz(시뮬 설정) → 빠르게 움직이면 지도 번짐 가능
 - 메카넘 바퀴 미끄러짐 → 오도메트리 오차가 SLAM 품질에 영향
 - 2D LiDAR 단일 평면 → 낮은 장애물·계단은 LiDAR로 못 볼 수 있음 (카메라 보완 필요)
+
+## 9. 로봇 도착 전 검증 범위
+
+[동일 입력 재생](replay-evaluation.md), [검출 기준선](detector-baseline.md),
+[시맨틱 패키지](../src/mapping_semantic/README.md)와 [실물 인수 절차](robot-acceptance.md)를 제공합니다.
+외부 검출의 정적 클래스는 chair/cup/bottle이며 person 등 동적 클래스는 관측만 발행합니다.
+표면 대표점은 물체 중심·크기·자세를 추정한 값이 아닙니다.
+지도 보정 epoch의 변위가 0.2m 또는 yaw 0.1rad를 넘으면 객체를 초기화하고 재관측합니다.
+작은 보정은 재투영하지 않으므로 정밀 누적에는 고정 지도 운용이 필요합니다.

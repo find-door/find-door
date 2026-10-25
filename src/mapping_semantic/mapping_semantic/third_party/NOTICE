@@ -1,0 +1,13 @@
+OpenCV Zoo NanoDet Python implementation
+Source: https://github.com/opencv/opencv_zoo/tree/main/models/object_detection_nanodet
+Source file: https://github.com/opencv/opencv_zoo/blob/main/models/object_detection_nanodet/nanodet.py
+Retrieved by the project on 2026-10-25; upstream commit was not recorded.
+Original nanodet.py SHA-256: 5ba84922eaefdc48d0066cffdfb721d0d434c5f3b92213563161e00da26cea1b
+License: Apache License 2.0; complete upstream LICENSE accompanies this file.
+Upstream notices in the distributed source and LICENSE are retained.
+
+Modifications: nanodet.py is vendored without changes. Project wrapper
+mapping_semantic/nanodet_detector.py subclasses it to add finite/shape validation,
+stable softmax, class-aware NMS with OpenCV 4.5.x index-shape compatibility,
+RGB-to-BGR conversion, aspect-preserving letterbox and original-coordinate boxes.
+Model weights are not included. Download and archive their provenance separately.

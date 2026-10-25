@@ -42,3 +42,8 @@ PYTHONPATH=src/mapping_eval python3 -m pytest src/mapping_eval/test -q
 ```
 
 통합 실행은 시뮬레이터와 SLAM이 있는 환경에서 위 CLI로 별도 검증합니다.
+
+## 추가 검증 도구
+
+- [동일 입력 재생·Cartographer 비교](../../docs/replay-evaluation.md): `replay_benchmark`
+- [합성 RGB-D 객체 지도 검증](../../docs/semantic-evaluation.md): `run_semantic_benchmark --output NEWDIR --record-camera --confirm-simulation`

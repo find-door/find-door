@@ -5,7 +5,7 @@
 2D LiDAR와 카메라로 실내 지도를 만들고, 카메라로 인식한 문·계단·사람 등을 지도 위에 표시하는 **시맨틱 매핑** 프로젝트입니다.
 최종 목표는 군·소방·탐사용 **내부 정찰 드론**에 탑재하는 것입니다. (영화 「프로메테우스」의 탐사 드론처럼)
 
-> ⚠️ **상태: 초기 설계 단계 (Phase 0).** 문서는 뼈대이며, `🔍 미정`으로 표시된 항목은 아직 결정되지 않았습니다.
+> **상태: 로봇 도착 전 소프트웨어 검증 진행 중.** 시뮬레이션 자동 주행·지도 평가·루프 비교를 구현했습니다. 실물 MVP는 미완료이며 [준비 범위](docs/prehardware-plan.md)와 검증 결과를 구분합니다.
 
 <!-- TODO: 데모 영상/GIF (왼쪽 카메라 화면 + 오른쪽 RViz 지도) -->
 
@@ -54,14 +54,14 @@ flowchart LR
 
 **MVP = Phase 1 + Phase 2.** 상세는 [docs/roadmap.md](docs/roadmap.md).
 
-## 저장소 구조 (안)
+## 저장소 구조
 
 ```text
 prometheus-mapping/
 ├── README.md
 ├── CONTRIBUTING.md        # 브랜치·커밋 규칙
 ├── .gitmessage            # 커밋 메시지 템플릿
-├── .github/               # PR 템플릿
+├── .github/               # PR 템플릿·오프라인 CI
 ├── docs/
 │   ├── architecture.md    # 시스템 구조, TF·토픽 설계
 │   ├── interfaces.md      # 초기 센서·TF·실행 계약
@@ -73,7 +73,7 @@ prometheus-mapping/
 └── src/                   # ROS 2 패키지
     ├── mapping_gazebo/    # 매핑용 실내 world·launch ✅
     ├── mapping_slam/      # SLAM 기준선 설정·단독/통합 launch
-    ├── mapping_semantic/  # 카메라 객체 인식 → 지도 표시 (예정)
+    ├── mapping_semantic/  # 색상 표적·NanoDet 2D 검출, RGB-D 투영·객체 지도
     └── mapping_eval/      # 입력 검사·자동 시뮬 주행·지도 기하 평가
 ```
 
@@ -92,7 +92,7 @@ slam_toolbox 설치가 필요합니다. 초기 인터페이스는 [docs/interfac
 
 ## 검증 결과
 
-> 결과가 나오면 채움 (예: 도면 대비 지도 오차 ○○ cm, 객체 표시 위치 오차 ○○ cm). [docs/evaluation.md](docs/evaluation.md) 참고.
+기준선 3회 벽 P95 오차는 6.28 / 3.46 / 3.14 cm였습니다. 동일 bag에서 slam_toolbox·Cartographer 각 3회 재생과 합성 표적의 실제 RGB-D 투영·이동·저장·복원 검증을 수행했습니다. 루프 ON/OFF 6회는 임시 기준을 통과했으나 예비 실행의 급변 원인은 미확정입니다. 실물 성능 결과가 아닙니다. [평가 기록](docs/evaluation.md)을 참고하세요.
 
 ## 연구과제와의 경계
 

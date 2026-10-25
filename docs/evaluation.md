@@ -122,3 +122,13 @@ Ceres 실행 중 스레드 수 상한 경고가 출력된 시점과 인접해 �
 **실패를 재현하지 못했으므로 원인은 미확정이며 기본 설정은 유지합니다.**
 회별 수치·해석·재현 명령은 [루프 클로저 조사](loop-closure-investigation.md)에 정리했습니다.
 원자료는 `/home/blind/lab2/prometheus-evaluation-results/2026-10-25-loop-comparison/`에 있습니다.
+
+## 로봇 도착 전 소프트웨어 준비 — 2026-10-25
+
+기준 dev `0add5f0`, `feat/prehardware-readiness`의 변경으로 실행했습니다.
+동일 기록 입력의 slam_toolbox·Cartographer 각각 3회와 OFF 1회 재생을 완료했습니다.
+지도 지표는 [재생 결과](replay-evaluation.md), 실제 RGB-D의 두 표적 이동·ID·저장·복원과
+학습 검출/외부 투영의 구분은 [시맨틱 결과](semantic-evaluation.md)에 기록했습니다.
+최초 온라인 급변은 재생에서 재현되지 않았으며 초기 scan 전체가 기록되지 않은 한계가 있습니다.
+4개 패키지 빌드, 순수 테스트 285개, colcon 303개 검사 오류·실패 0.
+실물 검증은 [로봇 인수](robot-acceptance.md)에서 별도 수행합니다.

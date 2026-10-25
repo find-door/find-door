@@ -1,7 +1,7 @@
 # 초기 인터페이스 계약
 
 이 계약은 `mapping_gazebo` → `mapping_slam` → `mapping_eval`의 시뮬레이션 기준입니다.
-실물 센서와 시맨틱 객체 메시지는 아직 미정입니다. 표준 ROS 메시지로 충분한 현재 단계에서는
+실물 센서 계약은 아직 미정이며 시맨틱 관측·객체에는 표준 vision_msgs를 사용합니다. 표준 ROS 메시지로 충분한 현재 단계에서는
 별도 `mapping_interfaces` 메시지 패키지를 만들지 않습니다.
 
 ## 패키지 경계
@@ -11,7 +11,7 @@
 | `mapping_gazebo` | 실내 world, 외부 launch wrapper | 로봇 모델·센서·브리지 구현 |
 | `mapping_slam` | SLAM 설정, 단독·통합 launch | 센서 드라이버, odom·고정 TF 발행 |
 | `mapping_eval` | 입력 검사, 시뮬 전용 경로 주행·반복 실행, 지도 기하 평가 | 실물 제어기, SLAM 알고리즘, 독립적인 ATE |
-| `mapping_semantic` (예정) | 검출·깊이 투영·객체 지도 | 현재는 패키지·커스텀 메시지를 생성하지 않음 |
+| `mapping_semantic` | NanoDet 2D 검출, 색상 표적·외부 검출 RGB-D 투영·정적 객체 지도 | 실물 보정, SLAM, 로봇 제어, 동적 추적 |
 
 ## 센서·출력 토픽
 
@@ -35,13 +35,13 @@
 브리지 발행 QoS는 외부 YAML에 명시되어 있지 않으므로 `ros2 topic info -v`로 확인합니다.
 2026-10-25 런타임에서 `/scan`·`/clock` 발행은 RELIABLE/VOLATILE, 각 발행자 1개를 확인했습니다.
 검사기는 센서 입력에 BEST_EFFORT/VOLATILE을 사용하고 `/map`에는 RELIABLE/TRANSIENT_LOCAL을 사용합니다.
-카메라 인코딩·정렬·무효 깊이는 Phase 2에서 런타임 확인합니다. NaN·inf·0 등 무효 깊이를 투영하지 않습니다.
+Gazebo 런타임에서 rgb8·32FC1(m), 640×480, fx=fy=499.409, 공통 optical frame, 무왜곡 K와 exact-time 동기화를 확인했습니다. NaN·inf·0 및 유효 범위 밖 깊이를 거부합니다. 이 값은 실물 보정 결과가 아닙니다.
 
 ## TF와 시간
 
 | 변환 | 유일한 발행 주체 |
 |---|---|
-| `map → odom` | slam_toolbox |
+| `map → odom` | 선택한 SLAM 하나: slam_toolbox 또는 Cartographer |
 | `odom → base_footprint` | Gazebo OdometryPublisher → 외부 브리지 |
 | `base_footprint → base_link → 센서` | 외부 launch의 robot_state_publisher |
 
@@ -80,3 +80,20 @@ Codex 검증은 `ROS_DOMAIN_ID=12`, `GZ_PARTITION=codex`로 격리합니다.
 초기 odom 시각의 map→odom 역변환을 고정하고, 각 odom 시각의 map→base_footprint를
 기록합니다. `run_benchmark`의 반복 실행·정답선·품질 기준은
 [시뮬레이션 평가 절차](simulation-evaluation.md)에 정의합니다.
+
+## 시맨틱 검출·투영 계약
+
+| 토픽 | 타입 | 의미 |
+|---|---|---|
+| `/semantic/detections2d` | `vision_msgs/msg/Detection2DArray` | 원본 RGB header·픽셀 bbox, 모델 confidence |
+| `/semantic/observations` | `vision_msgs/msg/Detection3DArray` | 관측 시각 map 좌표의 표면 대표점 |
+| `/semantic/objects` | `vision_msgs/msg/Detection3DArray` | 최소 3회 관측한 정적 객체, TRANSIENT_LOCAL |
+| `/semantic/markers` | `visualization_msgs/msg/MarkerArray` | 확정 객체 표시와 epoch 초기화 DELETEALL |
+| `/semantic/status` | `std_msgs/msg/String` | 처리·거부·TF·리셋·CPU·지연 JSON |
+
+외부 모드는 RGB/depth/CameraInfo/Detection2DArray의 frame·stamp가 모두 같아야 합니다.
+최고 confidence≥0.5, 유효 bbox 중앙 50%에서 깊이를 투영합니다. 정렬된 32FC1(m)만 지원하고
+최신 TF로 대체하지 않습니다. person 등 동적 클래스는 ID 없는 관측만 발행하고 저장하지 않습니다.
+정적 클래스·지도 식별자·모드가 다른 JSON은 로드하지 않습니다.
+자세·크기·보정된 위치 불확실성은 추정하지 않습니다.
+[세부 계약·서비스](../src/mapping_semantic/README.md)와 [검출 모델 범위](detector-baseline.md)를 참고하세요.
