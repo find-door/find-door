@@ -32,15 +32,22 @@
 - [x] 입력 수신·프레임·시간·TF·지도 메시지 검사 도구 구현
 - 정확도 평가는 아래 실험에서 별도 수행하며, 기준선 구현을 알고리즘 최종 선정으로 간주하지 않습니다.
 
-- [ ] SLAM 알고리즘 비교·선택 (slam_toolbox / Cartographer / Hector) → ADR 작성
+- [x] 시뮬 SLAM 개발 기준선 비교·결정 — [ADR-0004](adr/0004-prehardware-slam-baseline.md)
+- [ ] 실물 센서·독립 정답·Jetson 자원으로 최종 SLAM 선정
   - Hector는 upstream이 ROS 1 기반이고 루프 클로저가 없음 → ROS 2 포트 존재 여부 확인 후 조건부 후보로 비교
 - [x] 시뮬레이션에서 2D 지도 생성 → 도면 대비 오차 측정 — [3회 자동 주행 평가](evaluation.md#자동-주행지도-기하-평가--2026-10-25)
 - [x] 루프 클로저 ON/OFF 각 3회 비교 — [급변 재현 안 됨](loop-closure-investigation.md#2026-10-25-결과), 원인 확정 아님
-- [ ] 예비 실행의 SLAM 위치 급변 원인 검증 — 실패 bag의 출력 TF를 제외한 동일 입력 재생·그래프 연결 비교
+- [x] 실패 bag 출력 TF 제거·동일 기록 입력 재생 — [재생 결과](replay-evaluation.md)
+- [ ] 최초 온라인 급변 원인 확정 — 초기 입력 미기록으로 동일 상태 복제 불가, 재발 시 SLAM 시작 전 기록·그래프 관측 필요
 - [ ] 실물 JetAuto로 실제 공간(복도·실험실) 매핑, 줄자 실측과 비교
 - [ ] 루프 클로저 전·후 비교 (루프 클로저가 없는 후보는 N/A)
 
 ## Phase 2 — 카메라 융합 (시맨틱 지도)
+
+- [x] 별도 검출·RGB-D 투영 구조 결정 — [ADR-0005](adr/0005-rgbd-projection.md)
+- [x] 실제 Gazebo 색상 표적 투영·이동·ID·저장·복원 검증 — [결과](semantic-evaluation.md)
+- [x] NanoDet CPU/ROS와 외부 검출 연결 — [ADR-0007](adr/0007-cpu-detector-baseline.md), 실제 목표 클래스 성능 미검증
+- [x] 정적 객체·동적 관측 분리·지도 보정 정책 — [ADR-0008](adr/0008-semantic-map-policy.md)
 
 - [ ] 카메라↔LiDAR 외부 보정 (장착 위치·TF)
 - [ ] 객체 인식 (문·계단·사람·소화기 등) → 지도 좌표로 투영

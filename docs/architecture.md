@@ -133,11 +133,11 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 
 | 항목 | 선택지 | ADR |
 |---|---|---|
-| SLAM 알고리즘 | slam_toolbox / Cartographer / Hector SLAM (ROS 1 기반·루프 클로저 없음 → ROS 2 포트 확인이 필요한 조건부 후보) | 0004 (예정) |
-| 카메라 융합 방식 | 객체 인식 후 지도 투영 / RTAB-Map 등 통합 SLAM | 0005 (예정) |
+| SLAM 개발 기준선 | slam_toolbox 기본·Cartographer 비교, 실물 최종 선정 유보 | [ADR-0004](adr/0004-prehardware-slam-baseline.md) |
+| 카메라 융합 | 독립 2D 검출·RGB-D 관측 시각 TF 투영 | [ADR-0005](adr/0005-rgbd-projection.md) |
 | LiDAR 장착 방향 (3D) | 수평 / 세로 / 비스듬히(30~45°) / 수평+세로 2개 | 0006 (예정) |
-| 객체 인식 모델 | 🔍 (Jetson 실시간 동작 여부 기준) | 0007 (예정) |
-| 객체 지도 갱신 정책 | 루프 클로저 시 재투영 / 완성된 지도 위 위치 추정 모드로 제한 / 사람 등 동적 객체 만료·중복 병합·저장 형식 | 0008 (예정) |
+| 검출 개발 기준선 | NanoDet CPU·COCO80, 실물 목표 모델·Jetson 검증 유보 | [ADR-0007](adr/0007-cpu-detector-baseline.md) |
+| 객체 지도 정책 | 정적 객체만 누적, 큰 보정에 epoch 초기화·고정 지도 우선 | [ADR-0008](adr/0008-semantic-map-policy.md) |
 | 결정됨: 개발 플랫폼 | JetAuto (지상 로봇) | [ADR-0001](adr/0001-dev-platform-jetauto.md) |
 | 결정됨: 개발 환경 | Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic | [ADR-0002](adr/0002-dev-environment.md) |
 | 결정됨: `wf_gazebo` 재사용 | 오버레이 의존 (`worker_following_ws`) | [ADR-0003](adr/0003-wf-gazebo-reuse.md) |

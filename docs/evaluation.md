@@ -132,3 +132,5 @@ Ceres 실행 중 스레드 수 상한 경고가 출력된 시점과 인접해 �
 최초 온라인 급변은 재생에서 재현되지 않았으며 초기 scan 전체가 기록되지 않은 한계가 있습니다.
 4개 패키지 빌드, 순수 테스트 285개, colcon 303개 검사 오류·실패 0.
 실물 검증은 [로봇 인수](robot-acceptance.md)에서 별도 수행합니다.
+
+재생·시맨틱 소프트웨어 구현은 [PR #7](https://github.com/reconmap-lab/prometheus-mapping/pull/7), dev `f0b37c0`에 병합했고 원격 CI를 통과했습니다.

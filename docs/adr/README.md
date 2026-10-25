@@ -14,10 +14,10 @@
 | [0001](0001-dev-platform-jetauto.md) | 개발 플랫폼 | 핸드헬드 리그 / 지상 로봇 / 드론 | JetAuto (지상 로봇) | ✅ 결정 |
 | [0002](0002-dev-environment.md) | 개발 환경 | Humble + Fortress / Humble + Harmonic / Jazzy + Harmonic | Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic | ✅ 결정 |
 | [0003](0003-wf-gazebo-reuse.md) | `wf_gazebo` 재사용 방식 | 오버레이 의존 / 저장소에 복사 / 별도 저장소 | 오버레이 의존 (`worker_following_ws`) | ✅ 결정 |
-| 0004 | SLAM 알고리즘 | slam_toolbox / Cartographer / Hector SLAM (ROS 2 포트 확인 필요) | | 🔍 검토 중 |
-| 0005 | 카메라 융합 방식 | 객체 인식 후 지도 투영 / RTAB-Map 등 통합 SLAM | | 🔍 검토 중 |
+| [0004](0004-prehardware-slam-baseline.md) | SLAM 개발 기준선 | slam_toolbox / Cartographer / Hector | slam_toolbox 기본·Cartographer 선택 비교, 실물 유보 | ✅ 시뮬 기준선 결정 |
+| [0005](0005-rgbd-projection.md) | 카메라 융합 | 별도 검출·투영 / 통합 RGB-D SLAM | Detection2D + 정렬 깊이 + 관측 시각 TF | ✅ 결정 |
 | 0006 | LiDAR 장착 방향 (3D 단계) | 수평 / 세로 / 비스듬히(30~45°) / 수평+세로 2개 | | 🔍 검토 중 |
-| 0007 | 객체 인식 모델 | 🔍 (Jetson 실시간 동작 여부 기준) | | 🔍 검토 중 |
-| 0008 | 객체 지도 갱신 정책 | 루프 클로저 시 재투영 / 완성 지도 위 위치 추정 모드로 제한 | | 🔍 검토 중 |
+| [0007](0007-cpu-detector-baseline.md) | 검출 개발 기준선 | 색상 표적 / NanoDet / 실물 목표 모델 | NanoDet CPU 연결 기준선, 실물 목표 모델 유보 | ✅ CPU 기준선 결정 |
+| [0008](0008-semantic-map-policy.md) | 객체 지도 정책 | 재투영 / 고정 지도 / epoch 초기화 | 정적 객체·고정 지도 우선·큰 보정 초기화 | ✅ 제한 범위 결정 |
 
 > 번호는 예정값입니다. 실제로 작성하는 순서대로 번호를 붙이고, 이 표와 [architecture.md](../architecture.md#7-미결정-사항)를 함께 갱신합니다.

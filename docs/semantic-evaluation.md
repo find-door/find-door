@@ -20,7 +20,7 @@ ros2 run mapping_eval run_semantic_benchmark \
 ```
 
 이 도구는 자기 시뮬레이션만 headless로 시작해 (1,1)에서 두 객체를 확정하고,
-최대 0.2m 전진하여 같은 ID를 확인한 뒤 저장·mapper 재시작·load를 시험합니다.
+0.2m 전진을 목표(도착 허용 오차 0.02m)로 같은 ID를 확인한 뒤 저장·mapper 재시작·load를 시험합니다.
 첫 객체 관측 시각의 map←odom 전체 3D 역변환을 고정하며 사후 정합은 하지 않습니다.
 기존 JSON 덮어쓰기는 거부해야 하고, 새 mapper는 publisher GID와 instance_id로 확인합니다.
 load의 증거는 서비스 성공·loads 증가·호출 구간의 저장 좌표 일치 발행입니다.
@@ -81,3 +81,5 @@ ROS 단발 입력 시험은 수신 확인 후 재전송했습니다. 외부 브�
 
 실물 센서·보정·Jetson 처리율·실제 목표 클래스 성능과 사용자 RViz 화면 확인은
 [실물 인수 절차](robot-acceptance.md)에 남깁니다. RViz 설정은 제공하지만 GUI 시험은 아직 미완료입니다.
+
+구현은 [PR #7](https://github.com/reconmap-lab/prometheus-mapping/pull/7), dev `f0b37c0`에 병합했습니다.

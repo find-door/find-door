@@ -97,7 +97,8 @@ export LD_LIBRARY_PATH=/home/blind/lab2/prometheus-tools/cartographer-overlay/op
 | cartographer_02 | 2.51 | 2.50 | 100.00 | 98.45 | 0 |
 | cartographer_03 | 2.51 | 2.50 | 100.00 | 98.45 | 0 |
 
-이번 입력에서는 slam_toolbox ON·Cartographer 각각 3회의 지도 지표가 일치했습니다.
+이번 입력에서는 slam_toolbox ON·Cartographer 각각 3회의 결과가 표의 반올림 정밀도에서 같았습니다.
+픽셀 지도·점유 셀 수·모든 원시 지표가 같다는 의미는 아닙니다.
 
 두 알고리즘 모두 임시 기준을 만족하며, P95만으로 우열을 결정하지 않습니다.
 Cartographer는 이 비교에서 coverage가 조금 낮고 slam_toolbox는 RMSE가 조금 작았습니다.

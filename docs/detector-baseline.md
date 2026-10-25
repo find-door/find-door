@@ -27,9 +27,9 @@ RGB를 종횡비를 유지하여 416×416에 letterbox하고, 정수 리사이�
 | 클래스·score | COCO 클래스 문자열, 모델 confidence; 보정된 확률로 해석하지 않음 |
 | 식별·3D pose | 추적 ID를 생성하지 않음. Detection2D hypothesis의 기본 pose는 미추정이며 사용하지 않음 |
 | 상태 | `/semantic/detector_status`, `std_msgs/msg/String` JSON, reliable / volatile / depth 1 |
-| 실행 방식 | CPU, 기본 최대 5 Hz, 최신 대기 영상 1장으로 교체 |
+| 실행 방식 | CPU, 기본 5 Hz 추론 타이머, 최신 대기 영상 1장으로 교체 |
 
-입력 수신과 추론은 별도 callback group으로 실행하며 추론 작업은 동시에 하나만 수행합니다. 처리율은 실제 CPU 속도에 따라 5 Hz보다 낮을 수 있습니다. 상태에는 모델 checksum, OpenCV 버전, 입력·교체·실패·처리 수, 최근 처리·큐 대기 wall time과 입력 시각 대비 지연을 기록합니다. 시뮬레이션은 `use_sim_time=true`로 실행해야 센서 시각 지연을 해석할 수 있습니다. 콜백 이전 DDS 대기 시간은 큐 대기 wall time에 포함되지 않습니다.
+입력 수신과 추론은 별도 callback group으로 실행하며 추론 작업은 동시에 하나만 수행합니다. 추론 타이머 설정은 기본 5 Hz이며 실제 처리율이나 완료 메시지 간격을 보장하지 않습니다. 상태에는 모델 checksum, OpenCV 버전, 입력·교체·실패·처리 수, 최근 처리·큐 대기 wall time과 입력 시각 대비 지연을 기록합니다. 시뮬레이션은 `use_sim_time=true`로 실행해야 센서 시각 지연을 해석할 수 있습니다. 콜백 이전 DDS 대기 시간은 큐 대기 wall time에 포함되지 않습니다.
 
 ## 오프라인 실행
 
