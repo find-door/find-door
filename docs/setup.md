@@ -188,3 +188,7 @@ ros2 run mapping_eval check_interfaces --timeout 30 --require-map
 
 초기 패키지 빌드·통합 SLAM·지도 저장/재로딩은 2026-10-25 확인했습니다.
 검증 범위와 제한은 [평가 기록](evaluation.md#초기-패키지-연결-검증--2026-10-25)에 남겼습니다.
+
+## 실제 화면으로 보기
+
+[Gazebo·RViz 실시간 화면](live-visualization.md)에 실제 GUI 캡처·표시 항목·12 waypoint 주행 확인과 재실행 구성을 기록했습니다. 화면 표시 확인과 실물·지도 정확도 검증을 구분합니다.
