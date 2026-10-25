@@ -83,3 +83,7 @@ ROS 단발 입력 시험은 수신 확인 후 재전송했습니다. 외부 브�
 [실물 인수 절차](robot-acceptance.md)에 남깁니다. RViz 설정은 제공하지만 GUI 시험은 아직 미완료입니다.
 
 구현은 [PR #7](https://github.com/reconmap-lab/prometheus-mapping/pull/7), dev `f0b37c0`에 병합했습니다.
+
+## 실물 입력 형식 준비
+
+16UC1 밀리미터·32FC1 미터 및 BGR/RGB 전환, 선택적 최대 편차 동기화를 추가했습니다. 합성 ROS 입력에서 객체 ID 유지·잘못된 검출 시각·무효 depth·시간차 경계 거부를 확인했습니다. [실행 결과](robot-readiness-evaluation.md)에 물리 정렬·실물 정확도와의 구분 및 원자료를 기록했습니다.

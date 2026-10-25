@@ -20,11 +20,14 @@
 ## 결정과 이유
 
 검출 노드는 원본 RGB header·픽셀 bbox의 `vision_msgs/msg/Detection2DArray`를 발행합니다.
-mapper는 RGB/depth/CameraInfo/검출의 exact timestamp·frame을 검사하고 관측 시각 TF로
+mapper는 기본 RGB/depth/CameraInfo/검출의 exact timestamp·frame을 검사하고 관측 시각 TF로
 `vision_msgs/msg/Detection3DArray`를 발행합니다. 합성 색상 표적 모드는 검출 모델 없이
 기하·저장 경로를 확인하는 별도 입력입니다. 커스텀 메시지 패키지를 만들지 않습니다.
 
-현재는 무왜곡 pinhole CameraInfo와 RGB에 정렬된 `32FC1` 미터 깊이만 지원합니다.
+무왜곡 pinhole CameraInfo와 RGB에 정렬된 `32FC1` 미터 또는 `16UC1` 밀리미터 깊이를 지원합니다.
+실물 연결 준비 보완으로 rgb8/bgr8과 명시적 approximate sync를 추가했습니다.
+RGB와 검출은 항상 exact이며 depth·CameraInfo만 설정된 최대 0.1초 이내 편차를 허용합니다.
+TF·출력 시각은 RGB 시각으로 유지하며 기본 exact 정책은 바꾸지 않습니다.
 유효 깊이 픽셀의 XYZ 중앙값을 사용하고, 외부 bbox는 중앙 50% 영역으로 제한합니다.
 정적 객체 저장은 [ADR-0008](0008-semantic-map-policy.md), 검출 기준선은
 [ADR-0007](0007-cpu-detector-baseline.md)을 따릅니다.
@@ -33,8 +36,9 @@ mapper는 RGB/depth/CameraInfo/검출의 exact timestamp·frame을 검사하고 
 
 출력은 보이는 표면 대표점이며 객체 부피 중심·자세·크기를 추정하지 않습니다.
 중앙 bbox에도 배경·다른 객체가 섞일 수 있습니다. Exact sync가 부족한 실물 입력은
-정렬·시각 오차를 먼저 측정하고 허용 오차를 별도 검증해야 합니다. `16UC1` 변환,
-왜곡 보정과 카메라↔LiDAR 실측 보정은 실물 연결 전 확인 항목입니다.
+정렬·시각 오차를 먼저 측정하고 허용 오차를 별도 검증해야 합니다.
+깊이 단위 변환은 보정을 대신하지 않으며 왜곡 보정과 카메라↔LiDAR 실측 보정은
+실물 연결 전 확인 항목입니다.
 
 ## 검증 방법
 

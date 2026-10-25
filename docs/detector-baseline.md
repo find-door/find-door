@@ -57,7 +57,7 @@ ros2 run mapping_semantic detector_node --ros-args \
   -p max_hz:=5.0
 ```
 
-검출 노드는 `/semantic/detections2d`만 담당합니다. `semantic.launch.py detector_mode:=external_detections`로 RGB-D 투영 mapper를 연결합니다. RGB/depth/CameraInfo/검출의 exact header, 정렬·관측 시각 TF를 검사하며 person은 정적 지도에 저장하지 않습니다. 임의의 2D bbox 중심을 3D 객체 중심으로 간주하지 않습니다.
+검출 노드는 `/semantic/detections2d`만 담당합니다. `semantic.launch.py detector_mode:=external_detections`로 RGB-D 투영 mapper를 연결합니다. 기본 exact header와 정렬·관측 시각 TF를 검사하며 person은 정적 지도에 저장하지 않습니다. 임의의 2D bbox 중심을 3D 객체 중심으로 간주하지 않습니다. RGB/검출은 항상 exact이고 depth·CameraInfo에는 명시적으로 선택한 bounded approximate만 허용합니다. 깊이는 32FC1(m)/16UC1(mm), RGB는 rgb8/bgr8를 지원합니다.
 
 ## 검증 범위
 

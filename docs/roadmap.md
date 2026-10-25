@@ -23,7 +23,7 @@
 - [x] 로컬 저장소 생성, 문서 뼈대·기여 규칙 작성
 - [x] GitHub Private 원격 저장소 생성 — 공개 전환 승인과 분리
 - [x] ROS 2 워크스페이스·패키지 뼈대 생성 — `mapping_gazebo`
-- [ ] 실내 world에서 시뮬레이션 주행 확인 — GUI 없이 확인 완료(2026-10-21), Gazebo 창·RViz2 화면 확인 남음
+- [ ] 실내 world에서 시뮬레이션 주행 확인 — 자동 주행·실제 Gazebo 정지 장면 캡처 완료, RViz2 수동 화면 확인 남음
 - [ ] 연구과제 자원(JetAuto, `wf_gazebo`) 사용 및 GitHub 공개 범위를 교수님께 확인
 
 ## Phase 1 — 2D SLAM (지상 로봇)
@@ -40,6 +40,7 @@
 - [x] 실패 bag 출력 TF 제거·동일 기록 입력 재생 — [재생 결과](replay-evaluation.md)
 - [x] SLAM 시작 전 입력 기록·TF/그래프 진단·오프라인 coverage 검사 — [실행과 한계](slam-startup-capture.md)
 - [ ] 최초 온라인 급변 원인 확정 — 새 기록에서 급변·재생 지도 실패 관측, 과거 예비 실패와 같은 원인인지는 🔍
+- [x] 실물 배포용 런타임·프로파일·센서 점검·기록/격리 재생·자원 기록 준비 — [검증](robot-readiness-evaluation.md), ARM64·실물은 미검증
 - [ ] 실물 JetAuto로 실제 공간(복도·실험실) 매핑, 줄자 실측과 비교
 - [ ] 루프 클로저 전·후 비교 (루프 클로저가 없는 후보는 N/A)
 
@@ -50,6 +51,7 @@
 - [x] NanoDet CPU/ROS와 외부 검출 연결 — [ADR-0007](adr/0007-cpu-detector-baseline.md), 실제 목표 클래스 성능 미검증
 - [x] 정적 객체·동적 관측 분리·지도 보정 정책 — [ADR-0008](adr/0008-semantic-map-policy.md)
 
+- [x] 16UC1(mm)/32FC1(m)·RGB/BGR·선택적 bounded sync 연결 검증 — 물리 정렬 보정과 구분
 - [ ] 카메라↔LiDAR 외부 보정 (장착 위치·TF)
 - [ ] 객체 인식 (문·계단·사람·소화기 등) → 지도 좌표로 투영
 - [ ] 지도 위 표시 위치 정확도 측정

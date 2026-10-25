@@ -26,5 +26,5 @@ jobs:
         run: /usr/bin/python3 scripts/check_docs.py
       - name: ROS 없이 실행 가능한 단위 검사
         env:
-          PYTHONPATH: src/mapping_eval:src/mapping_semantic
-        run: /usr/bin/python3 -m pytest src/mapping_eval/test src/mapping_semantic/test -q
+          PYTHONPATH: src/mapping_eval:src/mapping_semantic:src/mapping_robot
+        run: /usr/bin/python3 -m pytest src/mapping_eval/test src/mapping_semantic/test src/mapping_robot/test scripts/test_robot_workspace.py scripts/test_robot_recording.py -q

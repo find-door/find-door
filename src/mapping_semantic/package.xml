@@ -5,7 +5,7 @@
   <description>합성 색상 fixture의 RGB-D 투영·정적 객체 지도 검증</description>
   <maintainer email="prophet000228@gmail.com">정원준</maintainer>
   <license>TBD</license>
-  <buildtool_depend>ament_python</buildtool_depend>
+  <buildtool_depend>python3-setuptools</buildtool_depend>
   <exec_depend>rclpy</exec_depend>
   <exec_depend>cv_bridge</exec_depend>
   <exec_depend>message_filters</exec_depend>

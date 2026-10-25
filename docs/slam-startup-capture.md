@@ -151,3 +151,5 @@ ros2 run mapping_eval replay_benchmark \
 
 OFF는 보존된 `2026-10-25-full-start-off.yaml`을 사용합니다.
 원본 bag·외부 모델·대용량 로그는 Git에 넣지 않고 문서·작은 PNG만 관리합니다.
+
+이후 같은 실패 bag의 ON/OFF를 각 3회로 확장한 결과와 첫 실물 시험 준비는 [배포 준비 검증](robot-readiness-evaluation.md)에 기록했습니다.

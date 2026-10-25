@@ -148,3 +148,11 @@ OFF는 6.63cm·급변 후보 0개입니다. 실효 파라미터는 `do_loop_clos
 연관성을 지지하지만 수락 원인과 과거 예비 실패와의 동일성은 🔍입니다.
 
 [상세 수치·진단·Gazebo 캡처·지도 그림·재현 명령·원자료 위치](slam-startup-capture.md).
+
+## 실물 배포 준비 — 2026-10-25
+
+기준 dev `ab06e3c`, `feat/robot-deployment-readiness`의 변경으로 실물 전용 mapping_robot을 추가했습니다. Gazebo 없는 두 패키지 빌드, 시스템 시각 합성 센서 preflight·SLAM/선택 검출·지도/객체 저장·bag 기록/격리 재생을 실제 ROS에서 확인했습니다. 깊이 단위·BGR·동기화 경계와 실패 입력을 검사했고 실제 하드웨어 검증과 구분했습니다. 순수 테스트 445개·colcon 410개 검사 오류·실패 0. 같은 실패 bag ON/OFF 각 3회에서 ON만 품질 실패, OFF는 P95 6.63cm입니다.
+
+[수치·한계·원자료·독립 검토](robot-readiness-evaluation.md), [설치·배포·도착 당일 명령](robot-deployment.md)을 참고합니다. ARM64·실물 드라이버·보정·정지·Jetson 성능·실물 정확도는 미검증입니다.
+
+배포 준비 구현 커밋 `a4b5eaa`의 소스 bundle 63개 파일을 실제 추출해 manifest 검증·두 런타임 패키지 재빌드까지 통과했습니다. 모델 가중치·드라이버·바이너리는 소스 bundle에 포함하지 않습니다.

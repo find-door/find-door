@@ -13,6 +13,7 @@
 | 카메라 융합 | 동기화·깊이·관측시각 TF 검증, 합성 색상 표적 실영상 투영, 객체 병합·저장·복원 | PR #7 병합·통합 검증 완료 |
 | 자동 검증 | 외부 연구자원 없이 순수 테스트·문서 링크를 CI로 확인 | PR #7 원격 CI 통과 |
 | SLAM 후보 | 실행 가능한 Cartographer 비교, 동일 입력·정답 기반 결과와 선택 범위 기록 | 비교 완료·시뮬 기준선 ADR-0004 |
+| 실물 배포·센서 점검 | Gazebo 없는 런타임, 프로파일·SLAM/선택 검출, 센서 검사·기록/격리 재생·자원 기록 | [개발 PC 통합 검증](robot-readiness-evaluation.md), [도착 당일 절차](robot-deployment.md) |
 | 실물 인수 준비 | 실제 센서·TF·보정·독립 정답·성능·정지 동작 확인 절차 | 절차 작성 완료·실물 미검증 |
 
 실제 문·계단·소화기 클래스 인식은 합성 표적 검증과 구분합니다. 사용할 수 있는 공개
@@ -32,3 +33,5 @@
 PR #7: [소프트웨어 구현](https://github.com/reconmap-lab/prometheus-mapping/pull/7).
 [원격 CI](https://github.com/reconmap-lab/prometheus-mapping/actions/runs/40162251705) 통과.
 최초 온라인 급변 원인은 미확정이며, RViz 수동 화면 확인·실물·목표 클래스 평가는 남아 있습니다.
+
+배포 준비의 최신 검증은 [실물 배포 준비 결과](robot-readiness-evaluation.md)입니다. 새 같은 bag의 ON/OFF 각각 3회에서도 ON만 지도 품질에 실패했습니다. 첫 실물 시험은 loop OFF로 제한하며 안정성 해결·최종 선정으로 간주하지 않습니다.

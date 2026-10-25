@@ -5,7 +5,7 @@
 2D LiDAR와 카메라로 실내 지도를 만들고, 카메라로 인식한 문·계단·사람 등을 지도 위에 표시하는 **시맨틱 매핑** 프로젝트입니다.
 최종 목표는 군·소방·탐사용 **내부 정찰 드론**에 탑재하는 것입니다. (영화 「프로메테우스」의 탐사 드론처럼)
 
-> **상태: 로봇 도착 전 소프트웨어 기준선 검증 완료.** 시뮬레이션 자동 주행·지도 평가·루프 비교를 구현했습니다. 실물 MVP는 미완료이며 [준비 범위](docs/prehardware-plan.md)와 검증 결과를 구분합니다.
+> **상태: 시뮬레이션 기준선·실물 배포 준비 진행.** 자동 주행·지도 평가·루프 비교와 실물 전용 프로파일·점검·실행 경로를 구현했습니다. 새 bag의 루프 ON에서 지도 실패를 관측해 안정성은 조사 중입니다. 실물 MVP는 미완료이며 [준비 범위](docs/prehardware-plan.md)와 검증 결과를 구분합니다.
 
 <!-- TODO: 데모 영상/GIF (왼쪽 카메라 화면 + 오른쪽 RViz 지도) -->
 
@@ -74,7 +74,8 @@ prometheus-mapping/
     ├── mapping_gazebo/    # 매핑용 실내 world·launch ✅
     ├── mapping_slam/      # SLAM 기준선 설정·단독/통합 launch
     ├── mapping_semantic/  # 색상 표적·NanoDet 2D 검출, RGB-D 투영·객체 지도
-    └── mapping_eval/      # 입력 검사·자동 시뮬 주행·지도 기하 평가
+    ├── mapping_eval/      # 입력 검사·자동 시뮬 주행·지도 기하 평가
+    └── mapping_robot/     # 실물 프로파일·읽기 전용 센서 점검·SLAM/선택 검출
 ```
 
 ## 빠른 시작
@@ -85,6 +86,8 @@ source ~/worker_following_ws/install/setup.bash   # wf_gazebo (연구과제, 오
 colcon build --symlink-install && source install/setup.bash
 ros2 launch mapping_slam simulation.launch.py
 ```
+
+실물 설치·도착 당일 시험은 [로봇 배포 안내](docs/robot-deployment.md)를 따릅니다. 로봇에는 Gazebo 없는 두 런타임 패키지만 빌드합니다.
 
 slam_toolbox 설치가 필요합니다. 초기 인터페이스는 [docs/interfaces.md](docs/interfaces.md)를 따릅니다.
 

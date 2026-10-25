@@ -2,13 +2,17 @@
 
 `detector_mode:=external_detections`는 별도 검출기가 발행한
 `/semantic/detections2d` (`vision_msgs/msg/Detection2DArray`)를 RGB·depth·CameraInfo와
-4방향 exact-time 동기화합니다. 배열과 각 detection의 header도 영상의 frame/stamp와
+기본 4방향 exact-time 동기화합니다. 배열과 각 detection의 header도 RGB의 frame/stamp와
 일치해야 합니다. 검출 모델 자체는 이 mapper가 실행하지 않습니다.
 
 외부 모드 실행: `ros2 launch mapping_semantic semantic.launch.py detector_mode:=external_detections map_id:=my_map`.
 `use_sim_time:=false`는 외부 모드에서 명시적으로 허용합니다. 실물 실행 검증은 아직 하지 않았습니다.
-RGB는 `rgb8`, 정렬된 depth는 미터 단위 `32FC1`만 지원합니다. `16UC1` 깊이는 변환기를
-검증한 뒤 연결해야 합니다. 토픽과 map/odom/optical 프레임은 launch 인자로 지정합니다.
+컬러 영상은 `rgb8` 또는 `bgr8`, 정렬된 depth는 `32FC1` float32 미터 또는 `16UC1` uint16 밀리미터를
+지원합니다. `16UC1`은 float32로 변환하고 0.001을 곱해 미터로 정규화합니다.
+드라이버가 다른 depth scale을 사용한다면 연결 전에 별도 변환이 필요합니다.
+토픽과 map/odom/optical 프레임은 launch 인자로 지정합니다. mapper는 CvBridge의
+`desired_encoding='rgb8'`로 bgr8 채널을 RGB 순서로 변환한 뒤 색상 검출에 사용합니다.
+채널 변환은 픽셀 좌표·해상도·원본 header를 바꾸지 않으므로 외부 검출 bbox도 그대로 적용됩니다.
 
 `static_classes` 노드 파라미터의 기본값은 `[chair, cup, bottle]`이며, 직접 실행 시
 `--ros-args -p detector_mode:=external_detections -p "static_classes:=['chair','cup']"`처럼
@@ -37,16 +41,36 @@ elephant, bear, zebra, giraffe는 동적 클래스로 취급하고 static_classe
 
 ## 입력 계약
 
-- `/camera/color/image_raw`: `sensor_msgs/msg/Image`, `rgb8`
-- `/camera/depth/image_raw`: `sensor_msgs/msg/Image`, `32FC1`, 미터 단위, RGB에 정렬
+- `/camera/color/image_raw`: `sensor_msgs/msg/Image`, `rgb8` 또는 `bgr8`
+- `/camera/depth/image_raw`: `sensor_msgs/msg/Image`, `32FC1`(m) 또는 `16UC1`(mm), RGB에 정렬
 - `/camera/camera_info`: `sensor_msgs/msg/CameraInfo`, 무왜곡 pinhole K
-- 세 메시지의 해상도·`camera_color_optical_frame`·timestamp가 모두 일치해야 합니다.
-- BEST_EFFORT 구독, exact time synchronization, 기본 큐 20개.
+- 세 메시지의 해상도·`camera_color_optical_frame`은 일치해야 합니다. 기본 timestamp도 정확히 일치해야 합니다.
+- BEST_EFFORT 구독, 기본 `sync_policy=exact`, 큐 20개.
 - 유효하지 않은 K, 왜곡, binning/ROI, 다른 frame·인코딩은 거부합니다.
 - `/tf`의 `map→odom`은 지도 보정 감시에 사용합니다. 투영에는
   **관측 timestamp의** `map←camera_color_optical_frame` TF를 사용합니다.
   TF는 벽시계 1초까지 기다리며 최신 TF로 대체하지 않습니다.
 - color_fixture 모드는 `use_sim_time=true`가 필수이며 외부 검출 모드는 명시적 false도 허용합니다.
+
+실물 드라이버의 RGB·depth·CameraInfo timestamp가 조금 다른 경우에만
+`sync_policy:=approximate max_sync_skew_sec:=0.03`을 명시해 근사 동기화를 켭니다.
+`max_sync_skew_sec`는 유한한 양수이며 최대 0.1초입니다. 기본 0.03초이며,
+RGB·depth·CameraInfo **세 stamp 전체의 최댓값−최솟값**이 이 값 이하여야 합니다.
+exact 모드에서는 이 파라미터를 지정해도 시간 편차를 허용하지 않습니다.
+외부 검출은 RGB와 exact pair를 먼저 만들고 그 pair만 depth·CameraInfo와 근사 결합합니다.
+Detection2DArray와 개별 Detection2D의 header는 어떤 모드에서도 RGB와 정확히 같아야 합니다.
+
+CameraInfo stamp=0은 거부하며 `camera_info_rejected`에 기록합니다. 과거에 한 번 발행한
+latched CameraInfo를 현재 RGB에 자동 재사용하지 않습니다. 각 영상과 허용 시간 내의
+유효한 CameraInfo가 필요합니다. 동기화되지 않은 입력은 출력되지 않습니다.
+TF 조회와 출력 관측 stamp는 **항상 RGB 시각**, 투영 위치와 내부 정규화 깊이는 **미터**입니다.
+정규화된 depth 토픽을 별도로 발행하지 않습니다.
+
+같은 frame 이름·해상도만으로 실제 RGB-depth 픽셀 정렬을 증명할 수 없습니다.
+이 노드는 depth registration이나 렌즈 왜곡 보정을 수행하지 않으므로 드라이버가 제공하는
+RGB 좌표에 정렬된 depth와 해당 무왜곡 카메라 보정을 사용해야 합니다. raw depth의
+frame 이름을 바꾸는 것으로 대체하면 안 됩니다. 근사 동기화 시에도 움직이는 물체·카메라의
+시간 차이로 투영 오차가 커질 수 있습니다. 실물 보정·정렬·대상 클래스 정확도는 미검증입니다.
 
 색상 마스크는 HSV saturation≥130, value≥60, 빨강 hue≤10 또는 ≥170,
 파랑 hue 100–130(OpenCV 0–179 단위)을 사용합니다. 최소 80픽셀 연결영역을

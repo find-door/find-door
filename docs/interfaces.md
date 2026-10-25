@@ -12,6 +12,7 @@
 | `mapping_slam` | SLAM 설정, 단독·통합 launch | 센서 드라이버, odom·고정 TF 발행 |
 | `mapping_eval` | 입력 검사, 시뮬 전용 경로 주행·반복 실행, 지도 기하 평가 | 실물 제어기, SLAM 알고리즘, 독립적인 ATE |
 | `mapping_semantic` | NanoDet 2D 검출, 색상 표적·외부 검출 RGB-D 투영·정적 객체 지도 | 실물 보정, SLAM, 로봇 제어, 동적 추적 |
+| `mapping_robot` | 실물 프로파일 검증·읽기 전용 센서 preflight·실물 SLAM/선택 검출 launch | 드라이버·장착 TF·구동 제어·Gazebo |
 
 ## 센서·출력 토픽
 
@@ -111,9 +112,24 @@ recorder·재생은 별도 QoS YAML을 사본·해시와 보존하고, 빈 원�
 | `/semantic/markers` | `visualization_msgs/msg/MarkerArray` | 확정 객체 표시와 epoch 초기화 DELETEALL |
 | `/semantic/status` | `std_msgs/msg/String` | 처리·거부·TF·리셋·CPU·지연 JSON |
 
-외부 모드는 RGB/depth/CameraInfo/Detection2DArray의 frame·stamp가 모두 같아야 합니다.
-최고 confidence≥0.5, 유효 bbox 중앙 50%에서 깊이를 투영합니다. 정렬된 32FC1(m)만 지원하고
+외부 모드는 frame이 같아야 하며 RGB/Detection2DArray stamp는 항상 exact입니다.
+RGB/depth/CameraInfo는 기본 exact이고 선택적 approximate에서 명시한 최대 0.1초 이내 편차만 허용합니다.
+최고 confidence≥0.5, 유효 bbox 중앙 50%에서 깊이를 투영합니다. RGB는 rgb8/bgr8,
+정렬된 depth는 32FC1(m)/16UC1(mm)를 지원하고 내부에서 m로 정규화합니다.
 최신 TF로 대체하지 않습니다. person 등 동적 클래스는 ID 없는 관측만 발행하고 저장하지 않습니다.
 정적 클래스·지도 식별자·모드가 다른 JSON은 로드하지 않습니다.
 자세·크기·보정된 위치 불확실성은 추정하지 않습니다.
 [세부 계약·서비스](../src/mapping_semantic/README.md)와 [검출 모델 범위](detector-baseline.md)를 참고하세요.
+
+## 실물 실행·기록 계약
+
+`mapping_robot robot.launch.py`는 확인된 YAML 프로파일로만 실행하며 모든 노드에
+`use_sim_time=false`를 적용합니다. 첫 실물 프로파일은 loop OFF이며 입력 센서·보정·모델을
+추측해 보충하지 않습니다. 카메라 비활성 시 SLAM-only로 실행할 수 있습니다.
+드라이버·TF·구동 명령은 이 launch가 발행하지 않습니다.
+
+`mapping_robot preflight`는 실제 토픽·프레임·관측 시각 TF·시각/수신률을 검사합니다.
+TF pose 일치 검사가 edge 발행자 유일성의 증명은 아닙니다.
+`scripts/robot_recording.py`는 센서·입력 TF만 기록하며 실물 기록에 `/clock`을 요구하지 않습니다.
+격리 재생에서는 과거 map→odom·구동 명령을 제외하고 player만 `/clock`을 만듭니다.
+[배포 절차](robot-deployment.md)와 [프로파일·점검 상세](../src/mapping_robot/README.md)를 따릅니다.

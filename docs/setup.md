@@ -148,7 +148,7 @@ world 도면·센서는 [mapping_gazebo](../src/mapping_gazebo/README.md), 지�
 
 ## 실행 — 실물 JetAuto
 
-실물 드라이버·센서 계약은 아직 확인하지 않았습니다. [로봇 인수 절차](robot-acceptance.md)를 먼저 수행하고, 실제 토픽·TF·파라미터를 확정한 뒤 `use_sim_time=false`로 연결합니다. 시뮬레이션의 주행 스크립트와 장착 치수를 실물에 그대로 적용하지 않습니다.
+실물 드라이버·센서 계약은 아직 확인하지 않았습니다. [설치·배포·첫 시험](robot-deployment.md)에 소스 bundle, 실물 전용 두 패키지 빌드, 프로파일·센서 검사·SLAM·기록 명령을 제공합니다. [로봇 인수 절차](robot-acceptance.md)를 수행하고 실제 토픽·TF·파라미터를 확정한 뒤 `use_sim_time=false`로 연결합니다. 시뮬레이션 주행 스크립트와 장착 치수를 실물에 그대로 적용하지 않습니다.
 
 ## ROS 없는 코드·문서 검사
 
@@ -157,7 +157,7 @@ world 도면·센서는 [mapping_gazebo](../src/mapping_gazebo/README.md), 지�
 ```bash
 /usr/bin/python3 -m compileall -q src scripts
 /usr/bin/python3 scripts/check_docs.py
-PYTHONPATH=src/mapping_eval:src/mapping_semantic /usr/bin/python3 -m pytest src/mapping_eval/test src/mapping_semantic/test -q
+PYTHONPATH=src/mapping_eval:src/mapping_semantic:src/mapping_robot /usr/bin/python3 -m pytest src/mapping_eval/test src/mapping_semantic/test src/mapping_robot/test scripts/test_robot_workspace.py scripts/test_robot_recording.py -q
 ```
 
 문서 검사는 상대 inline 링크의 파일과 Markdown 제목 앵커를 확인합니다. 외부 URL·참조형 링크와 GitHub 렌더링 전체를 검증하지는 않습니다. 이 CI는 ROS 빌드·실제 토픽/QoS·TF·기록/재생·시뮬레이션 실행 및 실물 검증을 대체하지 않습니다. 워크플로 원격 실행 결과는 GitHub에서 별도로 확인합니다.

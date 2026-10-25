@@ -58,6 +58,9 @@ flowchart LR
 종료 후 sensor·static/dynamic TF coverage와 진단 유효성을 검사하며, 기록 유효성과 지도
 품질은 구분합니다. [진단 인터페이스와 재생 QoS](slam-startup-capture.md)를 참고합니다.
 `mapping_semantic`은 색상 표적 또는 외부 Detection2DArray와 RGB-D를 관측 시각 TF로 투영하고 정적 객체를 관리합니다. NanoDet CPU 검출 노드를 별도로 제공합니다. 실물 정확도·Jetson 성능은 미검증입니다.
+`mapping_robot`은 실물 프로파일·읽기 전용 센서 preflight·SLAM/선택 검출 실행을 맡습니다.
+Gazebo·`wf_gazebo`를 의존하지 않으며 드라이버·오도메트리·장착 TF·구동 제어는 외부에서 제공합니다.
+[배포·첫 시험 절차](robot-deployment.md)로 실물 인수를 준비합니다.
 
 | 패키지 | 역할 | 주요 입력 | 주요 출력 | 단계 |
 |---|---|---|---|---|
@@ -65,6 +68,7 @@ flowchart LR
 | `mapping_slam` | SLAM 파라미터·launch, 지도 저장 | `/scan`, TF `odom→base_footprint` (후보별 상이) | `/map`, TF `map→odom` | 1 |
 | `mapping_semantic` | 객체 인식, 지도 좌표 투영, 객체 지도 관리 | 카메라 이미지·depth·`CameraInfo`, TF | 객체 마커, 객체 목록 | 2 |
 | `mapping_eval` | 입력 검사·시뮬 주행·지도 기하 평가 / 예정: 실물·성능 평가 | 센서·TF·지도·정답선·경로 | 검사 결과·cmd_vel·지도 지표·rosbag·궤적 잔차 | 1~2 |
+| `mapping_robot` | 실물 프로파일·센서 점검·SLAM/선택 검출 실행 | 확인된 센서 토픽·TF·보정·모델 파일 | 검사 JSON·지도·선택 semantic, 구동 명령 없음 | 1~2 |
 
 > 🔍 미정: Python만 쓸지, 성능 병목(투영 등)에 C++ 노드를 둘지.
 
@@ -96,7 +100,7 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 
 - 시뮬레이션: Gazebo → ROS 단방향 `/clock` 브리지, 모든 노드 `use_sim_time:=true`
 - TF 조회는 현재 시각이 아니라 **센서 메시지의 타임스탬프** 기준으로 합니다
-- RGB·depth·CameraInfo는 exact-time 동기화하며, 외부 검출 모드는 Detection2DArray까지 4방향 동기화합니다. 실물 허용 오차 변경은 보정·정렬 확인 후 별도 검증합니다 🔍
+- RGB·depth·CameraInfo는 기본 exact-time입니다. 선택적 approximate는 최대 0.1초 안에서 명시한 편차만 허용하고, 외부 검출은 RGB와 항상 exact header입니다. TF·출력 시각은 RGB 시각이며 실물 허용 편차·정렬 보정은 별도 확인합니다 🔍
 - `ros_gz_bridge` 토픽별 방향은 `wf_gazebo/config/gz_bridge.yaml`을 그대로 씁니다 ([ADR-0003](adr/0003-wf-gazebo-reuse.md)). 큰 영상의 BEST_EFFORT 프레임 손실을 막는 Fast DDS 설정(`fastdds_bridge.xml`)도 브리지 노드에 적용되어 있습니다
 
 ## 5. 토픽 인터페이스 (안)
@@ -120,7 +124,7 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 현재 카메라→지도 투영 계약 ([구현 상세](../src/mapping_semantic/README.md)):
 
 - RGB에 정렬된 depth와 무왜곡 pinhole CameraInfo만 허용
-- depth `32FC1` m, 0·NaN·inf·0.2–10m 밖 깊이 거부. `16UC1` mm 변환은 실물 연결 전에 별도 검증
+- RGB는 rgb8/bgr8, depth는 `32FC1` m 또는 `16UC1` mm를 지원하고 내부에서 m로 정규화. 0·NaN·inf·0.2–10m 밖 깊이 거부. 깊이 단위 지원과 물리 정렬 보정은 별개
 - 투영 기준 프레임: `camera_color_optical_frame` (REP 103 광학 좌표 규약)
 
 ## 6. 단계별 진화

@@ -6,11 +6,12 @@ import math
 import sys
 import time
 import uuid
+from types import SimpleNamespace
 
 from mapping_semantic.core import (
     ObjectMap, ObjectRecord, detect_color_fixtures, load_json, project_mask,
     rotation_matrix, save_exclusive, stamp_ns, transform_point, validate_camera_inputs,
-    external_masks,
+    external_masks, normalize_depth, validate_sync_policy,
 )
 
 
@@ -44,10 +45,12 @@ def main(args=None):
                 'minimum_pixels': 80, 'tf_wait_seconds': 1.0, 'queue_size': 20,
                 'detections_topic': '/semantic/detections2d',
                 'static_classes': ['chair', 'cup', 'bottle'],
+                'sync_policy': 'exact', 'max_sync_skew_sec': 0.03,
             }
             for name, value in defaults.items():
                 self.declare_parameter(name, value)
             self.p = {name: self.get_parameter(name).value for name in defaults}
+            validate_sync_policy(self.p['sync_policy'], self.p['max_sync_skew_sec'])
             if self.p['detector_mode'] not in ('color_fixture', 'external_detections'):
                 raise ValueError('지원하지 않는 detector_mode')
             if self.p['detector_mode'] == 'color_fixture' and not self.get_parameter('use_sim_time').value:
@@ -97,8 +100,23 @@ def main(args=None):
                                                          qos_profile=qos_profile_sensor_data)
                 subscriber.registerCallback(self.received, 'detections')
                 self.subscribers.append(subscriber)
-            self.sync = message_filters.TimeSynchronizer(self.subscribers, self.p['queue_size'])
-            self.sync.registerCallback(self.on_images)
+            if self.p['sync_policy'] == 'exact':
+                self.sync = message_filters.TimeSynchronizer(self.subscribers, self.p['queue_size'])
+                self.sync.registerCallback(self.on_images)
+            else:
+                sources = self.subscribers[:3]
+                if self.p['detector_mode'] == 'external_detections':
+                    # 외부 검출은 approximate matching에 넣지 않는다. 같은 RGB를 먼저 확보한다.
+                    self.rgb_detection_pair = message_filters.SimpleFilter()
+                    self.exact_detections = message_filters.TimeSynchronizer(
+                        [self.subscribers[0], self.subscribers[3]], self.p['queue_size'])
+                    self.exact_detections.registerCallback(self.on_rgb_detection_pair)
+                    sources = [self.rgb_detection_pair, *self.subscribers[1:3]]
+                self.sync = message_filters.ApproximateTimeSynchronizer(
+                    sources, self.p['queue_size'], self.p['max_sync_skew_sec'] + 1e-9,
+                    allow_headerless=False)
+                # message_filters는 strict '< slop'을 쓰므로 1ns를 더하고 core에서 <= 한계를 재검사한다.
+                self.sync.registerCallback(self.on_approximate_images)
             self.observations_pub = self.create_publisher(Detection3DArray, '/semantic/observations', 10)
             latched = QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE,
                                  durability=DurabilityPolicy.TRANSIENT_LOCAL)
@@ -117,6 +135,24 @@ def main(args=None):
             self.counters[f'{name}_received'] += 1
             if name == 'rgb':
                 self.last_rgb_wall = time.monotonic()
+            if name == 'info':
+                try:
+                    stamp_ns(message.header.stamp)
+                except (ValueError, TypeError) as exc:
+                    self.reject('camera_info_rejected', exc)
+
+        def on_rgb_detection_pair(self, rgb, detections):
+            try:
+                self.rgb_detection_pair.signalMessage(
+                    SimpleNamespace(header=rgb.header, rgb=rgb, detections=detections))
+            except Exception as exc:
+                self.reject('input_rejected', f'{type(exc).__name__}: {exc}')
+
+        def on_approximate_images(self, rgb_or_pair, depth, info):
+            if self.p['detector_mode'] == 'external_detections':
+                self.on_images(rgb_or_pair.rgb, depth, info, rgb_or_pair.detections)
+            else:
+                self.on_images(rgb_or_pair, depth, info)
 
         def reject(self, counter, reason):
             self.counters[counter] += 1
@@ -171,15 +207,19 @@ def main(args=None):
             try:
                 now_ns = self.check_clock()
                 timestamp, k = validate_camera_inputs(
-                    rgb_message, depth_message, info, self.p['optical_frame'])
+                    rgb_message, depth_message, info, self.p['optical_frame'],
+                    self.p['sync_policy'], self.p['max_sync_skew_sec'])
                 if timestamp <= self.last_input_ns:
                     raise ValueError('중복 또는 역행한 영상 timestamp')
                 if timestamp < self.epoch_start_ns:
                     raise ValueError('이전 지도 epoch의 영상')
                 if now_ns <= 0 or not -100_000_000 <= now_ns - timestamp <= 2_000_000_000:
                     raise ValueError('영상 timestamp가 현재 시뮬 시간과 맞지 않음')
+                # bgr8 입력도 채널만 RGB로 바꾸며 픽셀 좌표와 원본 header는 유지한다.
                 rgb = self.bridge.imgmsg_to_cv2(rgb_message, desired_encoding='rgb8')
-                depth = self.bridge.imgmsg_to_cv2(depth_message, desired_encoding='passthrough')
+                depth = normalize_depth(
+                    self.bridge.imgmsg_to_cv2(depth_message, desired_encoding='passthrough'),
+                    depth_message.encoding)
                 if rgb.shape != (info.height, info.width, 3) or depth.shape != (info.height, info.width):
                     raise ValueError('변환된 영상 배열 크기 불일치')
                 observations = []
@@ -323,6 +363,8 @@ def main(args=None):
             message.data = json.dumps({
                 'instance_id': self.instance_id,
                 'detector_mode': self.p['detector_mode'], 'map_id': self.p['map_id'],
+                'sync_policy': self.p['sync_policy'], 'max_sync_skew_sec': self.p['max_sync_skew_sec'],
+                'depth_unit': 'm', 'observation_timestamp_source': 'rgb',
                 'frame': self.p['map_frame'], 'epoch': self.object_map.epoch,
                 'objects_confirmed': len(self.object_map.confirmed()),
                 'objects_pending': len(self.object_map.objects) - len(self.object_map.confirmed()),

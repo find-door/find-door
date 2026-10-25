@@ -75,15 +75,37 @@ def stamp_ns(stamp):
     return result
 
 
-def validate_camera_inputs(rgb, depth, info, optical_frame):
-    """정렬된 무왜곡 rgb8/32FC1만 받는다. 실물은 별도 정렬 단계가 필요하다."""
+def validate_sync_policy(sync_policy='exact', max_sync_skew_sec=0.03):
+    if sync_policy not in ('exact', 'approximate'):
+        raise ValueError('sync_policy는 exact 또는 approximate이어야 함')
+    if (isinstance(max_sync_skew_sec, bool) or not isinstance(max_sync_skew_sec, (int, float))
+            or not math.isfinite(max_sync_skew_sec) or not 0 < max_sync_skew_sec <= 0.1):
+        raise ValueError('max_sync_skew_sec는 유한한 양수이며 0.1초 이하여야 함')
+    return 0 if sync_policy == 'exact' else round(max_sync_skew_sec * 1e9)
+
+
+def normalize_depth(depth, encoding):
+    """정렬된 depth를 float32 미터로 변환한다. 0·NaN·inf는 투영 단계에서 거부한다."""
+    if not isinstance(depth, np.ndarray) or depth.ndim != 2:
+        raise ValueError('depth는 2차원 배열이어야 함')
+    if encoding == '16UC1' and depth.dtype.kind == 'u' and depth.dtype.itemsize == 2:
+        return depth.astype(np.float32) * np.float32(0.001)
+    if encoding == '32FC1' and depth.dtype.kind == 'f' and depth.dtype.itemsize == 4:
+        return depth.astype(np.float32, copy=False)
+    raise ValueError('depth 인코딩/dtype 불일치: 16UC1 uint16(mm) 또는 32FC1 float32(m) 필요')
+
+
+def validate_camera_inputs(rgb, depth, info, optical_frame,
+                           sync_policy='exact', max_sync_skew_sec=0.03):
+    """정렬·무왜곡 입력과 시각 편차를 검증하며 항상 RGB timestamp를 반환한다."""
+    allowed_skew_ns = validate_sync_policy(sync_policy, max_sync_skew_sec)
     stamps = [stamp_ns(message.header.stamp) for message in (rgb, depth, info)]
-    if len(set(stamps)) != 1:
-        raise ValueError('RGB/depth/CameraInfo timestamp 불일치')
+    if max(stamps) - min(stamps) > allowed_skew_ns:
+        raise ValueError('RGB/depth/CameraInfo timestamp 편차가 동기화 허용치를 넘음')
     if any(message.header.frame_id != optical_frame for message in (rgb, depth, info)):
         raise ValueError('RGB/depth/CameraInfo optical frame 불일치')
-    if rgb.encoding != 'rgb8' or depth.encoding != '32FC1':
-        raise ValueError('rgb8 및 미터 단위 32FC1만 지원')
+    if rgb.encoding not in ('rgb8', 'bgr8') or depth.encoding not in ('32FC1', '16UC1'):
+        raise ValueError('rgb8/bgr8 및 32FC1(m)/16UC1(mm)만 지원')
     if rgb.width <= 0 or rgb.height <= 0:
         raise ValueError('영상 크기는 양수여야 함')
     if any((m.width, m.height) != (rgb.width, rgb.height) for m in (depth, info)):

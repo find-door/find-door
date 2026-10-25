@@ -10,7 +10,7 @@ import pytest
 from mapping_semantic.core import (
     ObjectMap, bbox_mask, correction_delta, detect_color_fixtures, load_json,
     project_mask, save_exclusive, transform_point, validate_camera_inputs,
-    external_masks, validate_static_classes,
+    external_masks, validate_static_classes, normalize_depth, validate_sync_policy,
 )
 
 
@@ -31,6 +31,37 @@ def test_camera_exact_contract():
     assert k[0, 0] == 10
 
 
+@pytest.mark.parametrize('encoding', ['rgb8', 'bgr8'])
+def test_color_encoding_contract_preserves_original_header_and_intrinsics(encoding):
+    rgb, depth, info = camera_messages()
+    rgb.encoding = encoding
+    timestamp, k = validate_camera_inputs(rgb, depth, info, rgb.header.frame_id)
+    assert timestamp == 1_000_000_000 and rgb.encoding == encoding
+    assert k == pytest.approx(np.array(info.k).reshape(3, 3))
+
+
+@pytest.mark.parametrize('encoding', ['mono8', 'rgba8', 'bgra8', '16UC3', '8UC3', ''])
+def test_unsupported_color_encoding_rejected(encoding):
+    rgb, depth, info = camera_messages()
+    rgb.encoding = encoding
+    with pytest.raises(ValueError):
+        validate_camera_inputs(rgb, depth, info, rgb.header.frame_id)
+
+
+def test_bgr_to_rgb_channel_conversion_preserves_fixture_pixel_masks():
+    import cv2
+    rgb = np.zeros((50, 60, 3), np.uint8)
+    rgb[5:25, 5:25] = [100, 0, 0]
+    rgb[25:45, 35:55] = [0, 0, 100]
+    bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+    converted = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+    expected = dict(detect_color_fixtures(rgb))
+    actual = dict(detect_color_fixtures(converted))
+    assert set(actual) == {'red_fixture', 'blue_fixture'}
+    assert all(np.array_equal(expected[label], actual[label]) for label in expected)
+    # 이 순수 검사는 채널 순서·픽셀 위치 계약이며 실제 CvBridge 실행은 ROS probe로 별도 검증한다.
+
+
 @pytest.mark.parametrize('kind', ['frame', 'time', 'zero_time', 'encoding', 'size',
                                  'distortion', 'focal', 'binning', 'roi'])
 def test_misaligned_or_invalid_camera_is_rejected(kind):
@@ -42,7 +73,7 @@ def test_misaligned_or_invalid_camera_is_rejected(kind):
     elif kind == 'zero_time':
         rgb.header.stamp.sec = 0
     elif kind == 'encoding':
-        depth.encoding = '16UC1'
+        depth.encoding = 'mono16'
     elif kind == 'size':
         depth.width = 10
     elif kind == 'distortion':
@@ -303,6 +334,107 @@ def test_external_serialization_preserves_contract_and_score():
     with pytest.raises(ValueError): ObjectMap().load_document(document, 'a', [0, 0, 0])
     document['static_classes'] = ['cup']
     with pytest.raises(ValueError): restored.load_document(document, 'a', [0, 0, 0])
+
+
+@pytest.mark.parametrize('offset,accepted', [(0, True), (29_999_999, True),
+                                            (30_000_000, True), (30_000_001, False)])
+def test_approximate_skew_boundary_uses_rgb_timestamp(offset, accepted):
+    rgb, depth, info = camera_messages()
+    depth.header.stamp.nanosec = offset
+    if accepted:
+        timestamp, _ = validate_camera_inputs(rgb, depth, info, rgb.header.frame_id, 'approximate', .03)
+        assert timestamp == 1_000_000_000
+    else:
+        with pytest.raises(ValueError):
+            validate_camera_inputs(rgb, depth, info, rgb.header.frame_id, 'approximate', .03)
+
+
+def test_approximate_limits_total_span_not_individual_rgb_offsets():
+    rgb, depth, info = camera_messages()
+    depth.header.stamp.nanosec = 20_000_000
+    info.header.stamp.sec, info.header.stamp.nanosec = 0, 980_000_000
+    with pytest.raises(ValueError):
+        validate_camera_inputs(rgb, depth, info, rgb.header.frame_id, 'approximate', .03)
+
+
+@pytest.mark.parametrize('kind', ['zero_info', 'stale_info', 'depth_frame', 'distortion'])
+def test_approximate_does_not_relax_calibration_or_latched_info(kind):
+    rgb, depth, info = camera_messages()
+    if kind == 'zero_info': info.header.stamp.sec = 0
+    elif kind == 'stale_info': info.header.stamp.sec = 2
+    elif kind == 'depth_frame': depth.header.frame_id = 'unregistered_depth'
+    else: info.d[0] = .01
+    with pytest.raises(ValueError):
+        validate_camera_inputs(rgb, depth, info, rgb.header.frame_id, 'approximate', .03)
+
+
+@pytest.mark.parametrize('policy,skew', [('other', .03), ('exact', 0), ('approximate', -.1),
+                                       ('approximate', .100001), ('approximate', math.nan),
+                                       ('approximate', math.inf), ('exact', True)])
+def test_invalid_sync_configuration(policy, skew):
+    with pytest.raises(ValueError): validate_sync_policy(policy, skew)
+
+
+def test_16uc1_mm_to_m_preserves_invalid_zero_and_input():
+    depth = np.array([[0, 200, 1000, 2345, 65535]], dtype=np.uint16)
+    original = depth.copy()
+    result = normalize_depth(depth, '16UC1')
+    assert result.dtype == np.float32
+    assert result[0] == pytest.approx([0, .2, 1., 2.345, 65.535], abs=1e-5)
+    assert np.array_equal(depth, original)
+
+
+def test_32fc1_units_and_nonfinite_values_are_preserved_for_rejection():
+    depth = np.array([[0., math.nan, math.inf, -math.inf, 2.]], np.float32)
+    result = normalize_depth(depth, '32FC1')
+    assert result.dtype == np.float32 and result[0,4] == 2
+    assert result[0,0] == 0 and np.isnan(result[0,1]) and np.isposinf(result[0,2])
+    with pytest.raises(ValueError):
+        project_mask(result, np.eye(3), np.ones(result.shape, bool), minimum_valid=1)
+
+
+@pytest.mark.parametrize('dtype,encoding', [(np.float32,'16UC1'),(np.int16,'16UC1'),
+                                           (np.uint8,'16UC1'),(np.float64,'32FC1'),
+                                           (np.uint16,'32FC1'),(np.uint16,'mono16')])
+def test_encoding_dtype_mismatch_rejected(dtype, encoding):
+    with pytest.raises(ValueError): normalize_depth(np.ones((2,2),dtype),encoding)
+
+
+def test_depth_dimensions_and_big_endian_uint16():
+    with pytest.raises(ValueError): normalize_depth(np.ones((2,2,1),np.uint16),'16UC1')
+    assert normalize_depth(np.array([[2000]],dtype='>u2'),'16UC1')[0,0] == 2.
+
+
+def test_approximate_camera_never_relaxes_external_detection_header():
+    rgb, depth, info = camera_messages()
+    depth.header.stamp.nanosec = 10_000_000
+    validate_camera_inputs(rgb, depth, info, rgb.header.frame_id, 'approximate', .03)
+    message, _ = external_message()
+    message.header = copy.deepcopy(rgb.header)
+    message.detections[0].header = copy.deepcopy(rgb.header)
+    assert external_masks(message,rgb.header,(40,40),['chair'])
+    # 외부 검출을 depth 시각으로 바꾸면 skew 안쪽이어도 RGB와 다르므로 거부.
+    message.header = copy.deepcopy(depth.header)
+    message.detections[0].header = copy.deepcopy(depth.header)
+    with pytest.raises(ValueError): external_masks(message,rgb.header,(40,40),['chair'])
+
+
+def test_depth_encoding_changes_do_not_change_fusion_or_meter_scale():
+    rgb, depth, info = camera_messages()
+    depth.encoding = '16UC1'
+    _, k = validate_camera_inputs(rgb, depth, info, rgb.header.frame_id)
+    store = ObjectMap()
+    original = None
+    for timestamp, encoding, array in [
+        (1,'16UC1',np.full((10,20),2000,np.uint16)),
+        (2,'32FC1',np.full((10,20),2.,np.float32)),
+        (3,'16UC1',np.full((10,20),2000,np.uint16)),
+    ]:
+        xyz = project_mask(normalize_depth(array,encoding),k,np.ones((10,20),bool))
+        record = store.update([('red_fixture',xyz)],timestamp)[0]
+        original = original or record.id
+        assert record.id == original and xyz[2] == 2.
+    assert len(store.confirmed()) == 1 and store.confirmed()[0].observations == 3
 
 
 @pytest.mark.parametrize('value', [None, {'red_fixture': 1, 'blue_fixture': 2}])
