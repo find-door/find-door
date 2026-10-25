@@ -15,11 +15,14 @@ from mapping_eval.run_benchmark import digest, positive, stop_process
 from mapping_eval.trajectory_metrics import analyze_trajectory
 
 
-def playback_command(bag, rate=1.0):
+def playback_command(bag, rate=1.0, qos_overrides=None):
     """clock 합성 없이 paused 상태에서 subscriber 연결을 기다린다."""
-    return ['ros2', 'bag', 'play', str(bag), '--start-paused',
+    command = ['ros2', 'bag', 'play', str(bag), '--start-paused',
             '--disable-keyboard-controls', '--rate', str(rate),
             '--wait-for-all-acked', '2000']
+    if qos_overrides is not None:
+        command.extend(['--qos-profile-overrides-path', str(qos_overrides)])
+    return command
 
 
 def cleanup_children(children, handles, stop=stop_process):
@@ -112,6 +115,11 @@ def main(args=None):
             raise RuntimeError(f'{label} 종료 코드 {child.returncode}')
 
     try:
+        from ament_index_python.packages import get_package_share_directory
+        qos_source = Path(get_package_share_directory('mapping_eval')) / 'config/replay_input_qos.yaml'
+        qos = inputs / 'replay_input_qos.yaml'
+        qos.write_bytes(qos_source.read_bytes())
+        status['playback_qos_policy'] = 'explicit filtered-input profile; tf_static transient_local; original metadata unchanged'
         copied_params = inputs / ('slam' + (params.suffix or '.yaml'))
         for name, path in [(copied_params.name, params), ('truth.yaml', truth)]:
             (inputs / name).write_bytes(path.read_bytes())
@@ -135,7 +143,7 @@ def main(args=None):
         status['retained_record_payload_sha256'] = filter_report['retained_record_payload_sha256']
         slam = start(['ros2', 'launch', 'mapping_slam', options.slam_launch,
                       'use_sim_time:=true', 'params_file:=' + str(copied_params)], 'slam')
-        player = start(playback_command(filter_report['bag'], options.rate), 'playback')
+        player = start(playback_command(filter_report['bag'], options.rate, qos), 'playback')
         resume = node.create_client(Resume, '/rosbag2_player/resume')
         startup_deadline = time.monotonic() + 30.0
         ready_at = None

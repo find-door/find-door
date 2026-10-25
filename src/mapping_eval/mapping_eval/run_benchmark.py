@@ -48,6 +48,27 @@ def stop_process(child):
     return False
 
 
+CAPTURE_TOPICS = ('/scan', '/odom', '/tf', '/tf_static', '/clock',
+                  '/slam_toolbox/graph_visualization', '/pose', '/mapping_capture/events')
+
+
+def recorder_ready(log_text):
+    """Recording 표시와 실제 토픽 구독 준비를 함께 확인한다."""
+    return all("Subscribed to topic '" + topic + "'" in log_text for topic in CAPTURE_TOPICS)
+
+
+def wait_until(predicate, children, timeout, label):
+    deadline = time.monotonic() + timeout
+    while True:
+        if any(child.poll() is not None for child in children):
+            raise RuntimeError(label + ': 프로세스 조기 종료')
+        if predicate():
+            return
+        if time.monotonic() > deadline:
+            raise RuntimeError(label + ': 제한 시간 초과')
+        time.sleep(0.05)
+
+
 def main(args=None):
     parser = argparse.ArgumentParser(description='indoor_v1 시뮬 전용 반복 매핑 평가')
     parser.add_argument('--output', required=True, type=Path, help='새 출력 폴더 (기존 폴더 거부)')
@@ -107,6 +128,12 @@ def main(args=None):
               'alignment': 'initial map_to_world only; no final alignment or scale fit',
               'limitations': 'Gazebo pose odom drives SLAM and route control; trajectory residual is not independent ATE',
               'runs': []}
+    if options.record:
+        qos_source = share / 'config/startup_capture_qos.yaml'
+        (inputs / qos_source.name).write_bytes(qos_source.read_bytes())
+        hashes[qos_source.name] = digest(inputs / qos_source.name)
+    report['capture_policy'] = ('diagnostics, recorder subscriptions, Gazebo sensors, SLAM, route'
+                                if options.record else 'integrated simulation without recording')
     env = os.environ.copy()
     (output / 'manifest.json').write_text(json.dumps(report, indent=2, ensure_ascii=False))
 
@@ -117,9 +144,26 @@ def main(args=None):
             try:
                 code = child.wait(timeout=timeout)
             finally:
-                stop_process(child)
+                if stop_process(child) is False:
+                    raise RuntimeError(name + ': 프로세스 그룹 정리 실패')
         if code != expected:
             raise RuntimeError(f'{name}: 종료 코드 {code}, 로그 {folder / (name + ".log")}')
+
+    def start(command, folder, name):
+        log = (folder / (name + '.log')).open('w')
+        handles.append(log)
+        child = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT,
+                                 start_new_session=True)
+        active.append(child)
+        return child
+
+    def mark(folder, phase):
+        run(['ros2', 'service', 'call', '/mapping_capture/mark_' + phase,
+             'std_srvs/srv/Trigger', '{}'], folder, 'mark_' + phase, 20)
+        events = [json.loads(line) for line in (folder / 'diagnostics/events.jsonl').read_text().splitlines()]
+        if not events or events[-1]['event'] != phase:
+            raise RuntimeError('진단 단계 이벤트 확인 실패: ' + phase)
+        return events[-1]
 
     active = []
     handles = []
@@ -144,28 +188,46 @@ def main(args=None):
             print(f'실험 {index + 1}/{options.runs}: {folder}', flush=True)
             started = time.monotonic()
             try:
-                log = (folder / 'simulation.log').open('w')
-                handles.append(log)
-                active.append(subprocess.Popen(
-                    ['ros2', 'launch', 'mapping_slam', 'simulation.launch.py',
-                     'world:=' + str(inputs / 'indoor_v1.sdf'),
-                     'params_file:=' + str(inputs / 'slam.yaml')],
-                    env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True))
+                capture = None
+                if options.record:
+                    import yaml
+                    configuration = yaml.safe_load((inputs / 'slam.yaml').read_text())
+                    tf_timeout = float(configuration['slam_toolbox']['ros__parameters'].get('transform_timeout', 0.2))
+                    diagnostics = start(
+                        ['ros2', 'run', 'mapping_eval', 'capture_diagnostics', '--output',
+                         str(folder / 'diagnostics'), '--transform-timeout', str(tf_timeout),
+                         '--confirm-simulation'], folder, 'diagnostics')
+                    wait_until(lambda: (folder / 'diagnostics/ready.json').is_file(),
+                               [diagnostics], 20, '진단 수집기 준비')
+                    recorder = start(
+                        ['ros2', 'bag', 'record', '-o', str(folder / 'bag'),
+                         '--include-unpublished-topics', '--polling-interval', '10',
+                         '--qos-profile-overrides-path', str(inputs / 'startup_capture_qos.yaml'),
+                         *CAPTURE_TOPICS, '/cmd_vel', '/rosout'], folder, 'record')
+                    wait_until(lambda: recorder_ready((folder / 'record.log').read_text()),
+                               [diagnostics, recorder], 20, 'SLAM 시작 전 bag 구독 준비')
+                    simulation = start(
+                        ['ros2', 'launch', 'mapping_gazebo', 'indoor.launch.py',
+                         'gui:=false', 'headless_rendering:=true',
+                         'world:=' + str(inputs / 'indoor_v1.sdf')], folder, 'simulation')
+                    run(['ros2', 'run', 'mapping_eval', 'check_interfaces', '--timeout', '60'],
+                        folder, 'sensor_preflight', 70)
+                    capture = {'slam_start': mark(folder, 'slam_start'),
+                               'slam_process_requested_monotonic_ns': time.monotonic_ns()}
+                    slam = start(
+                        ['ros2', 'launch', 'mapping_slam', 'mapping.launch.py',
+                         'use_sim_time:=true', 'params_file:=' + str(inputs / 'slam.yaml')],
+                        folder, 'slam')
+                else:
+                    simulation = start(
+                        ['ros2', 'launch', 'mapping_slam', 'simulation.launch.py',
+                         'world:=' + str(inputs / 'indoor_v1.sdf'),
+                         'params_file:=' + str(inputs / 'slam.yaml')], folder, 'simulation')
                 run(['ros2', 'run', 'mapping_eval', 'check_interfaces', '--timeout', '60',
                      '--require-map'], folder, 'preflight', 70)
                 run(['ros2', 'param', 'dump', '/slam_toolbox'], folder, 'effective_params', 20)
-                if options.record:
-                    log = (folder / 'record.log').open('w')
-                    handles.append(log)
-                    active.append(subprocess.Popen(
-                        ['ros2', 'bag', 'record', '-o', str(folder / 'bag'),
-                         '/scan', '/odom', '/tf', '/tf_static', '/clock', '/cmd_vel'],
-                        env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True))
-                    deadline = time.monotonic() + 15.0
-                    while 'Recording...' not in (folder / 'record.log').read_text():
-                        if active[-1].poll() is not None or time.monotonic() > deadline:
-                            raise RuntimeError('rosbag recorder 시작 실패: record.log 확인')
-                        time.sleep(0.1)
+                if capture is not None:
+                    capture['drive_start'] = mark(folder, 'drive_start')
                 run(['ros2', 'run', 'mapping_eval', 'drive_route', '--confirm-simulation',
                      '--route', str(route), '--output', str(folder),
                      '--timeout', str(options.route_timeout), '--speed', str(options.speed)],
@@ -173,7 +235,7 @@ def main(args=None):
                 run(['ros2', 'run', 'nav2_map_server', 'map_saver_cli', '-f', str(folder / 'map'),
                      '--ros-args', '-p', 'use_sim_time:=true', '-p', 'save_map_timeout:=10.0'],
                     folder, 'save_map', 30)
-                if options.record and active[-1].poll() is not None:
+                if options.record and recorder.poll() is not None:
                     raise RuntimeError('rosbag recorder가 주행 도중 종료됨')
                 drive = json.loads((folder / 'route_result.json').read_text())
                 transform = drive['initial_map_to_world']
@@ -187,8 +249,25 @@ def main(args=None):
                     'wall_precision': metrics['occupied_to_truth']['precision_at_tolerance'] >= 0.95,
                     'wall_coverage': metrics['truth_to_occupied']['coverage_at_tolerance'] >= 0.85,
                 }
+                if capture is not None:
+                    capture['capture_end'] = mark(folder, 'capture_end')
+                    for child in (slam, simulation):
+                        if stop_process(child) is False:
+                            raise RuntimeError('센서/SLAM 종료 실패')
+                        active.remove(child)
+                    time.sleep(0.5)  # 센서 종료 후 DDS 콜백과 기록 큐를 처리한다.
+                    for child in (recorder, diagnostics):
+                        if stop_process(child) is False:
+                            raise RuntimeError('기록/진단 종료 실패')
+                        active.remove(child)
+                    from mapping_eval.startup_audit import audit_startup
+                    audit = audit_startup(folder / 'bag', folder / 'diagnostics')
+                    (folder / 'startup_audit.json').write_text(json.dumps(audit, indent=2, ensure_ascii=False))
+                    capture['audit'] = audit
+                    if not audit['startup_coverage_valid'] or not audit['diagnostic_valid']:
+                        raise RuntimeError('초기 입력 기록 coverage 검사 실패: startup_audit.json 확인')
                 report['runs'].append({'run': index + 1, 'elapsed_wall_s': time.monotonic() - started,
-                                       'route': drive, 'metrics': metrics,
+                                       'route': drive, 'metrics': metrics, 'capture': capture,
                                        'quality_gate': gates, 'quality_pass': all(gates.values())})
             finally:
                 failures = []

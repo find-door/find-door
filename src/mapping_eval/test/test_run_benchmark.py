@@ -103,3 +103,18 @@ def test_custom_parameters_are_snapshotted_before_domain_probe(tmp_path, monkeyp
     assert '기존 시뮬/로봇' in report['error']
     custom.write_text('changed after snapshot')
     assert 'do_loop_closing: false' in snapshot.read_text()
+
+
+def test_recording_banner_does_not_mean_sensor_subscriptions_are_ready():
+    from mapping_eval.run_benchmark import CAPTURE_TOPICS, recorder_ready
+    assert not recorder_ready('Recording...')
+    subscribed = ["Subscribed to topic '" + topic + "'" for topic in CAPTURE_TOPICS]
+    assert not recorder_ready('\n'.join(subscribed[:-1]))
+    assert recorder_ready('\n'.join(subscribed))
+
+
+def test_stale_ready_marker_does_not_hide_dead_process():
+    from types import SimpleNamespace
+    from mapping_eval.run_benchmark import wait_until
+    with pytest.raises(RuntimeError, match='프로세스 조기 종료'):
+        wait_until(lambda: True, [SimpleNamespace(poll=lambda: 1)], 1, 'test')

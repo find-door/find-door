@@ -229,3 +229,9 @@ def test_cleanup_reports_process_group_that_survives():
     from mapping_eval.replay_benchmark import cleanup_children
     problems = cleanup_children([SimpleNamespace(pid=123)], [], stop=lambda child: False)
     assert len(problems) == 1 and '123' in problems[0]
+
+
+def test_replay_profile_restores_static_durability_without_synthetic_clock():
+    command = playback_command('/tmp/bag', qos_overrides='/tmp/replay.yaml')
+    assert '--clock' not in command
+    assert command[command.index('--qos-profile-overrides-path') + 1] == '/tmp/replay.yaml'

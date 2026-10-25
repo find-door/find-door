@@ -134,3 +134,17 @@ Ceres 실행 중 스레드 수 상한 경고가 출력된 시점과 인접해 �
 실물 검증은 [로봇 인수](robot-acceptance.md)에서 별도 수행합니다.
 
 재생·시맨틱 소프트웨어 구현은 [PR #7](https://github.com/reconmap-lab/prometheus-mapping/pull/7), dev `f0b37c0`에 병합했고 원격 CI를 통과했습니다.
+
+## SLAM 시작 전 입력·그래프 진단 — 2026-10-25
+
+기준 dev `0448e5c`, `feat/slam-startup-capture` 변경으로 시작 전 recorder·진단 구독,
+static/dynamic TF·scan coverage 감사, 명시적 재생 QoS를 구현·검증했습니다.
+4개 패키지 빌드·순수 테스트 316개·colcon 334개 검사 통과.
+
+첫 기록은 P95 3.21cm로 통과했으나 두 번째는 큰 TF 변화 3.709m와 지도 품질 실패를
+기록했습니다(P95 391.30cm). 같은 두 번째 bag의 ON 재생은 P95 391.30cm,
+OFF는 6.63cm·급변 후보 0개입니다. 실효 파라미터는 `do_loop_closing`만 다릅니다.
+기록·재생 완료와 지도 품질을 구분하며, 새 실패·비연속 그래프 연결은 루프 처리
+연관성을 지지하지만 수락 원인과 과거 예비 실패와의 동일성은 🔍입니다.
+
+[상세 수치·진단·Gazebo 캡처·지도 그림·재현 명령·원자료 위치](slam-startup-capture.md).

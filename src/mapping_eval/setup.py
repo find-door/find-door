@@ -28,6 +28,8 @@ setup(
             'analyze_trajectory = mapping_eval.trajectory_metrics:main',
             'run_semantic_benchmark = mapping_eval.run_semantic_benchmark:main',
             'replay_benchmark = mapping_eval.replay_benchmark:main',
+            'capture_diagnostics = mapping_eval.diagnostics_node:main',
+            'audit_startup = mapping_eval.startup_audit:main',
             'run_benchmark = mapping_eval.run_benchmark:main',
         ],
     },

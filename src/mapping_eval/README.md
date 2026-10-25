@@ -47,3 +47,5 @@ PYTHONPATH=src/mapping_eval python3 -m pytest src/mapping_eval/test -q
 
 - [동일 입력 재생·Cartographer 비교](../../docs/replay-evaluation.md): `replay_benchmark`
 - [합성 RGB-D 객체 지도 검증](../../docs/semantic-evaluation.md): `run_semantic_benchmark --output NEWDIR --record-camera --confirm-simulation`
+
+- [SLAM 시작 전 입력·TF/그래프 기록](../../docs/slam-startup-capture.md): `run_benchmark --record`, `capture_diagnostics`, `audit_startup`

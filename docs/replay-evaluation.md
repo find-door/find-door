@@ -116,3 +116,7 @@ Cartographer는 이 비교에서 coverage가 조금 낮고 slam_toolbox는 RMSE�
 ![동일 기록 입력 지도 비교](images/replay-comparison.png)
 
 왼쪽은 최초 온라인 실패 지도, 가운데·오른쪽은 보존한 입력의 재생 결과입니다. 초기 입력 누락으로 원래 실행 전체를 복제한 비교는 아닙니다.
+
+새 초기 입력 기록 bag처럼 발행자 생성 전에 메타데이터가 만들어지면 offered QoS가 비어 있을 수 있습니다.
+현재 replay는 입력 사본·해시로 보존한 `replay_input_qos.yaml`을 적용해 TF 정적 내구성을 명시합니다.
+원본 bag·필터 메타데이터는 변경하지 않습니다. [시작 전 기록](slam-startup-capture.md)을 참고하세요.

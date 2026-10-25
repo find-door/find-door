@@ -54,6 +54,9 @@ flowchart LR
 현재 구현된 실행 경계와 실제 센서 이름은 [초기 인터페이스 계약](interfaces.md)을 따릅니다.
 `mapping_slam`은 slam_toolbox 초기 기준선이며 최종 알고리즘 선택은 아직 미정입니다.
 `mapping_eval`은 입력 검사와 [시뮬레이션 지도 기하 평가](simulation-evaluation.md)를 구현했습니다.
+기록 실행에서는 SLAM 시작 전 bag 구독을 준비하고 TF·그래프·단계 이벤트를 수집합니다.
+종료 후 sensor·static/dynamic TF coverage와 진단 유효성을 검사하며, 기록 유효성과 지도
+품질은 구분합니다. [진단 인터페이스와 재생 QoS](slam-startup-capture.md)를 참고합니다.
 `mapping_semantic`은 색상 표적 또는 외부 Detection2DArray와 RGB-D를 관측 시각 TF로 투영하고 정적 객체를 관리합니다. NanoDet CPU 검출 노드를 별도로 제공합니다. 실물 정확도·Jetson 성능은 미검증입니다.
 
 | 패키지 | 역할 | 주요 입력 | 주요 출력 | 단계 |

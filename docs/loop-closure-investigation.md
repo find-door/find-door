@@ -104,7 +104,9 @@ coverage는 6회 모두 100%였고, precision은 ON 100%, OFF 99.15–99.81%였�
 기본 `slam.yaml`의 루프 클로저 설정은 변경하지 않았습니다.
 다음 조사에서는 최초 실패 bag의 `/scan`, `/clock`, odom→base 및 고정 TF를 재생하되
 기록된 SLAM map→odom을 제외한 동일 입력 비교가 필요합니다. 새 SLAM과 기록 TF가
-중복되지 않도록 필터링해야 하며, 이 재생 도구는 아직 구현하지 않았습니다.
+중복되지 않도록 필터링해야 하며, 당시 이 재생 도구는 아직 구현하지 않았습니다.
+이후 구현·실행 결과는 [동일 입력 재생](replay-evaluation.md), 시작 전 기록과 신규
+실패 관측은 [시작 구간 진단](slam-startup-capture.md)을 참고합니다.
 
 원자료 폴더의 `comparison.json`에 집계값, 각 `run_XX/trajectory_metrics.json`에
 급변 분석 결과가 있습니다. 6개 bag 모두 6개 토픽의 메시지와 종료 메타데이터가

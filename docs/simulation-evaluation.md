@@ -20,6 +20,7 @@ ros2 run mapping_eval run_benchmark \
 
 `--params-file PATH`로 비교할 SLAM 설정을 지정할 수 있습니다.
 [루프 클로저 비교 절차](loop-closure-investigation.md)를 참고하세요.
+`--record`는 [SLAM 시작 전 기록·진단 절차](slam-startup-capture.md)를 사용합니다.
 기존 출력 폴더는 덮어쓰지 않습니다. 기본 속도는 0.35 m/s, 주행 제한 시간은
 회당 벽시계 240초입니다. `--confirm-simulation`은 필수이며 실물에 실행하지 않습니다.
 외부 모델의 holonomic VelocityControl을 사용해 yaw 0을 유지하며 body XY 속도를

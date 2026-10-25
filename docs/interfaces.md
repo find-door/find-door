@@ -82,6 +82,25 @@ Codex 검증은 `ROS_DOMAIN_ID=12`, `GZ_PARTITION=codex`로 격리합니다.
 기록합니다. `run_benchmark`의 반복 실행·정답선·품질 기준은
 [시뮬레이션 평가 절차](simulation-evaluation.md)에 정의합니다.
 
+## 시작 구간 진단 인터페이스
+
+| 토픽 | 타입 | 발행 주체·역할 |
+|---|---|---|
+| `/slam_toolbox/graph_visualization` | `visualization_msgs/msg/MarkerArray` | slam_toolbox의 주기적 노드·edge 시각화, 현재 약 1초 간격 |
+| `/pose` | `geometry_msgs/msg/PoseWithCovarianceStamped` | slam_toolbox가 처리한 scan의 추정 위치 |
+| `/mapping_capture/events` | `std_msgs/msg/String` | 진단 수집기의 단계·시각·scan 수 JSON, RELIABLE/VOLATILE depth 10 |
+
+진단 수집기는 TF를 발행하지 않습니다. `/mapping_capture/mark_slam_start`,
+`/mapping_capture/mark_drive_start`, `/mapping_capture/mark_capture_end`는
+`std_srvs/srv/Trigger`이며 이벤트 발행과 같은 JSON을 응답 message에 반환합니다.
+단계 시각은 서비스 처리 시각이고 SLAM의 scan 수락 시각이 아닙니다.
+
+graph 수집은 RELIABLE/VOLATILE depth 1, 센서·동적 TF 수집은 BEST_EFFORT/VOLATILE,
+정적 TF 수집은 RELIABLE/TRANSIENT_LOCAL depth 100입니다.
+recorder·재생은 별도 QoS YAML을 사본·해시와 보존하고, 빈 원본 QoS 메타데이터에도
+`/tf_static`을 TRANSIENT_LOCAL로 재생합니다. 원본 bag은 변경하지 않습니다.
+[실행 순서·시각/그래프 해석 한계·실제 결과](slam-startup-capture.md)를 참고합니다.
+
 ## 시맨틱 검출·투영 계약
 
 | 토픽 | 타입 | 의미 |
