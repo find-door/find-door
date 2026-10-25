@@ -46,7 +46,8 @@ Gazebo 런타임에서 rgb8·32FC1(m), 640×480, fx=fy=499.409, 공통 optical f
 | `base_footprint → base_link → 센서` | 외부 launch의 robot_state_publisher |
 
 외부 launch가 Gazebo·스폰·브리지·robot_state_publisher를 실행합니다.
-이 프로젝트에서 같은 노드를 추가로 실행하지 않습니다. SLAM의 odom 입력은 TF입니다.
+이 프로젝트에서 같은 노드를 추가로 실행하지 않습니다. slam_toolbox의 odom 입력은 TF이며,
+Cartographer 비교 설정은 `/odom` 메시지도 구독합니다.
 센서 처리는 수신 시각이 아닌 메시지 타임스탬프로 TF를 조회합니다.
 
 **현재 시뮬레이션은 VelocityControl로 body 속도를 직접 적용합니다.** `/odom`은 Gazebo 자세 기반이며

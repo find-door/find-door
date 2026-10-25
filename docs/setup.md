@@ -86,6 +86,7 @@ sudo apt-get install python3-colcon-common-extensions python3-rosdep \
   python3-pytest python3-numpy python3-scipy python3-pil python3-yaml python3-opencv \
   ros-humble-slam-toolbox ros-humble-nav2-map-server \
   ros-humble-rosbag2-transport ros-humble-rosbag2-py ros-humble-rosbag2-interfaces \
+  ros-humble-ros2bag ros-humble-rosbag2-storage-default-plugins \
   ros-humble-tf2-ros ros-humble-tf2-msgs ros-humble-rosgraph-msgs \
   ros-humble-cv-bridge ros-humble-message-filters ros-humble-vision-msgs \
   ros-humble-visualization-msgs ros-humble-std-srvs ros-humble-ros2param \
