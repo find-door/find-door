@@ -193,8 +193,7 @@ Room B(y≈4.5) scan 25개 중 17개의 무게중심이 3.0 m 안에 들어왔�
 - 과거 예비 실패(3.566 m)는 초기 scan이 기록되지 않아 같은 원인인지 확인할 수 없습니다 🔍
 - 근거는 한 world(`indoor_v1`)·재생 bag 5개입니다. 실물·다른 구조에서의 안정성을 보장하지 않습니다.
 - `indoor_v1`은 복도와 방이 같은 x 범위에서 벽 하나를 사이에 두고 평행해, 이런 오연결이 일어나기 쉬운 구조입니다.
-- 기본 `slam.yaml`은 아직 바꾸지 않았습니다. `use_scan_barycenter: false`를 기본값으로 할지는
-  온라인 반복 실행으로 확인한 뒤 [ADR-0004](adr/0004-prehardware-slam-baseline.md)에 결정으로 남깁니다.
+- 기본값 채택은 아래 온라인 반복 결과로 결정했습니다 ([ADR-0004](adr/0004-prehardware-slam-baseline.md#2026-10-27-루프-후보-기준-변경)).
 
 원자료: `/home/blind/lab2/prometheus-evaluation-results/` 아래
 
@@ -204,3 +203,24 @@ Room B(y≈4.5) scan 25개 중 17개의 무게중심이 3.0 m 안에 들어왔�
 
 평가 도구가 `ROS_DOMAIN_ID=12`·`GZ_PARTITION=codex`만 허용해서, Codex가 대기 중이고
 도메인 12에 다른 발행자가 없음을 확인한 뒤 그 도메인으로 실행했습니다.
+
+### 2026-10-27 온라인 반복 확인
+
+dev 기본 `slam.yaml`에서 `use_scan_barycenter: false`만 바꾸고(관측용 `debug_logging: true` 추가)
+새 Gazebo·SLAM 프로세스로 5회 자동 주행했습니다. `--record`로 시작 전부터 bag을 기록했습니다.
+
+| 회차 | 벽 RMSE (cm) | 벽 P95 (cm) | precision | coverage | waypoint | 급변 후보 | 루프 최적화 |
+|---|---|---|---|---|---|---|---|
+| 1 | 2.30 | 3.45 | 100% | 100% | 12/12 | 0 | 10 |
+| 2 | 2.28 | 3.43 | 100% | 100% | 12/12 | 0 | 10 |
+| 3 | 3.20 | 7.16 | 100% | 100% | 12/12 | 0 | 10 |
+| 4 | 2.78 | 6.46 | 100% | 100% | 12/12 | 0 | 9 |
+| 5 | 1.97 | 3.02 | 100% | 100% | 12/12 | 0 | 10 |
+
+- 5회 모두 임시 품질 기준을 통과했고(`quality_pass: true`), 위치 최대 오차는 3.3–6.4 cm였습니다.
+- 기존 온라인 루프 ON(벽 P95 3.21–6.82 cm)과 같은 범위이며, 루프를 계속 닫습니다.
+- 5회 무발생이 실패 확률 0을 뜻하지는 않습니다. 원래 설정도 온라인 실행 대부분은 통과했고,
+  실패는 예비 실행과 v2 두 번에서 관측됐습니다.
+
+원자료: `/home/blind/lab2/prometheus-evaluation-results/2026-10-27-barycenter-off-online/`
+(`inputs/slam.yaml`이 실제 입력 사본, `online_bary_off.sh`, 회차별 bag·지도·궤적·`trajectory_metrics.json`).
