@@ -115,3 +115,92 @@ coverage는 6회 모두 100%였고, precision은 ON 100%, OFF 99.15–99.81%였�
 
 구현 검증: 3개 패키지 빌드, 순수 테스트 154개 통과, colcon 171개 검사 오류·실패 0.
 입력 사본 보존·실제 파라미터 수집·급변 분석은 별도 에이전트가 읽기 전용으로 검토했습니다.
+
+## 2026-10-26 원인 분석: 스캔 무게중심 기반 루프 후보 선택
+
+[시작 구간 진단](slam-startup-capture.md#새-급변에서-확인한-사실)의 v2 실패 bag은 루프 ON 재생에서
+매번 같은 실패(벽 P95 391.30 cm)를 냅니다. 이 결정적 재현 입력으로 원인을 좁혔습니다.
+
+### 무엇이 연결됐나
+
+- 급변 직전 scan(sim 53.6초)의 실제 위치는 **복도 (6.37, 1.04)**, 서쪽 진행입니다.
+  시뮬 `/odom`은 world 원점 기준 Gazebo 자세라 정답 위치로 씁니다.
+- SLAM은 이 노드(101)를 벽 너머 **Room B의 노드 60 (6.17, 4.51)**과 연결했고,
+  map→odom이 y 방향 +3.67 m(x 0.045 m, yaw −0.02 rad) 보정됐습니다.
+
+### 왜 후보가 됐나
+
+slam_toolbox 2.6.10의 `MapperGraph::FindPossibleLoopClosure`는 후보 거리를
+`GetReferencePose(use_scan_barycenter)`로 잽니다. 기본값 `true`에서는 로봇 위치가 아니라
+**scan 점들의 무게중심** 사이 거리입니다
+([Mapper.cpp](https://github.com/SteveMacenski/slam_toolbox/blob/2.6.10/lib/karto_sdk/src/Mapper.cpp)).
+LiDAR 최대 거리 12 m에서는 문을 통해 옆 공간의 점이 들어와 무게중심이 끌립니다.
+
+실패 bag에서 오프라인으로 계산한 값입니다 (`barycenter.py`, 정답 위치 기준):
+
+| 비교 | 거리 | `loop_search_maximum_distance` 3.0 m |
+|---|---|---|
+| 노드101 scan ↔ 가장 가까운 Room B scan, 로봇 위치 | 3.48 m | 후보 아님 |
+| 같은 두 scan, 무게중심 | 2.94 m | **후보** |
+
+Room B(y≈4.5) scan 25개 중 17개의 무게중심이 3.0 m 안에 들어왔습니다.
+후보가 된 뒤에는 `loop_search_space_dimension: 8.0`(±4 m) 탐색이 3.6 m 보정을 허용했습니다.
+
+### 한 항목씩 바꾼 재생
+
+같은 v2 bag·재생 속도 1.0·고정 초기 정합이며, 설정 차이는 표의 한 항목과 루프 최적화 횟수를
+세기 위한 `debug_logging: true`뿐입니다. 루프 최적화 횟수는 `slam.log`의 Ceres `Solver Summary` 수입니다.
+
+| 조건 | 벽 P95 (cm) | 벽 RMSE (cm) | precision | 급변 후보 | 루프 최적화 |
+|---|---|---|---|---|---|
+| 기준 (v2 설정 그대로) | 391.30 | 175.65 | 49.11% | 1 | 1 |
+| `use_scan_barycenter: false` | 2.96 | 2.47 | 100% | 0 | 10 |
+| `loop_search_maximum_distance: 2.5` | 2.92 | 2.45 | 100% | 0 | 7 |
+| `loop_search_space_dimension: 4.0` | 3.14 | 2.41 | 100% | 0 | 11 |
+| `loop_match_minimum_response_fine: 0.6` | 3.14 | 2.41 | 100% | 0 | 11 |
+
+- 기준에서는 실행 전체에서 **루프 최적화가 한 번** 일어났고 그 한 번에 지도가 깨졌습니다.
+- 네 조건 모두 루프를 7~11회 닫으면서 급변이 없었습니다. 루프를 끈 효과가 아니며,
+  같은 bag의 loop OFF(벽 P95 6.63 cm)보다 지도가 정확합니다.
+- `debug_logging` 없이 같은 5개 조건을 한 번 더 돌렸을 때 지도 지표는 위와 같았고,
+  기준의 급변 후보 수만 4개로 달랐습니다 (궤적 표본 시점 차이).
+
+### 정상 bag 회귀 확인
+
+기존 기록 4개를 각자의 원래 설정과 `use_scan_barycenter: false`로 재생했습니다.
+
+| bag | 원래 설정 P95 (cm) | `false` P95 (cm) | 루프 최적화 (원래 / `false`) |
+|---|---|---|---|
+| full-start 1 | 5.32 | 4.06 | 10 / 9 |
+| loop ON 1 | **238.50** | 7.16 | 11 / 9 |
+| loop ON 2 | 3.63 | 3.18 | 10 / 9 |
+| loop ON 3 | 3.08 | 2.84 | 10 / 9 |
+
+- `false`는 4개 모두 임시 품질 기준을 통과했고 P95가 같거나 작았습니다.
+- **loop ON 1은 온라인에서는 통과(벽 P95 3.95 cm)했지만 원래 설정 재생에서 실패**했습니다.
+  위치 잔차는 최대 0.12 m로 정상인데, 점유 셀 4236개 중 2033개가 건물 밖 y≈−1.0에 찍혔습니다.
+  현재 위치가 아니라 **이미 지나온 노드들이 루프 최적화로 약 3 m 밀린** 것으로 보입니다.
+  이 bag에는 그래프 진단이 없어 같은 무게중심 메커니즘인지는 🔍입니다.
+- 이 실패는 현재 위치만 보는 궤적 급변 검출(`jump_event_count` 0)로는 잡히지 않습니다.
+  지도 지표를 함께 봐야 합니다.
+
+### 결론과 한계
+
+**v2 실패의 원인은 무게중심 기반 후보 선택이 벽 너머 다른 공간의 scan을 루프 후보로 넣고,
+넓은 탐색 범위가 그 잘못된 정합을 받아들인 것입니다.** 근거는 소스 확인, 오프라인 거리 계산,
+한 항목씩 바꾼 결정적 재생입니다.
+
+- 과거 예비 실패(3.566 m)는 초기 scan이 기록되지 않아 같은 원인인지 확인할 수 없습니다 🔍
+- 근거는 한 world(`indoor_v1`)·재생 bag 5개입니다. 실물·다른 구조에서의 안정성을 보장하지 않습니다.
+- `indoor_v1`은 복도와 방이 같은 x 범위에서 벽 하나를 사이에 두고 평행해, 이런 오연결이 일어나기 쉬운 구조입니다.
+- 기본 `slam.yaml`은 아직 바꾸지 않았습니다. `use_scan_barycenter: false`를 기본값으로 할지는
+  온라인 반복 실행으로 확인한 뒤 [ADR-0004](adr/0004-prehardware-slam-baseline.md)에 결정으로 남깁니다.
+
+원자료: `/home/blind/lab2/prometheus-evaluation-results/` 아래
+
+- `2026-10-26-loop-gating/`: 5개 조건 재생(로그 없음), 조건별 `params/`, `loop_gating.sh`, `barycenter.py`·`barycenter_result.txt`
+- `2026-10-26-loop-gating-debug/`: 같은 5개 조건 + `debug_logging`, `loop_gating_debug.sh`
+- `2026-10-26-barycenter-regression/`: 정상 bag 4개 × 2개 설정, `regression.sh`
+
+평가 도구가 `ROS_DOMAIN_ID=12`·`GZ_PARTITION=codex`만 허용해서, Codex가 대기 중이고
+도메인 12에 다른 발행자가 없음을 확인한 뒤 그 도메인으로 실행했습니다.
