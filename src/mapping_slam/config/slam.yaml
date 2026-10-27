@@ -1,0 +1,29 @@
+# 초기 실내 기준값. 정확도 최적화 결과가 아니며 알고리즘 최종 선택은 ADR-0004에서 결정.
+slam_toolbox:
+  ros__parameters:
+    solver_plugin: solver_plugins::CeresSolver
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_footprint
+    scan_topic: /scan
+    mode: mapping
+    use_map_saver: true
+    resolution: 0.05
+    min_laser_range: 0.15
+    max_laser_range: 12.0
+    throttle_scans: 1
+    minimum_time_interval: 0.2
+    minimum_travel_distance: 0.1
+    minimum_travel_heading: 0.1
+    transform_publish_period: 0.05
+    map_update_interval: 1.0
+    transform_timeout: 0.2
+    tf_buffer_duration: 30.0
+    stack_size_to_use: 40000000
+    use_scan_matching: true
+    do_loop_closing: true
+    # 루프 후보를 scan 무게중심이 아닌 로봇 위치 거리로 고른다. 기본값 true에서는
+    # 문 너머 점에 끌린 무게중심 때문에 벽 너머 공간이 후보가 되어 3.67 m 오연결이 났다.
+    # docs/loop-closure-investigation.md 2026-10-26 원인 분석, ADR-0004
+    use_scan_barycenter: false
+    enable_interactive_mode: false

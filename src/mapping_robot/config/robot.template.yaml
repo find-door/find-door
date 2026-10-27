@@ -1,0 +1,37 @@
+schema_version: 1
+robot_id: REPLACE_ME
+hardware_confirmed: false
+frames:
+  map: REPLACE_ME_map
+  odom: REPLACE_ME_odom
+  base: REPLACE_ME_base
+  laser: REPLACE_ME_laser
+  optical: null
+topics:
+  scan: /REPLACE_ME/scan
+  odom: /REPLACE_ME/odom
+  rgb: null
+  depth: null
+  camera_info: null
+  detections: null
+thresholds:
+  min_scan_hz: null
+  min_odom_hz: null
+  max_age_sec: null
+slam:
+  resolution: null
+  min_laser_range: null
+  max_laser_range: null
+  do_loop_closing: false
+semantic:
+  enabled: false
+  map_id: null
+  model_path: null
+  model_sha256: null
+  output_path: null
+  sync_policy: exact
+  max_sync_skew_sec: 0.03
+  aligned_depth_confirmed: false
+  calibration_id: null
+  registration_note: null
+  static_classes: [chair, cup, bottle]

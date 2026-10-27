@@ -1,0 +1,7 @@
+# Synthetic fixtures only: front face centers in world, not object volume centers.
+frame: world
+map_id: semantic_v1
+objects:
+  red_fixture: [2.95, 0.55, 0.35]
+  blue_fixture: [2.95, 1.45, 0.35]
+tolerance_m: 0.10

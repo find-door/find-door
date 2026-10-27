@@ -1,0 +1,7 @@
+# Filtered sensor input contract. Restores tf_static durability when original
+# metadata was created before publishers existed (--include-unpublished-topics).
+/clock: {reliability: reliable, durability: volatile, history: keep_last, depth: 1000}
+/scan: {reliability: reliable, durability: volatile, history: keep_last, depth: 100}
+/odom: {reliability: reliable, durability: volatile, history: keep_last, depth: 100}
+/tf: {reliability: reliable, durability: volatile, history: keep_last, depth: 100}
+/tf_static: {reliability: reliable, durability: transient_local, history: keep_last, depth: 100}
