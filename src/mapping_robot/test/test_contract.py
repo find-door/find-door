@@ -103,7 +103,10 @@ def test_frozen_stamp_and_stale_burst_fail():
 
 def test_fixture_cannot_run_in_hardware_domain():
     with pytest.raises(ValueError): fixture_guard(True,{'ROS_DOMAIN_ID':'0'})
+    with pytest.raises(ValueError): fixture_guard(True,{'ROS_DOMAIN_ID':'11','GZ_PARTITION':'codex'})
+    with pytest.raises(ValueError): fixture_guard(True,{})
     fixture_guard(True, {'ROS_DOMAIN_ID':'12','GZ_PARTITION':'codex'})
+    fixture_guard(True, {'ROS_DOMAIN_ID':'11','GZ_PARTITION':'claude'})
 
 
 def test_slam_only_allows_unknown_camera_but_explicit_camera_requires_it():

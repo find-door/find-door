@@ -95,7 +95,7 @@ scan 시각의 TF와 odom pose/동일 시각 TF 일치를 검사합니다. 실�
 
 아래 첫 기록·SLAM 순서는 `semantic.enabled=false`인 초기 SLAM 시험입니다. 먼저 실제 드라이버가 정지 상태로 동작하고 물리 정지 수단을 확인한 상태에서 진행합니다.
 각 터미널은 로봇의 같은 ROS 도메인과 현재 `install/setup.bash`를 사용합니다.
-사용자는 실측 네트워크 환경에 맞는 ROS_DOMAIN_ID를 정하며, 에이전트의 검증 도메인 12를
+사용자는 실측 네트워크 환경에 맞는 ROS_DOMAIN_ID를 정하며, 에이전트의 검증 도메인(11·12)을
 로봇 운용값으로 강제하지 않습니다.
 
 ```bash
@@ -154,7 +154,7 @@ ros2 service call /semantic/save std_srvs/srv/Trigger '{}'
 
 ```bash
 # 로봇 구동 연결이 없는 개발 PC의 격리 도메인에서 센서만 재생
-export ROS_DOMAIN_ID=12 GZ_PARTITION=codex
+export ROS_DOMAIN_ID=12 GZ_PARTITION=codex  # Claude Code는 ROS_DOMAIN_ID=11 GZ_PARTITION=claude (AGENTS.md 병렬 작업)
 python3 scripts/robot_recording.py replay --profile /absolute/path/robot.yaml \
   --bag /absolute/path/hardware-bag --output /tmp/hardware-replay-new \
   --confirm-isolated

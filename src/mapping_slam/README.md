@@ -19,7 +19,7 @@ source install/setup.bash
 
 ```bash
 # 에이전트 검증용 격리. 모든 관련 터미널에 동일하게 적용
-export ROS_DOMAIN_ID=12 GZ_PARTITION=codex
+export ROS_DOMAIN_ID=12 GZ_PARTITION=codex  # Claude Code는 ROS_DOMAIN_ID=11 GZ_PARTITION=claude (AGENTS.md 병렬 작업)
 ros2 launch mapping_slam simulation.launch.py
 ```
 

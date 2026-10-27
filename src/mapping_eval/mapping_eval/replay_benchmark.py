@@ -56,7 +56,7 @@ def main(args=None):
     parser.add_argument('--confirm-simulation', action='store_true')
     options = parser.parse_args(args)
     try:
-        require_simulation(options.confirm_simulation, os.environ)
+        isolation = require_simulation(options.confirm_simulation, os.environ)
         source, output = validate_output(options.bag, options.output)
         params, truth = options.params_file.resolve(), options.truth.resolve()
         if not params.is_file() or not truth.is_file():
@@ -76,7 +76,7 @@ def main(args=None):
     filter_report = None
     status = {'schema_version': 1, 'status': 'running', 'source_bag': str(source),
               'slam_launch': options.slam_launch, 'slam_node': options.slam_node,
-              'rate': options.rate, 'ROS_DOMAIN_ID': 12, 'GZ_PARTITION': 'codex',
+              'rate': options.rate, **isolation,
               'clock_policy': 'replay original /clock; never ros2 bag play --clock',
               'alignment': 'initial map_to_world fixed; no fitting',
               'map_at_eof_policy': 'last available map at EOF; 2.5s wall drain does not force map update',

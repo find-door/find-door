@@ -116,7 +116,7 @@ frame 이름을 바꾸는 것으로 대체하면 안 됩니다. 근사 동기화
 Gazebo·SLAM은 별도로 실행합니다. 노드는 주행 명령이나 TF를 발행하지 않습니다.
 
 ```bash
-export ROS_DOMAIN_ID=12 GZ_PARTITION=codex
+export ROS_DOMAIN_ID=12 GZ_PARTITION=codex  # Claude Code는 ROS_DOMAIN_ID=11 GZ_PARTITION=claude (AGENTS.md 병렬 작업)
 source /opt/ros/humble/setup.bash
 source ~/worker_following_ws/install/setup.bash
 source install/setup.bash

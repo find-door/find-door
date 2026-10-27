@@ -83,8 +83,11 @@ def main(args=None):
         parser.error('--confirm-simulation을 명시해야 합니다 (실물 실행 금지)')
     if not 1 <= options.runs <= 20 or options.speed > 0.5:
         parser.error('runs는 1~20, speed는 0보다 크고 0.5 이하이어야 합니다')
-    if os.environ.get('ROS_DOMAIN_ID') != '12' or os.environ.get('GZ_PARTITION') != 'codex':
-        parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 환경에서 실행하세요')
+    from mapping_eval.drive_route import agent_environment
+    try:
+        isolation = agent_environment(os.environ)
+    except ValueError as error:
+        parser.error(str(error))
     from ament_index_python.packages import get_package_share_directory
     share = Path(get_package_share_directory('mapping_eval'))
     slam_share = Path(get_package_share_directory('mapping_slam'))
@@ -119,8 +122,7 @@ def main(args=None):
     report = {'status': 'running', 'runs_requested': options.runs,
               'configuration': {'speed_mps': options.speed,
                                 'route_timeout_wall_s': options.route_timeout,
-                                'record': options.record, 'ROS_DOMAIN_ID': 12,
-                                'GZ_PARTITION': 'codex'},
+                                'record': options.record, **isolation},
               'code_sha256': {path.name: digest(path) for path in Path(__file__).resolve().parent.glob('*.py')},
               'input_sha256': hashes, 'wf_gazebo_sha256': external,
               'provisional_gates': {'p95_m_max': 0.15, 'precision_min': 0.95,

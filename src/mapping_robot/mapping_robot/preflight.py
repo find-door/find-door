@@ -129,9 +129,16 @@ def stream_summary(samples, now_ros_ns, now_wall, minimum_hz, max_age):
             'age_sec': age, 'issues': issues}
 
 
+# mapping_eval.drive_route.AGENT_ENVIRONMENTS와 같은 값. 실물 런타임은 mapping_eval에 의존하지 않는다.
+AGENT_ENVIRONMENTS = {'11': 'claude', '12': 'codex'}
+
+
 def fixture_guard(enabled, environ):
-    if enabled and (environ.get('ROS_DOMAIN_ID') != '12' or environ.get('GZ_PARTITION') != 'codex'):
-        raise ValueError('fixture는 ROS_DOMAIN_ID=12, GZ_PARTITION=codex가 필수입니다')
+    domain = environ.get('ROS_DOMAIN_ID')
+    if enabled and (domain not in AGENT_ENVIRONMENTS
+                    or AGENT_ENVIRONMENTS[domain] != environ.get('GZ_PARTITION')):
+        raise ValueError('fixture는 에이전트 격리 환경(ROS_DOMAIN_ID=11 GZ_PARTITION=claude '
+                         '또는 ROS_DOMAIN_ID=12 GZ_PARTITION=codex)이 필수입니다')
 
 
 def main(args=None):

@@ -52,14 +52,18 @@ def test_valid_route():
     (False, {'ROS_DOMAIN_ID': '12', 'GZ_PARTITION': 'codex'}),
     (True, {}), (True, {'ROS_DOMAIN_ID': '0', 'GZ_PARTITION': 'codex'}),
     (True, {'ROS_DOMAIN_ID': '12', 'GZ_PARTITION': 'claude'}),
+    (True, {'ROS_DOMAIN_ID': '11', 'GZ_PARTITION': 'codex'}),
+    (True, {'ROS_DOMAIN_ID': '11'}),
 ])
 def test_simulation_guard_rejects_unconfirmed_or_shared_domain(confirmed, environment):
     with pytest.raises(ValueError):
         require_simulation(confirmed, environment)
 
 
-def test_simulation_guard_accepts_isolated_confirmed_run():
-    require_simulation(True, {'ROS_DOMAIN_ID': '12', 'GZ_PARTITION': 'codex'})
+@pytest.mark.parametrize('domain,partition', [('11', 'claude'), ('12', 'codex')])
+def test_simulation_guard_accepts_isolated_confirmed_run(domain, partition):
+    assert require_simulation(True, {'ROS_DOMAIN_ID': domain, 'GZ_PARTITION': partition}) == {
+        'ROS_DOMAIN_ID': int(domain), 'GZ_PARTITION': partition}
 
 
 @pytest.mark.parametrize('value', ['0', '-1', '0.51', 'nan', 'inf'])

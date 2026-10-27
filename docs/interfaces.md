@@ -65,7 +65,8 @@ Cartographer 비교 설정은 `/odom` 메시지도 구독합니다.
   rosbag이 `/clock`을 포함하면 `--clock`으로 두 번째 시계를 만들지 않습니다.
   재실행 입력에는 이전 SLAM의 `map → odom`을 섞지 않습니다.
 
-Codex 검증은 `ROS_DOMAIN_ID=12`, `GZ_PARTITION=codex`로 격리합니다.
+에이전트 검증은 `ROS_DOMAIN_ID`·`GZ_PARTITION`으로 격리합니다: Claude Code `11`/`claude`, Codex `12`/`codex`
+([AGENTS.md 병렬 작업](../AGENTS.md#병렬-작업-claude-codecodex-동시-실행)). 평가 도구는 이 두 조합 외의 환경에서 실행을 거부합니다.
 사용자 GUI/RViz도 동일 실행을 볼 때만 같은 도메인을 사용합니다.
 
 ## 검사 범위와 후속 작업

@@ -31,11 +31,25 @@ def validate_route(document):
     return result
 
 
+# AGENTS.md 「병렬 작업」의 에이전트별 격리 값. 사용자 기본 도메인(0)에서는 실행하지 않는다.
+AGENT_ENVIRONMENTS = {'11': 'claude', '12': 'codex'}
+
+
+def agent_environment(environment):
+    """허용된 도메인·파티션 쌍이면 manifest 기록용 값을 돌려준다."""
+    domain = environment.get('ROS_DOMAIN_ID')
+    partition = environment.get('GZ_PARTITION')
+    if domain not in AGENT_ENVIRONMENTS or AGENT_ENVIRONMENTS[domain] != partition:
+        allowed = ', '.join(f'ROS_DOMAIN_ID={d} GZ_PARTITION={p}'
+                            for d, p in AGENT_ENVIRONMENTS.items())
+        raise ValueError('에이전트 격리 환경에서 실행하세요: ' + allowed)
+    return {'ROS_DOMAIN_ID': int(domain), 'GZ_PARTITION': partition}
+
+
 def require_simulation(confirmed, environment):
-    if not confirmed or environment.get('ROS_DOMAIN_ID') != '12':
-        raise ValueError('--confirm-simulation과 ROS_DOMAIN_ID=12가 필요합니다')
-    if environment.get('GZ_PARTITION') != 'codex':
-        raise ValueError('GZ_PARTITION=codex가 필요합니다')
+    if not confirmed:
+        raise ValueError('--confirm-simulation이 필요합니다')
+    return agent_environment(environment)
 
 
 def bounded_speed(value):

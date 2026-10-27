@@ -26,7 +26,7 @@ semantic이 비활성인 첫 SLAM에서는 optical frame과 RGB/depth/camera_inf
 
 TF `odom←base`, `base←laser`는 scan header 시각으로 조회합니다. 카메라 옵션은 정해진 sync 정책으로 RGB/depth/CameraInfo를 짝짓고 RGB 시각의 `base←optical` TF를 검사합니다. 카메라 투영 전제는 `mapping_semantic`의 입력 검증을 재사용합니다. 모델 정확도·실측 외부 보정·시계 동기화 품질 자체를 증명하는 검사가 아닙니다.
 
-실물은 `use_sim_time=false`이며 `/clock` 발행자가 있으면 거부합니다. 테스트용 `--simulation-fixture`는 `ROS_DOMAIN_ID=12 GZ_PARTITION=codex`를 강제하고 `use_sim_time=true`로 검사합니다. 이 결과는 항상 `context=simulation_fixture`, `hardware_verified=false`입니다. 느린 시뮬레이션은 벽시계 수신률 기준에서 실패할 수 있습니다. JSON은 profile 해시, context, 입력별 시각·수신률, 발행자 QoS·GID, TF 결과·오류를 기록하며 기존 파일을 덮어쓰지 않습니다. 이 패키지는 `/cmd_vel` 등 구동 명령을 발행하지 않습니다.
+실물은 `use_sim_time=false`이며 `/clock` 발행자가 있으면 거부합니다. 테스트용 `--simulation-fixture`는 에이전트 격리 환경(`ROS_DOMAIN_ID=11 GZ_PARTITION=claude` 또는 `ROS_DOMAIN_ID=12 GZ_PARTITION=codex`)을 강제하고 `use_sim_time=true`로 검사합니다. 이 결과는 항상 `context=simulation_fixture`, `hardware_verified=false`입니다. 느린 시뮬레이션은 벽시계 수신률 기준에서 실패할 수 있습니다. JSON은 profile 해시, context, 입력별 시각·수신률, 발행자 QoS·GID, TF 결과·오류를 기록하며 기존 파일을 덮어쓰지 않습니다. 이 패키지는 `/cmd_vel` 등 구동 명령을 발행하지 않습니다.
 
 ## 선택적 semantic
 

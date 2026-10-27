@@ -121,7 +121,7 @@ source install/setup.bash  # 현재 checkout/worktree 루트
 에이전트는 해당 세션의 격리 값을 모든 터미널에 적용합니다. 사용자 GUI는 기본 도메인 0을 사용하며 직접 실행합니다. Claude Code는 `ROS_DOMAIN_ID=11 GZ_PARTITION=claude`, Codex는 아래 값을 씁니다.
 
 ```bash
-export ROS_DOMAIN_ID=12 GZ_PARTITION=codex
+export ROS_DOMAIN_ID=12 GZ_PARTITION=codex  # Claude Code는 ROS_DOMAIN_ID=11 GZ_PARTITION=claude (AGENTS.md 병렬 작업)
 # 백그라운드 launch와 자식 프로세스만 종료할 수 있도록 그룹 추적
 set -m
 ros2 launch mapping_slam simulation.launch.py gui:=false &
@@ -177,8 +177,8 @@ PYTHONPATH=src/mapping_eval:src/mapping_semantic:src/mapping_robot /usr/bin/pyth
 [입력 검사](../src/mapping_eval/README.md)를 참고합니다.
 
 ```bash
-# Codex 검증용 격리: 관련 터미널마다 동일하게 설정
-export ROS_DOMAIN_ID=12 GZ_PARTITION=codex
+# 에이전트 검증용 격리: 관련 터미널마다 동일하게 설정
+export ROS_DOMAIN_ID=12 GZ_PARTITION=codex  # Claude Code는 ROS_DOMAIN_ID=11 GZ_PARTITION=claude (AGENTS.md 병렬 작업)
 ros2 launch mapping_slam simulation.launch.py
 # 별도 터미널에서 환경 준비 후
 ros2 run mapping_eval check_interfaces --timeout 30 --require-map

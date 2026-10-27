@@ -9,7 +9,8 @@
 ## 실행
 
 시뮬레이션과 검사 명령은 동일한 `ROS_DOMAIN_ID`를 사용해야 합니다.
-Codex 검증은 `ROS_DOMAIN_ID=12`, `GZ_PARTITION=codex`로 격리합니다.
+에이전트 검증은 `ROS_DOMAIN_ID`·`GZ_PARTITION`으로 격리합니다: Claude Code `11`/`claude`, Codex `12`/`codex`
+([AGENTS.md 병렬 작업](../../AGENTS.md#병렬-작업-claude-codecodex-동시-실행)). 평가 도구는 이 두 조합 외의 환경에서 실행을 거부합니다.
 ROS 환경과 이 워크스페이스의 `install/setup.bash`를 source한 뒤 실행합니다.
 
 ```bash

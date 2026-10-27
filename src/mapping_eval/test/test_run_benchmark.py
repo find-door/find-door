@@ -90,8 +90,8 @@ def test_custom_parameters_are_snapshotted_before_domain_probe(tmp_path, monkeyp
     ros.create_node = lambda name: types.SimpleNamespace(
         count_publishers=lambda topic: 1, destroy_node=lambda: None)
     monkeypatch.setitem(sys.modules, 'rclpy', ros)
-    monkeypatch.setenv('ROS_DOMAIN_ID', '12')
-    monkeypatch.setenv('GZ_PARTITION', 'codex')
+    monkeypatch.setenv('ROS_DOMAIN_ID', '11')
+    monkeypatch.setenv('GZ_PARTITION', 'claude')
     output = tmp_path / 'result'
     assert main(['--output', str(output), '--params-file', str(custom),
                  '--confirm-simulation']) == 1
@@ -101,6 +101,8 @@ def test_custom_parameters_are_snapshotted_before_domain_probe(tmp_path, monkeyp
     assert report['input_sha256']['slam.yaml'] == hashlib.sha256(custom.read_bytes()).hexdigest()
     assert report['status'] == 'failed'
     assert '기존 시뮬/로봇' in report['error']
+    assert report['configuration']['ROS_DOMAIN_ID'] == 11
+    assert report['configuration']['GZ_PARTITION'] == 'claude'
     custom.write_text('changed after snapshot')
     assert 'do_loop_closing: false' in snapshot.read_text()
 

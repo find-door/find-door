@@ -29,7 +29,7 @@ def main(args=None):
     options = parser.parse_args(args)
     import math
     try:
-        require_simulation(options.confirm_simulation, os.environ)
+        isolation = require_simulation(options.confirm_simulation, os.environ)
         if not math.isfinite(options.transform_timeout) or options.transform_timeout < 0:
             raise ValueError('transform-timeout은 유한한 0 이상이어야 합니다')
         output = options.output.expanduser().resolve()
@@ -182,7 +182,7 @@ def main(args=None):
         node = Capture()
         atomic_json(output / 'ready.json', {
             **node.common(), 'node_name': 'mapping_capture', 'pid': os.getpid(),
-            'ROS_DOMAIN_ID': 12, 'GZ_PARTITION': 'codex',
+            **isolation,
             'topics': ['/clock', '/scan', '/odom', '/pose', '/tf', '/tf_static',
                        '/slam_toolbox/graph_visualization'],
             'services': ['/mapping_capture/mark_' + event for event in ('slam_start', 'drive_start', 'capture_end')],
