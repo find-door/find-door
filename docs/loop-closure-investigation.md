@@ -224,3 +224,38 @@ dev 기본 `slam.yaml`에서 `use_scan_barycenter: false`만 바꾸고(관측용
 
 원자료: `/home/blind/lab2/prometheus-evaluation-results/2026-10-27-barycenter-off-online/`
 (`inputs/slam.yaml`이 실제 입력 사본, `online_bary_off.sh`, 회차별 bag·지도·궤적·`trajectory_metrics.json`).
+
+## 2026-10-31 과거 노드 이동 검사
+
+현재 위치는 정상인데 과거 노드만 밀려 지도가 망가지는 실패는 궤적 급변 검출이 놓칩니다.
+`analyze_graph`는 정답 벽 없이 `/slam_toolbox/graph_visualization`의 노드 좌표만으로
+연속 스냅샷 사이 이동과 처음 관측 위치 대비 최종 이동을 계산합니다.
+기준(0.5 m) 이상이면 `anomaly_candidate`로 표시합니다.
+
+```bash
+ros2 run mapping_eval analyze_graph \
+  --graph run_01/diagnostics/graph.jsonl --output run_01/graph_motion.json
+```
+
+`run_benchmark --record`와 `replay_benchmark`는 자동으로 `graph_motion.json`을 남깁니다.
+품질 기준(`quality_pass`)에는 넣지 않았습니다.
+
+| 경로 | 조건 | 벽 P95 (cm) | 궤적 급변 후보 | 최대 노드 이동 (m) | 이상 후보 |
+|---|---|---:|---:|---:|---|
+| 재생 | v2, 원래 설정 | 391.30 | 1 | 3.437 | **있음** |
+| 재생 | loop ON 1, 원래 설정 | 238.50 | **0** | 3.329 | **있음** |
+| 재생 | loop ON 1, `false` | 7.16 | 0 | 0.073 | 없음 |
+| 온라인 | 현재 기본값, 신규 1회 | 2.73 | 0 | 0.040 | 없음 |
+
+- 도구 통합 전 같은 방식으로 기록한 재생 10건: 실패 2건은 3.33 m 이상, 나머지 8건(벽 P95 2.84–7.16 cm)은 0.08 m 이하.
+- 저장된 온라인 기록 7건: 실패 1건(391.30 cm)만 3.511 m로 후보, 나머지 6건(3.02–7.16 cm)은 0.08 m 이하.
+- 같은 v2 재생도 스냅샷 시점에 따라 최대 이동이 3.437–3.510 m로 달라집니다.
+
+### 한계
+
+- 시뮬레이션의 같은 world·경로 결과입니다. 실패 사례는 서로 다른 bag 2개뿐입니다.
+- 시뮬 odom은 드리프트가 거의 없어 정상 보정이 작습니다. 실물에서는 올바른 루프 클로저도 노드를 크게 옮길 수 있어, 0.5 m는 잠정값이며 실물에서 다시 정해야 합니다.
+- 이상 후보는 원인이나 지도 정확도 판정이 아니며, 노드 이동 없이 생기는 지도 오류는 잡지 못합니다.
+- Cartographer 재생은 이 토픽이 없어 검사를 건너뜁니다 (실행 미검증).
+
+원자료: `prometheus-evaluation-results/2026-10-31-graph-motion/`, `2026-10-30-node-motion/`

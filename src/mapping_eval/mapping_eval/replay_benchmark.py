@@ -10,6 +10,7 @@ import time
 
 from mapping_eval.bag_filter import filter_bag, validate_output
 from mapping_eval.drive_route import require_simulation
+from mapping_eval.graph_motion import analyze_graph
 from mapping_eval.map_metrics import evaluate_map
 from mapping_eval.run_benchmark import digest, positive, stop_process
 from mapping_eval.trajectory_metrics import analyze_trajectory
@@ -213,6 +214,10 @@ def main(args=None):
             json.dumps(trajectory, ensure_ascii=False, indent=2, allow_nan=False) + '\n')
         status['map_metrics'] = metrics
         status['trajectory_metrics'] = trajectory
+        if (output / 'graph.jsonl').is_file():
+            status['graph_motion'] = analyze_graph(output / 'graph.jsonl')
+            (output / 'graph_motion.json').write_text(
+                json.dumps(status['graph_motion'], ensure_ascii=False, indent=2, allow_nan=False) + '\n')
         if status['invalid_reasons']:
             raise RuntimeError('replay 유효성 검사 실패: ' + '; '.join(status['invalid_reasons']))
         status['status'] = 'completed'

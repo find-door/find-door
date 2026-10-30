@@ -266,6 +266,10 @@ def main(args=None):
                     audit = audit_startup(folder / 'bag', folder / 'diagnostics')
                     (folder / 'startup_audit.json').write_text(json.dumps(audit, indent=2, ensure_ascii=False))
                     capture['audit'] = audit
+                    from mapping_eval.graph_motion import analyze_graph
+                    capture['graph_motion'] = analyze_graph(folder / 'diagnostics/graph.jsonl')
+                    (folder / 'graph_motion.json').write_text(
+                        json.dumps(capture['graph_motion'], indent=2, ensure_ascii=False))
                     if not audit['startup_coverage_valid'] or not audit['diagnostic_valid']:
                         raise RuntimeError('초기 입력 기록 coverage 검사 실패: startup_audit.json 확인')
                 report['runs'].append({'run': index + 1, 'elapsed_wall_s': time.monotonic() - started,

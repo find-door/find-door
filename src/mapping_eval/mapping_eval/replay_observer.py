@@ -14,7 +14,9 @@ from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy, qos_profi
 from rclpy.time import Time
 from rosgraph_msgs.msg import Clock
 from tf2_ros import Buffer, TransformException, TransformListener
+from visualization_msgs.msg import MarkerArray
 
+from mapping_eval.diagnostics import parse_graph
 from mapping_eval.drive_route import inverse_se2, planar_transform, transform_point
 from mapping_eval.bag_filter import replay_timing_issues
 from mapping_eval.trajectory_metrics import COLUMNS
@@ -39,12 +41,22 @@ class ReplayObserver(Node):
         self.missing_tf_count = 0
         self.map = None
         self.fault = None
+        self.graph_records = []
         self.create_subscription(Clock, '/clock', self.on_clock, qos_profile_sensor_data)
         self.create_subscription(Odometry, '/odom', self.on_odom, qos_profile_sensor_data)
         self.create_subscription(
             OccupancyGrid, '/map', self.on_map,
             QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE,
                        durability=DurabilityPolicy.TRANSIENT_LOCAL))
+        # slam_toolbox 전용 토픽이라 Cartographer 재생에서는 비어 있다.
+        self.create_subscription(
+            MarkerArray, '/slam_toolbox/graph_visualization', self.on_graph,
+            QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE,
+                       durability=DurabilityPolicy.VOLATILE))
+
+    def on_graph(self, message):
+        self.graph_records.append({'receive_ros_ns': self.clock_ns or 0,
+                                   'nodes': parse_graph(message)['nodes']})
 
     def on_clock(self, message):
         current = stamp_ns(message.clock)
@@ -113,6 +125,9 @@ class ReplayObserver(Node):
             writer = csv.DictWriter(stream, fieldnames=COLUMNS)
             writer.writeheader()
             writer.writerows(self.samples)
+        if self.graph_records:
+            with (folder / 'graph.jsonl').open('x', encoding='utf-8') as stream:
+                stream.writelines(json.dumps(record) + '\n' for record in self.graph_records)
         fraction = len(self.samples) / expected_odom_count if expected_odom_count else 0.0
         received_fraction = (self.received_odom_count / expected_odom_count
                              if expected_odom_count else 0.0)

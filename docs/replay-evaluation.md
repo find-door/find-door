@@ -39,6 +39,7 @@ EOF 뒤 벽시계 2.5초의 콜백 처리는 시뮬 시간을 진행시키지 �
 실행 명령·코드·설정 해시, 유효성 판정·지도/궤적 지표를 기록합니다.
 `effective_params.log`, `map.pgm/yaml`, `trajectory.csv`, `trajectory_metrics.json`,
 `replay_observation.json`과 각 프로세스 로그를 함께 보존합니다.
+slam_toolbox 재생은 `graph.jsonl`과 `graph_motion.json`(과거 노드 이동 검사)도 남깁니다.
 
 같은 입력이어도 DDS·스레드 스케줄링·SLAM 내부 처리로 출력은 완전히 결정적이지 않을 수 있습니다.
 Gazebo odom은 SLAM 입력에도 사용하므로 궤적 잔차는 독립적인 ATE가 아닙니다.

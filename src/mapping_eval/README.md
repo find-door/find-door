@@ -3,7 +3,7 @@
 시뮬레이션 입력과 SLAM 출력의 인터페이스를 점검하는 `ament_python` 패키지입니다.
 자동 경로 주행·지도 기하 오차·반복 실행은 [시뮬레이션 평가 절차](../../docs/simulation-evaluation.md)를 참고하세요.
 궤적 잔차는 독립적인 위치 정확도 평가가 아닌 보조 지표입니다.
-`analyze_trajectory`로 위치 잔차 급변을 검출하며, 실행법과 on/off 비교 조건은
+`analyze_graph`로 과거 노드 이동을 검사하고([결과](../../docs/loop-closure-investigation.md#2026-10-31-과거-노드-이동-검사)), `analyze_trajectory`로 위치 잔차 급변을 검출하며, 실행법과 on/off 비교 조건은
 [루프 클로저 조사](../../docs/loop-closure-investigation.md)에 정리합니다.
 
 ## 실행
