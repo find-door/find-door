@@ -32,6 +32,6 @@
 
 PR #7: [소프트웨어 구현](https://github.com/reconmap-lab/prometheus-mapping/pull/7).
 [원격 CI](https://github.com/reconmap-lab/prometheus-mapping/actions/runs/40162251705) 통과.
-최초 온라인 급변 원인은 미확정이며, RViz 수동 화면 확인·실물·목표 클래스 평가는 남아 있습니다.
+새 기록(v2)의 지도 급변 원인은 확정해 기본 설정을 고쳤습니다([원인 분석](loop-closure-investigation.md#2026-10-26-원인-분석-스캔-무게중심-기반-루프-후보-선택)). 최초 예비 실행의 급변이 같은 원인인지와 RViz 수동 화면 확인·실물·목표 클래스 평가는 남아 있습니다.
 
-배포 준비의 최신 검증은 [실물 배포 준비 결과](robot-readiness-evaluation.md)입니다. 새 같은 bag의 ON/OFF 각각 3회에서도 ON만 지도 품질에 실패했습니다. 첫 실물 시험은 loop OFF로 제한하며 안정성 해결·최종 선정으로 간주하지 않습니다.
+배포 준비의 최신 검증은 [실물 배포 준비 결과](robot-readiness-evaluation.md)입니다. 새 같은 bag의 ON/OFF 각각 3회에서도 ON만 지도 품질에 실패했습니다. 첫 실물 시험은 loop OFF로 제한하며 안정성 해결·최종 선정으로 간주하지 않습니다. 이후 원인 확정으로 개발 기본 설정은 고쳤지만, 실물 프로파일의 loop OFF는 실물 검증 전까지 유지합니다.
