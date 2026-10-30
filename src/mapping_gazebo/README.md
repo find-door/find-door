@@ -31,6 +31,10 @@ ros2 launch mapping_gazebo indoor.launch.py gui:=false
 
 주행·센서 확인 명령은 `wf_gazebo/README.md`와 같습니다 (`teleop_twist_keyboard`, `ros2 topic hz /scan` 등).
 
+## indoor_demo (소개 영상 전용)
+
+`indoor_v1`의 벽 충돌체에 텍스처·가구를 더한 world입니다. 가구가 LiDAR에 보이므로 평가에 쓰지 않습니다. [녹화 절차](../../scripts/demo/README.md)
+
 ## indoor_v1 도면 (평가 정답 데이터)
 
 Phase 1 지도 정확도 평가의 기준입니다. **좌표는 모두 벽의 안쪽 면** 기준이며, 벽 두께 0.1 m, 높이 2.0 m입니다.

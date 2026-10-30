@@ -1,0 +1,68 @@
+Panels: []
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/Map
+      Name: Map
+      Enabled: true
+      Alpha: 1
+      Color Scheme: map
+      Topic:
+        Value: /map
+        Reliability Policy: Reliable
+        Durability Policy: Transient Local
+    - Class: rviz_default_plugins/Path
+      Name: SLAM path
+      Enabled: true
+      Color: 40; 120; 255
+      Alpha: 1
+      Line Style: Billboards
+      Line Width: 0.05
+      Topic:
+        Value: /demo/slam_path
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/LaserScan
+      Name: LaserScan
+      Enabled: true
+      Color Transformer: FlatColor
+      Color: 255; 60; 60
+      Style: Flat Squares
+      Size (m): 0.05
+      Topic:
+        Value: /scan
+        Reliability Policy: Best Effort
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+        Durability Policy: Transient Local
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/TopDownOrtho
+      Name: Current View
+      Angle: 0
+      Scale: 75
+      X: 5
+      Y: 3
+      Target Frame: <Fixed Frame>
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: true
+  Hide Left Dock: true
+  Hide Right Dock: true
+  Width: 820
+  Height: 600
+  X: 40
+  Y: 40
