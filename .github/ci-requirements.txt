@@ -1,0 +1,3 @@
+# apt python3-opencv는 GDAL·PROJ 묶음까지 받아 미러가 느리면 시간 제한에 걸린다.
+# Ubuntu 22.04 패키지와 같은 OpenCV 4.5.4의 wheel을 해시로 고정해 쓴다.
+opencv-python-headless==4.5.4.60 --hash=sha256:6d949ec3e10cffa915ab1853e490674b8c420ba29eb0aeea72785f3e254dc7a1
