@@ -43,9 +43,9 @@
 - [ ] 과거 예비 실패(3.566 m)와 같은 원인인지 확인 — 초기 scan 미기록으로 🔍
 - [x] `use_scan_barycenter: false` 기본값 채택 — 온라인 5회 통과 ([ADR-0004](adr/0004-prehardware-slam-baseline.md#2026-10-27-루프-후보-기준-변경))
 - [x] 구조가 다른 `indoor_v2`에서 재검증 — [현재 기본값 5회 모두 실패](loop-closure-investigation.md#2026-10-31-indoor_v2-재검증)
-- [x] `indoor_v2` 큰 지도 실패 원인 분석 — [평행 경로 오연결](loop-closure-investigation.md#2026-11-01-indoor_v2-실패-원인과-후보-검증), 재생 기록에 연결 정보가 없어 일부 🔍
-- [ ] `indoor_v2`에서 품질 기준을 통과하는 설정 찾기 — 후보 3개 모두 미달, 기본값 유지 🔍
-- [ ] `indoor_v2` 위치 오차 누적 원인 확인 🔍
+- [ ] `indoor_v2` 큰 지도 실패 원인 입증 — [벽 너머 연결이 유력한 후보](loop-closure-investigation.md#2026-11-01-indoor_v2-실패-후보와-설정-검증), 연결 생성 경로 미확인 🔍
+- [ ] 보정 능력까지 확인한 SLAM 설정 후보 찾기 — 처리 간격 0.5는 지도 점수만 통과, 관측된 보정 없음 🔍
+- [ ] `indoor_v2` 위치 오차가 스캔 매칭 단계에서 한쪽으로 쌓이는 이유 확인 🔍
 - [x] 실물 배포용 런타임·프로파일·센서 점검·기록/격리 재생·자원 기록 준비 — [검증](robot-readiness-evaluation.md), ARM64·실물은 미검증
 - [ ] 실물 JetAuto로 실제 공간(복도·실험실) 매핑, 줄자 실측과 비교
 - [ ] 루프 클로저 전·후 비교 (루프 클로저가 없는 후보는 N/A)
