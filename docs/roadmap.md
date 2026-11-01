@@ -44,7 +44,8 @@
 - [x] `use_scan_barycenter: false` 기본값 채택 — 온라인 5회 통과 ([ADR-0004](adr/0004-prehardware-slam-baseline.md#2026-10-27-루프-후보-기준-변경))
 - [x] 구조가 다른 `indoor_v2`에서 재검증 — [현재 기본값 5회 모두 실패](loop-closure-investigation.md#2026-10-31-indoor_v2-재검증)
 - [x] `indoor_v2` 큰 지도 실패 원인 확인 — [재생한 실패 bag 2개에서 수락된 벽 너머 오연결](loop-closure-investigation.md#루프-수락-기록과-정답-비교)
-- [ ] 맞는 루프를 유지하면서 지도 기준을 통과하는 SLAM 설정 찾기 — 처리 간격 0.5는 루프 수락 0회, `maxdist-2.0`은 위치 오차로 일부 미달 🔍
+- [x] 처리 간격 스윕 — [0.1–0.5 m 중 사전 기준 통과 없음](loop-closure-investigation.md#처리-간격-스윕과-조사-결론), 시뮬레이션 튜닝 종료
+- [ ] 실물 odom 오차 측정 후 루프 설정 재평가 🔍
 - [ ] `indoor_v2` 위치 오차가 스캔 매칭 단계에서 한쪽으로 쌓이는 이유 확인 🔍
 - [x] 실물 배포용 런타임·프로파일·센서 점검·기록/격리 재생·자원 기록 준비 — [검증](robot-readiness-evaluation.md), ARM64·실물은 미검증
 - [ ] 실물 JetAuto로 실제 공간(복도·실험실) 매핑, 줄자 실측과 비교
