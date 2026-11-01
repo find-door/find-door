@@ -1,4 +1,4 @@
-"""격리된 indoor_v1 시뮬레이션을 반복 실행하고 산출물을 보존한다."""
+"""격리된 실내 world 시뮬레이션을 반복 실행하고 산출물을 보존한다."""
 
 import argparse
 import hashlib
@@ -70,8 +70,9 @@ def wait_until(predicate, children, timeout, label):
 
 
 def main(args=None):
-    parser = argparse.ArgumentParser(description='indoor_v1 시뮬 전용 반복 매핑 평가')
+    parser = argparse.ArgumentParser(description='실내 world 시뮬 전용 반복 매핑 평가')
     parser.add_argument('--output', required=True, type=Path, help='새 출력 폴더 (기존 폴더 거부)')
+    parser.add_argument('--world', choices=('indoor_v1', 'indoor_v2'), default='indoor_v1')
     parser.add_argument('--params-file', type=Path, help='비교 실험용 SLAM YAML (입력 사본을 보존)')
     parser.add_argument('--runs', type=int, default=3)
     parser.add_argument('--speed', type=positive, default=0.35)
@@ -92,14 +93,14 @@ def main(args=None):
     share = Path(get_package_share_directory('mapping_eval'))
     slam_share = Path(get_package_share_directory('mapping_slam'))
     gazebo_share = Path(get_package_share_directory('mapping_gazebo'))
-    route = share / 'config/indoor_v1_route.yaml'
-    truth = share / 'config/indoor_v1_truth.yaml'
+    route = share / f'config/{options.world}_route.yaml'
+    truth = share / f'config/{options.world}_truth.yaml'
     params = (options.params_file.expanduser().resolve() if options.params_file
               else slam_share / 'config/slam.yaml')
     if not params.is_file():
         parser.error('SLAM 파라미터 파일이 없습니다: ' + str(params))
     source_files = {route.name: route, truth.name: truth, 'slam.yaml': params,
-                    'indoor_v1.sdf': gazebo_share / 'worlds/indoor_v1.sdf'}
+                    options.world + '.sdf': gazebo_share / f'worlds/{options.world}.sdf'}
     output = options.output.expanduser().resolve()
     try:
         output.mkdir(parents=True, exist_ok=False)
@@ -211,7 +212,7 @@ def main(args=None):
                     simulation = start(
                         ['ros2', 'launch', 'mapping_gazebo', 'indoor.launch.py',
                          'gui:=false', 'headless_rendering:=true',
-                         'world:=' + str(inputs / 'indoor_v1.sdf')], folder, 'simulation')
+                         'world:=' + str(inputs / (options.world + '.sdf'))], folder, 'simulation')
                     run(['ros2', 'run', 'mapping_eval', 'check_interfaces', '--timeout', '60'],
                         folder, 'sensor_preflight', 70)
                     capture = {'slam_start': mark(folder, 'slam_start'),
@@ -223,7 +224,7 @@ def main(args=None):
                 else:
                     simulation = start(
                         ['ros2', 'launch', 'mapping_slam', 'simulation.launch.py',
-                         'world:=' + str(inputs / 'indoor_v1.sdf'),
+                         'world:=' + str(inputs / (options.world + '.sdf')),
                          'params_file:=' + str(inputs / 'slam.yaml')], folder, 'simulation')
                 run(['ros2', 'run', 'mapping_eval', 'check_interfaces', '--timeout', '60',
                      '--require-map'], folder, 'preflight', 70)

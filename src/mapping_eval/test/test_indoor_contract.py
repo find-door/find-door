@@ -4,12 +4,15 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 import numpy as np
+import pytest
 import yaml
 
+WORLDS = ('indoor_v1', 'indoor_v2')
 
-def inputs():
+
+def inputs(world):
     source = Path(__file__).resolve().parents[2]
-    world = source / 'mapping_gazebo/worlds/indoor_v1.sdf'
+    world = source / f'mapping_gazebo/worlds/{world}.sdf'
     boxes = []
     for collision in ET.parse(world).findall('.//model[@name="walls"]/link/collision'):
         pose = list(map(float, collision.findtext('pose').split()))
@@ -21,9 +24,10 @@ def inputs():
     return boxes, config
 
 
-def test_truth_is_exposed_collision_boundary():
-    boxes, config = inputs()
-    truth = yaml.safe_load((config / 'indoor_v1_truth.yaml').read_text())
+@pytest.mark.parametrize('world', WORLDS)
+def test_truth_is_exposed_collision_boundary(world):
+    boxes, config = inputs(world)
+    truth = yaml.safe_load((config / f'{world}_truth.yaml').read_text())
     assert truth['frame'] == 'world'
     for segment in truth['segments']:
         a, b = np.array(segment[:2]), np.array(segment[2:])
@@ -38,9 +42,10 @@ def test_truth_is_exposed_collision_boundary():
             assert on_boundary, point
 
 
-def test_route_has_body_clearance_and_returns_to_spawn():
-    boxes, config = inputs()
-    route = yaml.safe_load((config / 'indoor_v1_route.yaml').read_text())
+@pytest.mark.parametrize('world', WORLDS)
+def test_route_has_body_clearance_and_returns_to_spawn(world):
+    boxes, config = inputs(world)
+    route = yaml.safe_load((config / f'{world}_route.yaml').read_text())
     points = np.array(route['waypoints'])
     assert route['frame'] == 'odom'
     np.testing.assert_allclose(points[0], [1.0, 1.0])

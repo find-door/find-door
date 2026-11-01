@@ -42,6 +42,8 @@
 - [x] 새 기록(v2) 급변 원인 확정 — 스캔 무게중심 기반 루프 후보가 벽 너머 방을 연결 ([원인 분석](loop-closure-investigation.md#2026-10-26-원인-분석-스캔-무게중심-기반-루프-후보-선택))
 - [ ] 과거 예비 실패(3.566 m)와 같은 원인인지 확인 — 초기 scan 미기록으로 🔍
 - [x] `use_scan_barycenter: false` 기본값 채택 — 온라인 5회 통과 ([ADR-0004](adr/0004-prehardware-slam-baseline.md#2026-10-27-루프-후보-기준-변경))
+- [x] 구조가 다른 `indoor_v2`에서 재검증 — [현재 기본값 5회 모두 실패](loop-closure-investigation.md#2026-10-31-indoor_v2-재검증)
+- [ ] `indoor_v2` 지도 실패 원인 확인과 대응 🔍
 - [x] 실물 배포용 런타임·프로파일·센서 점검·기록/격리 재생·자원 기록 준비 — [검증](robot-readiness-evaluation.md), ARM64·실물은 미검증
 - [ ] 실물 JetAuto로 실제 공간(복도·실험실) 매핑, 줄자 실측과 비교
 - [ ] 루프 클로저 전·후 비교 (루프 클로저가 없는 후보는 N/A)

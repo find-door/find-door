@@ -153,6 +153,11 @@ OFF는 6.63cm·급변 후보 0개입니다. 실효 파라미터는 `do_loop_clos
 
 [상세 수치·진단·Gazebo 캡처·지도 그림·재현 명령·원자료 위치](slam-startup-capture.md).
 
+## 반복 구조 world 재검증 — 2026-10-31
+
+`indoor_v2`에서 현재 기본값 5회 모두 품질 기준을 통과하지 못했습니다(벽 P95 291.5–300.5 cm).
+조건별 결과와 한계는 [루프 클로저 조사](loop-closure-investigation.md#2026-10-31-indoor_v2-재검증)에 기록합니다.
+
 ## 실물 배포 준비 — 2026-10-25
 
 기준 dev `ab06e3c`, `feat/robot-deployment-readiness`의 변경으로 실물 전용 mapping_robot을 추가했습니다. Gazebo 없는 두 패키지 빌드, 시스템 시각 합성 센서 preflight·SLAM/선택 검출·지도/객체 저장·bag 기록/격리 재생을 실제 ROS에서 확인했습니다. 깊이 단위·BGR·동기화 경계와 실패 입력을 검사했고 실제 하드웨어 검증과 구분했습니다. 순수 테스트 445개·colcon 410개 검사 오류·실패 0. 같은 실패 bag ON/OFF 각 3회에서 ON만 품질 실패, OFF는 P95 6.63cm입니다.

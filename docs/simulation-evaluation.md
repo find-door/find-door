@@ -26,6 +26,8 @@ ros2 run mapping_eval run_benchmark \
 외부 모델의 holonomic VelocityControl을 사용해 yaw 0을 유지하며 body XY 속도를
 보냅니다. 실제 휠 구동·미끄러짐·실물 제어기를 검증하는 경로가 아닙니다.
 
+기본 world는 `indoor_v1`이며, `--world indoor_v2`로 [반복 구조 world](loop-closure-investigation.md#2026-10-31-indoor_v2-재검증)를 평가합니다. 임시 품질 기준은 같습니다.
+
 `config/indoor_v1_route.yaml`의 12개 waypoint로 복도→왼쪽 방→오른쪽 방→복도를
 순환합니다. 도착 허용 오차는 0.08 m입니다. scan 최소 유효 거리가 0.25 m 미만이거나
 센서·clock이 정지하면 실패 처리하고 zero 명령을 보냅니다. 마지막 지점에서 2초
