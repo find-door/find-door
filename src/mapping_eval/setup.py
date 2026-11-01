@@ -27,6 +27,7 @@ setup(
             'drive_route = mapping_eval.drive_route:main',
             'analyze_trajectory = mapping_eval.trajectory_metrics:main',
             'analyze_graph = mapping_eval.graph_motion:main',
+            'analyze_loops = mapping_eval.loop_events:main',
             'run_semantic_benchmark = mapping_eval.run_semantic_benchmark:main',
             'replay_benchmark = mapping_eval.replay_benchmark:main',
             'capture_diagnostics = mapping_eval.diagnostics_node:main',

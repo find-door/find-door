@@ -77,7 +77,8 @@ prometheus-mapping/
     ├── mapping_slam/      # SLAM 기준선 설정·단독/통합 launch
     ├── mapping_semantic/  # 색상 표적·NanoDet 2D 검출, RGB-D 투영·객체 지도
     ├── mapping_eval/      # 입력 검사·자동 시뮬 주행·지도 기하 평가
-    └── mapping_robot/     # 실물 프로파일·읽기 전용 센서 점검·SLAM/선택 검출
+    ├── mapping_robot/     # 실물 프로파일·읽기 전용 센서 점검·SLAM/선택 검출
+    └── mapping_slam_debug/ # 시뮬 분석용 루프 수락 기록 솔버 플러그인
 ```
 
 ## 빠른 시작

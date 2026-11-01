@@ -59,6 +59,7 @@ flowchart LR
 품질은 구분합니다. [진단 인터페이스와 재생 QoS](slam-startup-capture.md)를 참고합니다.
 `mapping_semantic`은 색상 표적 또는 외부 Detection2DArray와 RGB-D를 관측 시각 TF로 투영하고 정적 객체를 관리합니다. NanoDet CPU 검출 노드를 별도로 제공합니다. 실물 정확도·Jetson 성능은 미검증입니다.
 `mapping_robot`은 실물 프로파일·읽기 전용 센서 preflight·SLAM/선택 검출 실행을 맡습니다.
+`mapping_slam_debug`는 시뮬레이션 분석 때만 켜는 루프 수락 기록 솔버 플러그인입니다.
 Gazebo·`wf_gazebo`를 의존하지 않으며 드라이버·오도메트리·장착 TF·구동 제어는 외부에서 제공합니다.
 [배포·첫 시험 절차](robot-deployment.md)로 실물 인수를 준비합니다.
 

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>mapping_slam_debug</name>
+  <version>0.1.0</version>
+  <description>Solver wrapper that records accepted slam_toolbox loop closures for simulation analysis</description>
+  <maintainer email="prophet000228@gmail.com">정원준</maintainer>
+  <license>TBD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>slam_toolbox</depend>
+  <depend>pluginlib</depend>
+  <depend>rclcpp</depend>
+
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

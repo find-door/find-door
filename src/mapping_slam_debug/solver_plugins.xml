@@ -1,0 +1,8 @@
+<library path="logging_solver">
+  <class
+    name="mapping_slam_debug::LoggingSolver"
+    type="mapping_slam_debug::LoggingSolver"
+    base_class_type="karto::ScanSolver">
+    <description>Ceres 솔버에 위임하면서 수락된 루프 클로저를 JSONL로 기록한다</description>
+  </class>
+</library>
