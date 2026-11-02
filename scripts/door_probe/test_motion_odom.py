@@ -2,7 +2,8 @@
 
 from types import SimpleNamespace as N
 import pytest
-from live_check import motion_odom
+from live_check import angle_delta, motion_odom, motion_yaw, rotation_observation
+import math
 
 
 def odom():
@@ -26,3 +27,49 @@ def test_rejects(kind):
     else: message.pose.pose.orientation.w = 0.
     with pytest.raises(ValueError):
         motion_odom(message, now)
+
+
+@pytest.mark.parametrize('yaw', [-math.pi, -2.9, -.25, 0., .25, 2.9, math.pi])
+def test_yaw(yaw):
+    message = odom()
+    message.pose.pose.orientation.z = math.sin(yaw/2)
+    message.pose.pose.orientation.w = math.cos(yaw/2)
+    assert angle_delta(motion_yaw(message, 1_100_000_000), yaw) == pytest.approx(0.)
+
+
+def test_yaw_wrap():
+    assert angle_delta(-math.pi+.1, math.pi-.1) == pytest.approx(.2)
+    assert angle_delta(math.pi-.1, -math.pi+.1) == pytest.approx(-.2)
+
+
+def test_yaw_normalizes_quaternion():
+    message = odom()
+    message.pose.pose.orientation.z = math.sin(.25/2)*1.005
+    message.pose.pose.orientation.w = math.cos(.25/2)*1.005
+    assert motion_yaw(message, 1_100_000_000) == pytest.approx(.25)
+
+
+def test_yaw_rejects_stale():
+    with pytest.raises(ValueError):
+        motion_yaw(odom(), 2_000_000_000)
+
+
+@pytest.mark.parametrize('state', ['closed', 'unknown'])
+def test_rotation_allows_expected_or_unknown(state):
+    initial = dict(id='door_1', position=[0., 0., 0.], state='closed')
+    observed = dict(initial, state=state)
+    assert rotation_observation(dict(objects=[observed]), initial, 'closed') == observed
+
+
+@pytest.mark.parametrize('kind', ['wrong_state', 'id', 'anchor', 'missing', 'duplicate'])
+def test_rotation_rejects_wrong_known_and_identity(kind):
+    initial = dict(id='door_1', position=[0., 0., 0.], state='closed')
+    observed = dict(initial)
+    snapshot = dict(objects=[observed])
+    if kind == 'wrong_state': observed['state'] = 'open'
+    elif kind == 'id': observed['id'] = 'door_2'
+    elif kind == 'anchor': observed['position'] = [1., 0., 0.]
+    elif kind == 'missing': snapshot['objects'] = []
+    else: snapshot['objects'].append(dict(observed))
+    with pytest.raises(RuntimeError):
+        rotation_observation(snapshot, initial, 'closed')

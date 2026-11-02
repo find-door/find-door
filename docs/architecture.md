@@ -8,7 +8,8 @@ RGB-D·문 검출에서 [출입구·문턱 위치를 추정하는 후보](doorwa
 동기화 RGB-D·Detection2D 입력에서 관측 시각 TF·문 메모리·JSON/마커·저장 서비스를 연결한
 [문 ROS 노드](door-ros.md)를 구현했습니다([ADR-0009](adr/0009-door-ros-pipeline.md)).
 [상주 YOLOE 발행 어댑터와 실제 LiDAR SLAM 동시 실행](door-live.md)을 단일 문·정지 관측에서 확인했습니다
-([ADR-0010](adr/0010-live-door-detector.md)). 주행·독립 장면·실물 검증은 아직 미완료입니다.
+([ADR-0010](adr/0010-live-door-detector.md)). [짧은 직선 주행](door-motion.md)과
+[작은 회전](door-rotation.md)도 확인했으며 장거리·독립 장면·실물 검증은 아직 미완료입니다.
 기존 `mapping_semantic`의 표면 대표점과 정적 객체 JSON을 문 상태 지도 구현으로 간주하지 않습니다.
 
 > ⚠️ 초안. `🔍 미정` 항목은 [ADR](adr/)로 결정한 뒤 이 문서를 갱신합니다.

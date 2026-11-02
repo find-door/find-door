@@ -14,9 +14,9 @@
   - 깊이 단일 관측 후보와 [정답 ROI 개발 진단](door-state-evaluation.md), [시간 종합 메모리](door-memory.md) 구현. [실시간 검출·ROS 연결](door-live.md)과 [상태 전이](door-transition.md)까지 개발 검증. 독립 장면·실물 검증은 미완료.
 - [ ] 고정 문 위치·ID와 상태를 연결한 지도 저장·표시
   - [출입구·문턱 위치 추정 후보](doorway-evaluation.md)의 오프라인 연결 완료.
-  - [ROS 노드·마커·저장 서비스](door-ros.md) 기록 재생 및 [실시간 검출·LiDAR SLAM 동시 실행](door-live.md) 정지 관측 검증. 짧은 직선 주행은 아래 기록을 따르며 회전·장거리는 미검증.
+  - [ROS 노드·마커·저장 서비스](door-ros.md) 기록 재생 및 [실시간 검출·LiDAR SLAM 동시 실행](door-live.md) 정지 관측 검증. 짧은 직선·작은 회전은 아래 기록을 따르며 큰 회전·장거리는 미검증.
   - [실행 중 문 각도 변경](door-transition.md)의 동일 ID·위치 유지·unknown 경유 상태 전환 검증. 연속 경첩 회전·실물은 미검증.
-  - [짧은 직선 후진·복귀](door-motion.md)의 주행 관측 검증. 회전·장거리·실물은 미검증.
+  - [짧은 직선 후진·복귀](door-motion.md)와 [작은 제자리 회전·복귀](door-rotation.md)의 관측 검증. 큰 회전·장거리·실물은 미검증.
 - [ ] 실제 촬영 영상 평가를 Gazebo 결과와 분리하고 과목 데모·보고서 준비
 
 단계별로 쌓아가며, 각 단계가 끝날 때마다 동작 영상과 수치 결과를 남깁니다.

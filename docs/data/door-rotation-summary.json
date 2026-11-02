@@ -1,0 +1,286 @@
+{
+  "stage": "v0.2.0-door-rotation.1",
+  "date": "2026-11-03",
+  "criteria": {
+    "command_radps": [
+      0.1,
+      -0.1
+    ],
+    "duration_sim_sec": 2.5,
+    "yaw_tolerance_rad": 0.04,
+    "xy_tolerance_m": 0.1,
+    "wrong_known_state": "fail",
+    "unknown_state": "record_and_require_fresh_expected_after_stop"
+  },
+  "runs": [
+    {
+      "state": "closed",
+      "path": "experiments/door_probe/live-rotate-closed-02/check.json",
+      "sha256": "4bc217b4e8869391bb26086aefb92b62e6a3c0dbdd10464e8bb7eed58721ca50",
+      "status": "complete",
+      "worker_group_gone": true,
+      "stages": [
+        {
+          "name": "turn_left",
+          "travel_yaw_rad": 0.2556000006899969,
+          "travel_yaw_deg": 14.64480128307775,
+          "polling_states": {
+            "moving": {
+              "closed": 24
+            },
+            "settling": {
+              "closed": 3
+            }
+          },
+          "stop_boundary_sim_ns": 6653000000,
+          "confirmation_last_stamp_ns": 6667000000,
+          "rgb": "turn_left-rgb.png",
+          "rgb_stamp_ns": 6864000000,
+          "rgb_sha256": "4f3b973565db7beccbb0e73b6383b80ee2b8c3937004b6a6ae6e4d557ab56a0e"
+        },
+        {
+          "name": "return",
+          "travel_yaw_rad": -0.2603000005257413,
+          "travel_yaw_deg": -14.914091437378087,
+          "polling_states": {
+            "moving": {
+              "closed": 24
+            },
+            "settling": {
+              "closed": 5
+            }
+          },
+          "stop_boundary_sim_ns": 9880000000,
+          "confirmation_last_stamp_ns": 10032000000,
+          "rgb": "return-rgb.png",
+          "rgb_stamp_ns": 10297000000,
+          "rgb_sha256": "5c2d4e65db905484878a84cdc892f9e5d0ece4dc0fd5c351a92805360c38553d"
+        }
+      ],
+      "id": "door_000001",
+      "anchor_position": [
+        -0.050000010211790125,
+        3.738385194154735e-08,
+        0.00272563450439281
+      ],
+      "return_yaw_error_rad": 0.004699999835744431,
+      "return_yaw_error_deg": 0.26929015430033604,
+      "return_xy_error_m": 6.798480489195185e-07,
+      "map_publishers": [
+        "slam_toolbox"
+      ],
+      "clock_publishers": 1,
+      "scan_count": 53,
+      "harness_sha256": "2e70e9056efcc85a9d5cdd6bb2c3ef74873fbc8d12a159841294c59e311cab6c",
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+      },
+      "detector_metadata": {
+        "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+        "release_policy_override": "keep",
+        "cache_override": "/tmp/find-door-live-go8bnhsi/ultralytics-config",
+        "last_run": {
+          "device": "0",
+          "release_policy": "keep",
+          "settings": {
+            "version": "0.1.0",
+            "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+            "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+            "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+            "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+            "device": "0",
+            "imgsz": 640,
+            "max_det": 300,
+            "iou": 0.45,
+            "agnostic_nms": false,
+            "release_policy": "keep",
+            "include_mask_area": false,
+            "classes": [
+              {
+                "prompt": "door",
+                "class": "door",
+                "report_class": "door",
+                "candidate_for": null,
+                "confidence": 0.1
+              },
+              {
+                "prompt": "person",
+                "class": "person",
+                "report_class": "person",
+                "candidate_for": null,
+                "confidence": 0.25
+              }
+            ]
+          },
+          "success": true,
+          "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+          "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+          "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+          "cuda_allocated_before_predict": 54404096,
+          "ultralytics": "8.4.191",
+          "input_size": [
+            640,
+            480
+          ],
+          "model_end2end_before_predict": false,
+          "backend_end2end": false,
+          "candidate_limit_reached": false,
+          "cuda_peak_allocated_predict": 84042752,
+          "release_completed": true,
+          "cuda_allocated_after_cleanup": 54404096,
+          "processing_time_seconds": 0.1342689500306733
+        }
+      },
+      "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml",
+      "world_sha256": "6c3eca3eae72fe1d39f9f253cd372f075bd4c7eef64d3672d39137c940c58cd6"
+    },
+    {
+      "state": "open",
+      "path": "experiments/door_probe/live-rotate-open-02/check.json",
+      "sha256": "418d72bd30be45f2ec02e021126e43c75cfc492b32281f6d5231043262209498",
+      "status": "complete",
+      "worker_group_gone": true,
+      "stages": [
+        {
+          "name": "turn_left",
+          "travel_yaw_rad": 0.25000000068227163,
+          "travel_yaw_deg": 14.323944917361866,
+          "polling_states": {
+            "moving": {
+              "open": 23
+            },
+            "settling": {
+              "open": 4
+            }
+          },
+          "stop_boundary_sim_ns": 6838000000,
+          "confirmation_last_stamp_ns": 6864000000,
+          "rgb": "turn_left-rgb.png",
+          "rgb_stamp_ns": 7129000000,
+          "rgb_sha256": "b5435f193a07611a5b49ed2ccbe245d991f7486e28fff0f2cbf6d8f443942a7a"
+        },
+        {
+          "name": "return",
+          "travel_yaw_rad": -0.25070000013900245,
+          "travel_yaw_deg": -14.364051931893993,
+          "polling_states": {
+            "moving": {
+              "open": 23
+            },
+            "settling": {
+              "open": 6
+            }
+          },
+          "stop_boundary_sim_ns": 10014000000,
+          "confirmation_last_stamp_ns": 10165000000,
+          "rgb": "return-rgb.png",
+          "rgb_stamp_ns": 10561000000,
+          "rgb_sha256": "5eb2ab1b3e6afca1519bb83e73a20721b84b2cbae9ab4dc18cafc48e050fd2d2"
+        }
+      ],
+      "id": "door_000001",
+      "anchor_position": [
+        -0.050000010211790125,
+        3.73838519415338e-08,
+        0.00272563450439281
+      ],
+      "return_yaw_error_rad": 0.000699999456730782,
+      "return_yaw_error_deg": 0.04010701453212429,
+      "return_xy_error_m": 6.599205501816936e-07,
+      "map_publishers": [
+        "slam_toolbox"
+      ],
+      "clock_publishers": 1,
+      "scan_count": 54,
+      "harness_sha256": "2e70e9056efcc85a9d5cdd6bb2c3ef74873fbc8d12a159841294c59e311cab6c",
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+      },
+      "detector_metadata": {
+        "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+        "release_policy_override": "keep",
+        "cache_override": "/tmp/find-door-live-wxvre_wu/ultralytics-config",
+        "last_run": {
+          "device": "0",
+          "release_policy": "keep",
+          "settings": {
+            "version": "0.1.0",
+            "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+            "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+            "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+            "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+            "device": "0",
+            "imgsz": 640,
+            "max_det": 300,
+            "iou": 0.45,
+            "agnostic_nms": false,
+            "release_policy": "keep",
+            "include_mask_area": false,
+            "classes": [
+              {
+                "prompt": "door",
+                "class": "door",
+                "report_class": "door",
+                "candidate_for": null,
+                "confidence": 0.1
+              },
+              {
+                "prompt": "person",
+                "class": "person",
+                "report_class": "person",
+                "candidate_for": null,
+                "confidence": 0.25
+              }
+            ]
+          },
+          "success": true,
+          "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+          "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+          "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+          "cuda_allocated_before_predict": 54404096,
+          "ultralytics": "8.4.191",
+          "input_size": [
+            640,
+            480
+          ],
+          "model_end2end_before_predict": false,
+          "backend_end2end": false,
+          "candidate_limit_reached": false,
+          "cuda_peak_allocated_predict": 84042752,
+          "release_completed": true,
+          "cuda_allocated_after_cleanup": 54404096,
+          "processing_time_seconds": 0.16143571201246232
+        }
+      },
+      "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml",
+      "world_sha256": "1e3149d6b9f4a409f5556255e828daef94533efcce57d64e986aecc88dff4294"
+    }
+  ],
+  "tests": {
+    "offline_passed": 690,
+    "ros_specific_skipped": 2,
+    "odom_rotation_tests": 24
+  },
+  "limitations": [
+    "단일 문·2m 정면 시작의 작은 제자리 회전 개발 진단",
+    "Gazebo pose odom이며 실물·휠 슬립·SLAM 정확도 검증이 아님",
+    "polling 샘플 수는 센서 프레임 수와 다름"
+  ],
+  "figure": {
+    "path": "docs/images/door-rotation.png",
+    "sha256": "097b44040e3491de0af2fd57eb6ba1a47c58d89c8c654b87cdb33b677248c928",
+    "source_sha256": "fb7f2b59c6fa422d88d8fe5431fd29c062a8d8b71f7178b6f3ae411d51135d6c"
+  }
+}
