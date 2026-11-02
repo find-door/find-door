@@ -31,6 +31,32 @@ def motion_odom(message, now_ns):
     return p.x, p.y
 
 
+def angle_delta(angle, reference):
+    """±π 경계를 넘는 두 yaw의 부호 있는 최소 차이."""
+    return math.atan2(math.sin(angle-reference), math.cos(angle-reference))
+
+
+def motion_yaw(message, now_ns):
+    """검증된 odom quaternion에서 정규화된 yaw를 구한다."""
+    motion_odom(message, now_ns)
+    q = message.pose.pose.orientation
+    norm_sq = q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w
+    return math.atan2(2*(q.w*q.z+q.x*q.y), norm_sq-2*(q.y*q.y+q.z*q.z))
+
+
+def rotation_observation(snapshot, initial, expected_state):
+    """Polling한 지도에서 ID·anchor·반대 known 상태를 검사한다."""
+    objects = snapshot['objects']
+    if len(objects) != 1 or objects[0]['id'] != initial['id']:
+        raise RuntimeError('회전 중 문 ID 손실·중복')
+    observed = objects[0]
+    if observed['position'] != initial['position']:
+        raise RuntimeError('회전 중 문 anchor 변경')
+    if observed['state'] not in (expected_state, 'unknown'):
+        raise RuntimeError('회전 중 반대 known 문 상태 출력')
+    return observed
+
+
 def main():
     import rclpy
     from rclpy.node import Node
@@ -50,6 +76,7 @@ def main():
     parser.add_argument('--timeout', type=float, default=120.)
     parser.add_argument('--transition', action='store_true', help='닫힘 시작 후 같은 문을 열고 닫는 실제 센서 전이 검사')
     parser.add_argument('--motion', action='store_true', help='격리된 Gazebo 로봇을 후진·복귀시키는 관측 검사')
+    parser.add_argument('--rotate', action='store_true', help='격리된 Gazebo 로봇의 제자리 회전·복귀 관측 검사')
     args = parser.parse_args()
     if (os.environ.get('ROS_DOMAIN_ID'), os.environ.get('GZ_PARTITION')) != ('12', 'codex'):
         parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 필요')
@@ -57,8 +84,8 @@ def main():
         parser.error('새 출력 경로와 양수 timeout이 필요합니다')
     if args.transition and args.state != 'closed':
         parser.error('전이 검사는 --state closed로 시작합니다')
-    if args.motion and args.transition:
-        parser.error('--motion과 --transition은 별도 실행으로 검사합니다')
+    if sum([args.motion, args.transition, args.rotate]) > 1:
+        parser.error('--motion, --transition, --rotate는 별도 실행으로 검사합니다')
     args.output = args.output.resolve()
     args.output.mkdir(parents=True)
     root = Path(__file__).resolve().parents[2]
@@ -68,9 +95,9 @@ def main():
     data = {'maps': [], 'doors': [], 'detector': [], 'scan_count': 0}
     image = [None]
     odom = [None]
-    command_pub = node.create_publisher(Twist, '/cmd_vel', 10) if args.motion else None
+    command_pub = node.create_publisher(Twist, '/cmd_vel', 10) if args.motion or args.rotate else None
     motion_control_started = False
-    if args.motion:
+    if args.motion or args.rotate:
         node.create_subscription(Odometry, '/odom', lambda m: odom.__setitem__(0, m), qos_profile_sensor_data)
     transient = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
     node.create_subscription(OccupancyGrid, '/map', lambda m: data['maps'].append(m), transient)
@@ -175,6 +202,71 @@ def main():
             report['return_error_m'] = abs(motion_odom(odom[0], data['doors'][-1]['stamp_ns'])[0]-origin_x)
             if report['return_error_m'] > .1:
                 raise RuntimeError('초기 위치 복귀 오차 초과')
+        if args.rotate:
+            initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == args.state)
+            now_ns = data['doors'][-1]['stamp_ns']
+            origin_x, origin_y = motion_odom(odom[0], now_ns)
+            origin_yaw = motion_yaw(odom[0], now_ns)
+            report.update(mode='live_gazebo_yoloe_lidar_slam_rotate', rotation=[],
+                          limitations=['단일 문 모델·2m 정면 시작·제자리 약 14도 회전과 복귀',
+                                       'Gazebo pose odom, 휠 오차·독립 장소·실물 시험 아님'])
+            for label, velocity in [('turn_left', .1), ('return', -.1)]:
+                begin_ns = data['doors'][-1]['stamp_ns']
+                begin_yaw = motion_yaw(odom[0], begin_ns)
+                stage = dict(name=label, command_radps=velocity, duration_sim_sec=2.5,
+                             begin_sim_ns=begin_ns, begin_odom_yaw=begin_yaw, history=[])
+                report['rotation'].append(stage)
+                deadline = time.monotonic() + 30
+                while (data['doors'][-1]['stamp_ns']-begin_ns)/1e9 < 2.5:
+                    if time.monotonic() > deadline:
+                        raise TimeoutError('회전 중 시뮬레이션 시각 정체')
+                    message = Twist()
+                    message.angular.z = velocity
+                    motion_control_started = True
+                    command_pub.publish(message)
+                    pump(.1)
+                    current = data['doors'][-1]
+                    px, py = motion_odom(odom[0], current['stamp_ns'])
+                    yaw = motion_yaw(odom[0], current['stamp_ns'])
+                    stage['history'].append(dict(map=current, odom_xy=[px, py], odom_yaw=yaw))
+                    rotation_observation(current, initial, args.state)
+                    if math.hypot(px-origin_x, py-origin_y) > .1:
+                        raise RuntimeError('제자리 회전 중 위치 이탈')
+                command_pub.publish(Twist())
+                pump(.4)
+                stage['stop_boundary_sim_ns'] = data['doors'][-1]['stamp_ns']
+                stage['end_odom_yaw'] = motion_yaw(odom[0], stage['stop_boundary_sim_ns'])
+                stage['travel_yaw_rad'] = angle_delta(stage['end_odom_yaw'], begin_yaw)
+                if abs(stage['travel_yaw_rad']-velocity*2.5) > .04:
+                    raise RuntimeError('실제 odom 회전량이 목표 허용 범위 밖입니다')
+                # 정지 후 얻은 새 관측만 회전 구간의 성공 근거로 인정한다.
+                stage['settle_history'] = []
+                settle = time.monotonic() + 10
+                while time.monotonic() < settle:
+                    current = data['doors'][-1]
+                    stage['settle_history'].append(current)
+                    rotation_observation(current, initial, args.state)
+                    if (len(current['objects']) == 1 and current['objects'][0]['id'] == initial['id']
+                            and current['objects'][0]['position'] == initial['position']
+                            and current['objects'][0]['state'] == args.state
+                            and current['objects'][0]['last_stamp_ns'] > stage['stop_boundary_sim_ns']):
+                        stage['final'] = current
+                        break
+                    pump(.1)
+                else:
+                    raise TimeoutError('회전 정지 후 새 관측의 문 상태 확인 실패')
+                if image[0] is not None:
+                    path = args.output / f'{label}-rgb.png'
+                    PILImage.fromarray(bridge.imgmsg_to_cv2(image[0], desired_encoding='rgb8')).save(path)
+                    stage['rgb'] = path.name
+                    stage['rgb_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+                    stage['rgb_stamp_ns'] = image[0].header.stamp.sec*1_000_000_000+image[0].header.stamp.nanosec
+            now_ns = data['doors'][-1]['stamp_ns']
+            report['return_yaw_error_rad'] = abs(angle_delta(motion_yaw(odom[0], now_ns), origin_yaw))
+            px, py = motion_odom(odom[0], now_ns)
+            report['return_xy_error_m'] = math.hypot(px-origin_x, py-origin_y)
+            if report['return_yaw_error_rad'] > .04 or report['return_xy_error_m'] > .1:
+                raise RuntimeError('초기 방향·위치 복귀 오차 초과')
         if args.transition:
             initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == 'closed')
             if image[0] is not None:
