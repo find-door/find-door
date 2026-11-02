@@ -1,5 +1,21 @@
 # mapping_gazebo
 
+## 문 검출 전용 실험 world
+
+`door_probe_closed.sdf`, `door_probe_half.sdf`, `door_probe_open.sdf`는 실제 문짝을
+경첩 기준 0°/45°/90°에 고정 배치한 별도 실험 환경입니다.
+`door_probe_negative.sdf`는 문 없는 평벽 대조군입니다.
+기존 indoor·semantic world는 문짝 없는 개구부이며 그대로 보존합니다.
+
+생성기는 `scripts/door_probe/generate_worlds.py`입니다. 문 개구부는 x=0,
+y=−0.5..0.5, z=0..2m이고 문짝은 +x 방 안으로 열립니다.
+문틀 앞면 x=−0.105, 뒷벽 앞면 x=3.95m입니다. world 이름은 모두
+`door_probe_v1`이므로 한 번에 하나만 실행합니다. 로봇·센서는 기존 외부 오버레이를 사용합니다.
+
+2026-11-02: 네 SDF 구문 검사와 생성기 테스트 13개, 패키지 빌드·테스트를 통과했습니다.
+닫힌 문 2m 정면에서는 headless Gazebo RGB-D 3쌍을 수집했습니다.
+카메라가 낮아 문 상단이 잘리며, 실제 문 인식 성능 검증 결과가 아닙니다.
+
 매핑용 실내 Gazebo Harmonic world와 launch입니다. 로봇 모델·센서·브리지는 연구과제 `wf_gazebo`를 **오버레이로** 사용합니다 ([ADR-0003](../../docs/adr/0003-wf-gazebo-reuse.md)). 이 저장소에는 `wf_gazebo` 파일을 복사하지 않습니다.
 
 ## 빌드
