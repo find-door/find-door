@@ -1,0 +1,231 @@
+{
+  "date": "2026-11-03",
+  "cases": [
+    {
+      "state": "closed",
+      "mode": "live_gazebo_yoloe_lidar_slam_motion",
+      "limitations": [
+        "단일 문 모델·정면 후진과 복귀",
+        "Gazebo pose odom, 휠 오차·실물·독립 장소 시험 아님"
+      ],
+      "return_error_m": 0.004799999863064119,
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+      },
+      "harness_sha256": "9ceacd9176a0a9e8166a2924d02a8a7d6694b81c57310944313842b0f81b62e0",
+      "worker_group_gone": true,
+      "map_publishers": [
+        "slam_toolbox"
+      ],
+      "scan_count": 78,
+      "map_updates": 16,
+      "raw_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/live-motion-closed-02/check.json",
+      "raw_sha256": "843f03e72b0300cd8e17dcfa739fd2363fb5c16da30cf1b0b6938822fd49937f",
+      "stages": [
+        {
+          "name": "retreat",
+          "command_mps": -0.1,
+          "duration_sim_sec": 5.0,
+          "begin_sim_ns": 3777000000,
+          "begin_odom_x": -2.0823729995393188,
+          "stop_boundary_sim_ns": 9266000000,
+          "end_odom_x": -2.592372999403449,
+          "travel_x_m": -0.5099999998641302,
+          "final": {
+            "map_id": "live-door-probe-closed-live-motion-closed-02",
+            "frame": "map",
+            "stamp_ns": 9511000000,
+            "observation_stamp_ns": 9307000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.050000010211790125,
+                  3.738385194152025e-08,
+                  0.00272563450439281
+                ],
+                "state": "closed",
+                "last_stamp_ns": 9307000000,
+                "observations": 39
+              }
+            ],
+            "counters": {
+              "received_rgb": 40,
+              "received_depth": 40,
+              "received_camera_info": 40,
+              "received_detections": 40,
+              "synchronized": 40,
+              "no_detection": 1,
+              "processed": 39
+            },
+            "last_error": ""
+          },
+          "samples": 49,
+          "unknown_samples": 0
+        },
+        {
+          "name": "return",
+          "command_mps": 0.1,
+          "duration_sim_sec": 5.0,
+          "begin_sim_ns": 9511000000,
+          "begin_odom_x": -2.592372999403449,
+          "stop_boundary_sim_ns": 15010000000,
+          "end_odom_x": -2.087172999402383,
+          "travel_x_m": 0.5052000000010661,
+          "final": {
+            "map_id": "live-door-probe-closed-live-motion-closed-02",
+            "frame": "map",
+            "stamp_ns": 15301000000,
+            "observation_stamp_ns": 15048000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.050000010211790125,
+                  3.738385194152025e-08,
+                  0.00272563450439281
+                ],
+                "state": "closed",
+                "last_stamp_ns": 15048000000,
+                "observations": 71
+              }
+            ],
+            "counters": {
+              "received_rgb": 72,
+              "received_depth": 72,
+              "received_camera_info": 72,
+              "received_detections": 72,
+              "synchronized": 72,
+              "no_detection": 1,
+              "processed": 71
+            },
+            "last_error": ""
+          },
+          "samples": 48,
+          "unknown_samples": 0
+        }
+      ]
+    },
+    {
+      "state": "open",
+      "mode": "live_gazebo_yoloe_lidar_slam_motion",
+      "limitations": [
+        "단일 문 모델·정면 후진과 복귀",
+        "Gazebo pose odom, 휠 오차·실물·독립 장소 시험 아님"
+      ],
+      "return_error_m": 0.00019999986305441197,
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+      },
+      "harness_sha256": "9ceacd9176a0a9e8166a2924d02a8a7d6694b81c57310944313842b0f81b62e0",
+      "worker_group_gone": true,
+      "map_publishers": [
+        "slam_toolbox"
+      ],
+      "scan_count": 79,
+      "map_updates": 16,
+      "raw_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/live-motion-open-02/check.json",
+      "raw_sha256": "374bd83da5651dffc4a931af80a8e19f0fe41a12da06c1595e82d7ae63ef1884",
+      "stages": [
+        {
+          "name": "retreat",
+          "command_mps": -0.1,
+          "duration_sim_sec": 5.0,
+          "begin_sim_ns": 3902000000,
+          "begin_odom_x": -2.0823729995393188,
+          "stop_boundary_sim_ns": 9355000000,
+          "end_odom_x": -2.5874729994034387,
+          "travel_x_m": -0.5050999998641199,
+          "final": {
+            "map_id": "live-door-probe-open-live-motion-open-02",
+            "frame": "map",
+            "stamp_ns": 9649000000,
+            "observation_stamp_ns": 9373000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.050000010211790125,
+                  3.73838519415338e-08,
+                  0.00272563450439281
+                ],
+                "state": "open",
+                "last_stamp_ns": 9373000000,
+                "observations": 38
+              }
+            ],
+            "counters": {
+              "received_rgb": 39,
+              "received_depth": 39,
+              "received_camera_info": 39,
+              "received_detections": 39,
+              "synchronized": 39,
+              "no_detection": 1,
+              "processed": 38
+            },
+            "last_error": ""
+          },
+          "samples": 47,
+          "unknown_samples": 0
+        },
+        {
+          "name": "return",
+          "command_mps": 0.1,
+          "duration_sim_sec": 5.0,
+          "begin_sim_ns": 9649000000,
+          "begin_odom_x": -2.5874729994034387,
+          "stop_boundary_sim_ns": 15115000000,
+          "end_odom_x": -2.082572999402373,
+          "travel_x_m": 0.5049000000010655,
+          "final": {
+            "map_id": "live-door-probe-open-live-motion-open-02",
+            "frame": "map",
+            "stamp_ns": 15606000000,
+            "observation_stamp_ns": 15313000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.050000010211790125,
+                  3.73838519415338e-08,
+                  0.00272563450439281
+                ],
+                "state": "open",
+                "last_stamp_ns": 15313000000,
+                "observations": 75
+              }
+            ],
+            "counters": {
+              "received_rgb": 76,
+              "received_depth": 76,
+              "received_camera_info": 76,
+              "received_detections": 76,
+              "synchronized": 76,
+              "no_detection": 1,
+              "processed": 75
+            },
+            "last_error": ""
+          },
+          "samples": 48,
+          "unknown_samples": 0
+        }
+      ]
+    }
+  ]
+}
