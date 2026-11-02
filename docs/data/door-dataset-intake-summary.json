@@ -1,0 +1,23 @@
+{
+  "total_frames": 86,
+  "omitted_duplicate_rgb": 72,
+  "validator_sha256": "8d3e1fb0457e4c9d1ca14fea963351837dbfde213d706432c634e156ce3234c4",
+  "intake_sha256": "b7095bab3047d9cc0c9a8ba4f57b70ffcabf12c8370cf34d5a87ef27f1d2e52b",
+  "environments": {
+    "gazebo": 36,
+    "real_rgb": 50,
+    "real_rgbd": 0
+  },
+  "reviewed_dual_target_frames": 0,
+  "dataset_sha256": "0eef254c814be2449e6839383423c386a5624cbb296942a8bac8b102359d3f5f",
+  "provenance": {
+    "captures_sha256": "614ae81c7a3981379b2adb81b1d64e12127f46227fbacfedeeff9cab8d6bee38",
+    "external_manifest_sha256": "13850cd68d8af9bc0602e151f3a91dea03fd51f2fa3393d121741dc2d5562979"
+  },
+  "limitations": [
+    "문짝·출입구 박스는 재검수 전이므로 null",
+    "원본 영상·라벨을 재배포하지 않음",
+    "새 독립 시험셋 또는 학습 준비 완료 자료가 아님"
+  ],
+  "raw_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/dataset-intake-03/dataset.json"
+}

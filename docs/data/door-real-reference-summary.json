@@ -1,0 +1,469 @@
+{
+  "mode": "existing_real_rgb_C_count_reference_no_new_inference",
+  "groups": {
+    "indoor_primary": {
+      "frames": 41,
+      "eligible": 35,
+      "correct_counts": 20,
+      "excluded": 6,
+      "runtime_errors": 0
+    },
+    "exterior_auxiliary": {
+      "frames": 9,
+      "eligible": 9,
+      "correct_counts": 6,
+      "excluded": 0,
+      "runtime_errors": 0
+    }
+  },
+  "frames": [
+    {
+      "frame_id": "dd2_closed_Door0016",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "7f637175090c5a0128f4aaccd7a4fa0bf447dec0940dd3d4ef6d2859f1844456",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_closed_Door0081",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "525900c5cd7cdee66760827a0928b630b2df059bc6890efeb9b970d59fdafff9",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_closed_Door0115",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "b411ca9ec3f7a46fce10f9ac45ecb48397a0c47361eff91107cd4090089ea981",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_closed_Door0146",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "2dd410ce0e1319220bb7240b58f748def9605edf1e8ae21ad923bf81b71aec47",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_closed_Door0208",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "51e26017fc325cf92195557322aa4df6a1ad6f4dd40ec0c732adbfc118d3a3f4",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_closed_Door0245",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "54166313a4996c7077467a712ad443e6bda0b234d7767347b84a26df53e3d35c",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_closed_Door0290",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "637b2f97ea4c1ca6c8926cc1e4a109dcc5178bad34f44af77e51578f9d4993c3",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_closed_Door0343",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "c32681e8ac52e8898f64ef5d80bf09c2d85cd0abbba09e552c22b4a4677d8de8",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_closed_Door0372",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "2bd0b1870d2df1a7e5f73a1b85ea25e3d3c73deb84a0c898c1ffa5b4ffd0dd2b",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_closed_Door0401",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "8a3a05e8e0fd3f268b4261b31c67e185bd5412bfe3d9fca8d1cc7f8d9c436698",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_open_Door1016",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "58c73c19b09996f16620c084150e0dd4042c3661ba75befdd53c828b8263c32e",
+      "truth_count": 1,
+      "predicted_count": 0,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_open_Door1081",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "2819a6da3dd2727a53a6362faf7f4e7d1b81eae1b8d0a538e30b0549ecd6a0e0",
+      "truth_count": 2,
+      "predicted_count": 3,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_open_Door1115",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "3a232d5c3c1117d712e6bb7f40450f455a27d490babd3fc6db3bf7ac6bd48c42",
+      "truth_count": 1,
+      "predicted_count": 0,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_open_Door1146",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "04f7a4d2768ecdd3cd1495de8374333134ec9f0d0efc77f000cce8d6afc1ff2b",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_open_Door1208",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "4daca7c822e516933eb635dcacf34b4118b14020fbb2ad49b7a0ebf462bd0bb7",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_open_Door1245",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "c5ba4b886a500a51ee9537c05991f6e77dc0334ec0b66b705cb3cd78765369aa",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_open_Door1290",
+      "group": "indoor_primary",
+      "eligible": false,
+      "raw_sha256": "93568d393279165b2c0d097e8d45423dce18111235c2b6bcdddbd8b8d708d224"
+    },
+    {
+      "frame_id": "dd2_open_Door1343",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "62f202a884ff3ae475e5c3c78a2f7fe92ba80c98bbf4655a92a40f8a02563f5a",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_open_Door1372",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "7d215b921f10d26b6d67f56e22bf7d0792eae90ecc2fa071d847f9a116cb4a33",
+      "truth_count": 1,
+      "predicted_count": 0,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_open_Door1401",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "085261ff860c70026fb49ef7640ab11e9e0a542ab64bc7b03be3e0d4af8cd88b",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_semi_Door2016",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "c90dceaef8a6935ac6016acd993b90bbcdbc99d74f1391a2f49de42640f8b284",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_semi_Door2081",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "7fe3786449d2846144537357ddd700558d6fda630286943690b24b2e8e17448f",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_semi_Door2115",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "f288c8efd2424f94ef5d1d48c8aa86b0185a1df224f16459e367614ca0bb6417",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_semi_Door2146",
+      "group": "indoor_primary",
+      "eligible": false,
+      "raw_sha256": "e80941f888d9515a925e30157f6a646c79d2255b559ab8a8392301f869e15560"
+    },
+    {
+      "frame_id": "dd2_semi_Door2208",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "1f86e41911118bd81fd806d134f5606b793ffde281dcff23554794422f61fe58",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    },
+    {
+      "frame_id": "dd2_semi_Door2245",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "1080d2f29bc529a4c9b3b3cc731568092659608402046b44de52f72556ad9848",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_semi_Door2290",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "e4f9823fdde533664fbfa8c5f8b6e12f9080cc744e1688c96c16eb4a23a8e87c",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_semi_Door2343",
+      "group": "indoor_primary",
+      "eligible": false,
+      "raw_sha256": "9ff5953dee9ff9861d50e8bf7ab85d1195dfa2d836793015d2f22b7d262b7722"
+    },
+    {
+      "frame_id": "dd2_semi_Door2372",
+      "group": "exterior_auxiliary",
+      "eligible": true,
+      "raw_sha256": "463754c22cee4068f69161e2b704e8ad70504aec95eee99fcd0b95d41475ed6e",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "dd2_semi_Door2401",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "2cadc0d0e0be59452352f3d9a33723a91913459e9ea91326ebb430ffc68eab5f",
+      "truth_count": 1,
+      "predicted_count": 0,
+      "correct": false
+    },
+    {
+      "frame_id": "oi_00173afdc7581c41",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "6bebdb72c12bea4715e1fe5805c4284a32c9f063cbff56276c31235f21bfb33c",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_28f45b12ee25ae19",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "f0549e1fa9b965f4c0e15abbf136d820f974ca0474ef8b1dbf109ef9e879fd5a",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_291f50e909f7872e",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "2fa9c6688d2069d1e27391685a522e633ca9bff86bf3042d2bb1015aeda77549",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_29af2f1dd764c49f",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "4e470ace35bc915e45aa754b57b4758c015ff344afef4ecb4196ee0e837cd388",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_2d22708883788e8b",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "f365bebc9853403a5b20d616c0d9fd166b814e676b0b742821c64dde8bc8541c",
+      "truth_count": 1,
+      "predicted_count": 1,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_32255e4104d8f9b7",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "79c1585fa4ffb558dba8888fb9fc4090370f0df7062fb2e53df38b35f1f85bf5",
+      "truth_count": 1,
+      "predicted_count": 0,
+      "correct": false
+    },
+    {
+      "frame_id": "oi_35f837b8efa90099",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "23c39f0e9b43912f10070ff9bfaa8ba0b385d91832720451d491934274b3bd14",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_3c58039507939426",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "b149a8ac39b61b1ce2260507b7511df2995905a3fcfad4e037b96ffc267f8b82",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_44a1c33f790c5687",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "ee3d0a280c5e9df6759d5ad81bc1e511ea0a5e5f11cac00b6eb5a982a112d6aa",
+      "truth_count": 1,
+      "predicted_count": 0,
+      "correct": false
+    },
+    {
+      "frame_id": "oi_5ba4992a5dec8a7a",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "fea23ed3451dca784b6758cb51618935b007c04dc1a2d3577f275a6360fe2736",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_294885a08c11dfa4",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "48346aa799d0ba60d8dccf855a538b1719904ec47d47b92660a5916fcecafd5f",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_370c5423dc672f07",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "67a7c32bd3eecf3a2c0aa7aba003dcecb85a22cae2a9901c58d20dcd6c07d7ab",
+      "truth_count": 2,
+      "predicted_count": 0,
+      "correct": false
+    },
+    {
+      "frame_id": "oi_8caa5b06d30d1e75",
+      "group": "indoor_primary",
+      "eligible": false,
+      "raw_sha256": "6ce81a824d6b948453dd232de8e7ad16856f626be56ab186608780e99e0f6ec2"
+    },
+    {
+      "frame_id": "oi_e6d27669b2efb650",
+      "group": "indoor_primary",
+      "eligible": false,
+      "raw_sha256": "84049149d091037d5dc4408bcc3f204f1756d9d394a10129d15b67a6efeaf8d8"
+    },
+    {
+      "frame_id": "oi_ee248bd9c09cba0c",
+      "group": "indoor_primary",
+      "eligible": false,
+      "raw_sha256": "1b6b2db522b1f9f96f65f948422f2ce146e37e7b68ce13c33af6b3ad457adeed"
+    },
+    {
+      "frame_id": "oi_05042cfa44abe4f6",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "32fc756f00b9179769639e95f767955c75dfb3b4195ddcb4dba6805d3aa75852",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_0d8e57d0804c2d1a",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "8a463578bcff33bb3121c28031f1ad7987ddeac36eceec3fbbe06805d339c40b",
+      "truth_count": 0,
+      "predicted_count": 1,
+      "correct": false
+    },
+    {
+      "frame_id": "oi_10f64dac50ca0f16",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "9e31f4abd77404399c842ccfb212baf4e1012c3ecca6412c07b1b49a3445d2ed",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_1229d5e203956ac6",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "9f6648e9d46af79b6498d0751b8efeb86d7d80d039a0bd3be53134ab421a5cd4",
+      "truth_count": 0,
+      "predicted_count": 0,
+      "correct": true
+    },
+    {
+      "frame_id": "oi_1b66ee083974f58e",
+      "group": "indoor_primary",
+      "eligible": true,
+      "raw_sha256": "add6f6f2ad10b20cbe70e00a68d54f9757a2051f03e6ba23a988bb9bbefd332c",
+      "truth_count": 1,
+      "predicted_count": 2,
+      "correct": false
+    }
+  ],
+  "auditor_sha256": "abd4a76e2d95e45470b2bf360458b5e50220ef35f523f9c132916f185b344fd6",
+  "manifest_sha256": "13850cd68d8af9bc0602e151f3a91dea03fd51f2fa3393d121741dc2d5562979",
+  "batch_sha256": "0f0708941f1a0f171b52022ea91f2982c488fc0adef3feb5035ae3baefb94902",
+  "original_code_commit": "95fe4a679315680321e7b4eceaeae37cd5659ceb",
+  "detector_assets": {
+    "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+    "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+    "config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905"
+  },
+  "limitations": [
+    "과거 추론 원문 재사용, 현재 시스템의 새 평가 아님",
+    "문짝/출입구 bbox·깊이 상태·지도 위치 평가는 아님",
+    "실내·실외 분모 분리, 새 독립 시험셋 아님"
+  ],
+  "raw_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-reference-03.json",
+  "raw_sha256": "19a991961bd531439d1e5831e6eb63e9ab3d41178dfc242bfc493ff2bb6159f7"
+}
