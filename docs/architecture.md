@@ -5,7 +5,9 @@
 깊이 기반 상태 후보는 순수 모듈로 구현하고 [정답 ROI 개발 진단](door-state-evaluation.md)을 수행했습니다.
 고정 위치·시간 상태 종합·JSON 복원은 [문 메모리 모듈](door-memory.md)로 구현했습니다.
 RGB-D·문 검출에서 [출입구·문턱 위치를 추정하는 후보](doorway-evaluation.md)를 오프라인으로 구현했습니다.
-ROS 검출 입력 어댑터·map 위치/상태 출력과 저장 연결은 아직 구현하지 않았습니다.
+동기화 RGB-D·Detection2D 입력에서 관측 시각 TF·문 메모리·JSON/마커·저장 서비스를 연결한
+[문 ROS 노드](door-ros.md)를 구현했습니다([ADR-0009](adr/0009-door-ros-pipeline.md)).
+실시간 문 검출 발행 어댑터와 실제 SLAM 지도에서의 전체 검증은 아직 미완료입니다.
 기존 `mapping_semantic`의 표면 대표점과 정적 객체 JSON을 문 상태 지도 구현으로 간주하지 않습니다.
 
 > ⚠️ 초안. `🔍 미정` 항목은 [ADR](adr/)로 결정한 뒤 이 문서를 갱신합니다.
