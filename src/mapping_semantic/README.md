@@ -1,5 +1,9 @@
 # mapping_semantic
 
+`doorway.estimate_doorway`와 `door_position.threshold_point`는 RGB-D·문짝 검출에서
+돌출된 문틀의 출입구 영역과 벽 평면 위 문턱 위치를 구하는 후보입니다.
+균일한 벽·양쪽 문틀 가정과 [개발 평가 결과](../../docs/doorway-evaluation.md)를 확인하세요.
+
 `mapping_semantic.door_map.DoorMap`은 호출자가 제공하는 고정 문 위치에 대해
 ID 유지·세 번 연속 상태 종합·관측 만료·JSON 복원을 제공합니다.
 [문 메모리 계약과 진단](../../docs/door-memory.md)을 참고하세요. 기존 ROS mapper와의 연결은 진행 전입니다.
