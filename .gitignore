@@ -9,6 +9,9 @@ __pycache__/
 .venv/
 *.egg-info/
 
+# 문 실험 RGB-D·추론 원문 (요약·설정은 docs에 기록)
+experiments/door_probe/
+
 # rosbag
 *.db3
 *.mcap
