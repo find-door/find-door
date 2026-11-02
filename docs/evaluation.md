@@ -289,7 +289,7 @@ odom·회전 판정 24검사, 전체 오프라인 690검사 통과·ROS 전용 2
 
 ## 알려진 출입구의 무검출 RGB-D 재관측 — 2026-11-03
 
-기준 `0b4e6ae` 이후 `v0.2.0-door-reobserve.1`에서 [ADR-0012](adr/0012-known-door-reobservation.md)를 구현했다.
+기준 `0b4e6ae` 이후 `v0.2.0-door-reobserve.2`에서 [ADR-0012](adr/0012-known-door-reobservation.md)를 구현했다.
 문 검출로 확인한 출입구의 평면 영역을 현재 카메라에 재투영하고, 현재 RGB-D의 문틀·벽·문턱 기하를 대조해
 새 ID 생성 없이 같은 문의 상태를 갱신한다. epoch/load 때 캐시를 비우고 정상 검출 처리는 캐시 생성 실패와 분리했다.
 평판 금속문 반열림을 먼저 확인한 뒤 완전 열림→닫힘으로 순간 변경한 [Gazebo ON/OFF 비교](door-reobservation.md)에서
