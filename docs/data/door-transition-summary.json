@@ -1,0 +1,201 @@
+{
+  "mode": "live_gazebo_yoloe_lidar_slam_door_transition",
+  "limitations": [
+    "단일 문 모델·2m 정면·로봇 정지",
+    "지도 정확도·실물·독립 장소 시험 아님"
+  ],
+  "source_sha256": {
+    "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+    "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+    "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+    "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+    "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+    "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+    "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+  },
+  "harness_sha256": "bd24beaa146a6aa8275ad2db22ff509d823a1ef27f51cff4fcb363627b8a753d",
+  "worker_group_gone": true,
+  "door_map": {
+    "map_id": "live-door-probe-closed-live-transition-02",
+    "frame": "map",
+    "stamp_ns": 5609000000,
+    "observation_stamp_ns": 5214000000,
+    "epoch": 0,
+    "objects": [
+      {
+        "id": "door_000001",
+        "position": [
+          -0.050000010211790125,
+          3.73838519415338e-08,
+          0.00272563450439281
+        ],
+        "state": "closed",
+        "last_stamp_ns": 5214000000,
+        "observations": 16
+      }
+    ],
+    "counters": {
+      "received_rgb": 17,
+      "received_depth": 17,
+      "received_camera_info": 17,
+      "received_detections": 17,
+      "synchronized": 17,
+      "no_detection": 1,
+      "processed": 16
+    },
+    "last_error": ""
+  },
+  "detector_status": {
+    "counters": {
+      "received": 85,
+      "submitted": 18,
+      "replaced": 66,
+      "completed": 17
+    },
+    "epoch": 0,
+    "worker_pgid": 2534924,
+    "worker_start_ticks": 166876118,
+    "latency_sec": 0.14039362699259073,
+    "source_age_sec": 0.205,
+    "metadata": {
+      "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+      "release_policy_override": "keep",
+      "cache_override": "/tmp/find-door-live-_v7a6hvm/ultralytics-config",
+      "last_run": {
+        "device": "0",
+        "release_policy": "keep",
+        "settings": {
+          "version": "0.1.0",
+          "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+          "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+          "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+          "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+          "device": "0",
+          "imgsz": 640,
+          "max_det": 300,
+          "iou": 0.45,
+          "agnostic_nms": false,
+          "release_policy": "keep",
+          "include_mask_area": false,
+          "classes": [
+            {
+              "prompt": "door",
+              "class": "door",
+              "report_class": "door",
+              "candidate_for": null,
+              "confidence": 0.1
+            },
+            {
+              "prompt": "person",
+              "class": "person",
+              "report_class": "person",
+              "candidate_for": null,
+              "confidence": 0.25
+            }
+          ]
+        },
+        "success": true,
+        "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+        "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+        "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+        "cuda_allocated_before_predict": 54404096,
+        "ultralytics": "8.4.191",
+        "input_size": [
+          640,
+          480
+        ],
+        "model_end2end_before_predict": false,
+        "backend_end2end": false,
+        "candidate_limit_reached": false,
+        "cuda_peak_allocated_predict": 84042752,
+        "release_completed": true,
+        "cuda_allocated_after_cleanup": 54404096,
+        "processing_time_seconds": 0.1260763310128823
+      }
+    },
+    "last_error": ""
+  },
+  "scan_count": 29,
+  "map_updates": 6,
+  "map_publishers": [
+    "slam_toolbox"
+  ],
+  "raw_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/live-transition-02/check.json",
+  "raw_sha256": "7d25e56d1cfe6807f823772590b5cdecbd29ef9f16e5a6e5c83e3767654c7c3d",
+  "transitions": [
+    {
+      "expected_state": "open",
+      "command": [
+        "gz",
+        "service",
+        "-s",
+        "/world/door_probe_v1/set_pose",
+        "--reqtype",
+        "gz.msgs.Pose",
+        "--reptype",
+        "gz.msgs.Boolean",
+        "--timeout",
+        "5000",
+        "--req",
+        "name: \"door_leaf\", position: {x: 0, y: -0.5, z: 0}, orientation: {z: -0.7071067811865475, w: 0.7071067811865476}"
+      ],
+      "stdout": "data: true\n\n",
+      "stderr": "",
+      "begin_sim_ns": 3792000000,
+      "final": {
+        "id": "door_000001",
+        "position": [
+          -0.050000010211790125,
+          3.73838519415338e-08,
+          0.00272563450439281
+        ],
+        "state": "open",
+        "last_stamp_ns": 4291000000,
+        "observations": 9
+      },
+      "confirmation_wall_sec": 0.9437752160010859,
+      "confirmation_sim_sec": 0.499,
+      "unknown_seen": true,
+      "rgb": "transition-open-rgb.png",
+      "rgb_sha256": "ce6378a294d41e29f465e8248da8416d34391cd52e6c4d9fae83a97956840978",
+      "rgb_stamp_ns": 4620000000
+    },
+    {
+      "expected_state": "closed",
+      "command": [
+        "gz",
+        "service",
+        "-s",
+        "/world/door_probe_v1/set_pose",
+        "--reqtype",
+        "gz.msgs.Pose",
+        "--reptype",
+        "gz.msgs.Boolean",
+        "--timeout",
+        "5000",
+        "--req",
+        "name: \"door_leaf\", position: {x: 0, y: -0.5, z: 0}, orientation: {z: 0.0, w: 1.0}"
+      ],
+      "stdout": "data: true\n\n",
+      "stderr": "",
+      "begin_sim_ns": 4624000000,
+      "final": {
+        "id": "door_000001",
+        "position": [
+          -0.050000010211790125,
+          3.73838519415338e-08,
+          0.00272563450439281
+        ],
+        "state": "closed",
+        "last_stamp_ns": 5214000000,
+        "observations": 16
+      },
+      "confirmation_wall_sec": 0.9668585349572822,
+      "confirmation_sim_sec": 0.59,
+      "unknown_seen": true,
+      "rgb": "transition-closed-rgb.png",
+      "rgb_sha256": "1ff8635076d8d364052b7643fe73df3682d37f92c5644d6f0c81debaf8657de7",
+      "rgb_stamp_ns": 5479000000
+    }
+  ]
+}
