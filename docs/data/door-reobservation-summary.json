@@ -1,0 +1,457 @@
+{
+  "stage": "v0.2.0-door-reobserve.1",
+  "date": "2026-11-03",
+  "runs": [
+    {
+      "enabled": true,
+      "path": "experiments/door_probe/known-door-on-02/check.json",
+      "sha256": "1eb86508a4b984597a2064d9004670e2036bfed551fce4be60ebed3b23dd3647",
+      "worker_group_gone": true,
+      "stages": [
+        {
+          "expected_state": "open",
+          "required_output": "open",
+          "begin_sim_ns": 3951000000,
+          "elapsed_sim_sec": 3.037,
+          "reobserved_gain": 15,
+          "no_detection_gain": 15,
+          "unknown_seen": false,
+          "rgb": "known-open-rgb.png",
+          "rgb_sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+          "rgb_stamp_ns": 6997000000,
+          "polling_sample_states": {
+            "open": 26
+          },
+          "final": {
+            "map_id": "live-door-probe-open-known-door-on-02",
+            "frame": "map",
+            "stamp_ns": 6988000000,
+            "observation_stamp_ns": 6600000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.05000006470974183,
+                  4.191309836388943e-08,
+                  0.0027256377781369467
+                ],
+                "state": "open",
+                "last_stamp_ns": 6600000000,
+                "observations": 21
+              }
+            ],
+            "counters": {
+              "received_rgb": 22,
+              "received_depth": 22,
+              "received_camera_info": 22,
+              "received_detections": 22,
+              "synchronized": 22,
+              "no_detection": 16,
+              "processed": 21,
+              "reobserved": 15
+            },
+            "last_error": ""
+          },
+          "final_observation_age_sim_sec": 0.388
+        },
+        {
+          "expected_state": "closed",
+          "required_output": "closed",
+          "begin_sim_ns": 6988000000,
+          "elapsed_sim_sec": 3.135,
+          "reobserved_gain": 21,
+          "no_detection_gain": 21,
+          "unknown_seen": true,
+          "rgb": "known-closed-rgb.png",
+          "rgb_sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+          "rgb_stamp_ns": 10099000000,
+          "polling_sample_states": {
+            "open": 3,
+            "unknown": 2,
+            "closed": 21
+          },
+          "final": {
+            "map_id": "live-door-probe-open-known-door-on-02",
+            "frame": "map",
+            "stamp_ns": 10123000000,
+            "observation_stamp_ns": 9769000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.05000006470974183,
+                  4.191309836388943e-08,
+                  0.0027256377781369467
+                ],
+                "state": "closed",
+                "last_stamp_ns": 9769000000,
+                "observations": 42
+              }
+            ],
+            "counters": {
+              "received_rgb": 43,
+              "received_depth": 43,
+              "received_camera_info": 43,
+              "received_detections": 43,
+              "synchronized": 43,
+              "no_detection": 37,
+              "processed": 42,
+              "reobserved": 36
+            },
+            "last_error": ""
+          },
+          "final_observation_age_sim_sec": 0.354
+        }
+      ],
+      "saved_path": "experiments/door_probe/known-door-on-02/doors.json",
+      "saved_sha256": "f9ca1259cc0154b5603a2e0f75b31e7cfdcdd46d0229e946209a0aa45c29a725",
+      "saved_memory": {
+        "door_map_schema_version": 1,
+        "map_id": "live-door-probe-open-known-door-on-02",
+        "frame": "map",
+        "config": {
+          "association_distance": 0.25,
+          "minimum_observations": 3,
+          "state_ttl_sec": 2.0,
+          "ambiguity_distance_m": 0.05
+        },
+        "next_id": 2,
+        "watermark_ns": 9769000000,
+        "objects": [
+          {
+            "id": "door_000001",
+            "position": [
+              -0.05000006470974183,
+              4.191309836388943e-08,
+              0.0027256377781369467
+            ],
+            "state": "closed",
+            "last_stamp_ns": 9769000000,
+            "observations": 42
+          }
+        ]
+      },
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+        "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f"
+      },
+      "harness_sha256": "c8660c117a24f8b17f4239b7e092c6a008f8aece127d56d91fdc987b7f26791d",
+      "world_sha256": "50b3f2a90e46f642282191fc2e1c7227fc33d1bb428076d1956484e8a358a060",
+      "detector_metadata": {
+        "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+        "release_policy_override": "keep",
+        "cache_override": "/tmp/find-door-live-zls9kxa2/ultralytics-config",
+        "last_run": {
+          "device": "0",
+          "release_policy": "keep",
+          "settings": {
+            "version": "0.1.0",
+            "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+            "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+            "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+            "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+            "device": "0",
+            "imgsz": 640,
+            "max_det": 300,
+            "iou": 0.45,
+            "agnostic_nms": false,
+            "release_policy": "keep",
+            "include_mask_area": false,
+            "classes": [
+              {
+                "prompt": "door",
+                "class": "door",
+                "report_class": "door",
+                "candidate_for": null,
+                "confidence": 0.1
+              },
+              {
+                "prompt": "person",
+                "class": "person",
+                "report_class": "person",
+                "candidate_for": null,
+                "confidence": 0.25
+              }
+            ]
+          },
+          "success": true,
+          "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+          "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+          "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+          "cuda_allocated_before_predict": 54096384,
+          "ultralytics": "8.4.191",
+          "input_size": [
+            640,
+            480
+          ],
+          "model_end2end_before_predict": false,
+          "backend_end2end": false,
+          "candidate_limit_reached": false,
+          "cuda_peak_allocated_predict": 83735040,
+          "release_completed": true,
+          "cuda_allocated_after_cleanup": 54096384,
+          "processing_time_seconds": 0.15902904298854992
+        }
+      },
+      "map_publishers": [
+        "slam_toolbox"
+      ],
+      "clock_publishers": 1
+    },
+    {
+      "enabled": false,
+      "path": "experiments/door_probe/known-door-off-01/check.json",
+      "sha256": "4e92402f7a3467561ee85454d9e4184e0e0e1cc437a6d22a1bf7502f94e2a824",
+      "worker_group_gone": true,
+      "stages": [
+        {
+          "expected_state": "open",
+          "required_output": "unknown",
+          "begin_sim_ns": 4359000000,
+          "elapsed_sim_sec": 3.086,
+          "reobserved_gain": 0,
+          "no_detection_gain": 16,
+          "unknown_seen": true,
+          "rgb": "known-open-rgb.png",
+          "rgb_sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+          "rgb_stamp_ns": 7458000000,
+          "polling_sample_states": {
+            "open": 17,
+            "unknown": 9
+          },
+          "final": {
+            "map_id": "live-door-probe-open-known-door-off-01",
+            "frame": "map",
+            "stamp_ns": 7445000000,
+            "observation_stamp_ns": 4555000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.05000006470974183,
+                  4.191309836388943e-08,
+                  0.0027256377781369467
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 4555000000,
+                "observations": 7
+              }
+            ],
+            "counters": {
+              "received_rgb": 24,
+              "received_depth": 24,
+              "received_camera_info": 24,
+              "received_detections": 24,
+              "synchronized": 24,
+              "no_detection": 17,
+              "processed": 7
+            },
+            "last_error": ""
+          },
+          "final_observation_age_sim_sec": 2.89
+        },
+        {
+          "expected_state": "closed",
+          "required_output": "unknown",
+          "begin_sim_ns": 7445000000,
+          "elapsed_sim_sec": 3.1,
+          "reobserved_gain": 0,
+          "no_detection_gain": 19,
+          "unknown_seen": true,
+          "rgb": "known-closed-rgb.png",
+          "rgb_sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+          "rgb_stamp_ns": 10495000000,
+          "polling_sample_states": {
+            "unknown": 26
+          },
+          "final": {
+            "map_id": "live-door-probe-open-known-door-off-01",
+            "frame": "map",
+            "stamp_ns": 10545000000,
+            "observation_stamp_ns": 4555000000,
+            "epoch": 0,
+            "objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  -0.05000006470974183,
+                  4.191309836388943e-08,
+                  0.0027256377781369467
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 4555000000,
+                "observations": 7
+              }
+            ],
+            "counters": {
+              "received_rgb": 43,
+              "received_depth": 43,
+              "received_camera_info": 43,
+              "received_detections": 43,
+              "synchronized": 43,
+              "no_detection": 36,
+              "processed": 7
+            },
+            "last_error": ""
+          },
+          "final_observation_age_sim_sec": 5.99
+        }
+      ],
+      "saved_path": "experiments/door_probe/known-door-off-01/doors.json",
+      "saved_sha256": "b86791f436b56a8c052643d50d592b3fd7bf023cb5ca6d26c60fb5dc9be1209f",
+      "saved_memory": {
+        "door_map_schema_version": 1,
+        "map_id": "live-door-probe-open-known-door-off-01",
+        "frame": "map",
+        "config": {
+          "association_distance": 0.25,
+          "minimum_observations": 3,
+          "state_ttl_sec": 2.0,
+          "ambiguity_distance_m": 0.05
+        },
+        "next_id": 2,
+        "watermark_ns": 4555000000,
+        "objects": [
+          {
+            "id": "door_000001",
+            "position": [
+              -0.05000006470974183,
+              4.191309836388943e-08,
+              0.0027256377781369467
+            ],
+            "state": "unknown",
+            "last_stamp_ns": 4555000000,
+            "observations": 7
+          }
+        ]
+      },
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+        "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f"
+      },
+      "harness_sha256": "c8660c117a24f8b17f4239b7e092c6a008f8aece127d56d91fdc987b7f26791d",
+      "world_sha256": "50b3f2a90e46f642282191fc2e1c7227fc33d1bb428076d1956484e8a358a060",
+      "detector_metadata": {
+        "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+        "release_policy_override": "keep",
+        "cache_override": "/tmp/find-door-live-6kg6x6h2/ultralytics-config",
+        "last_run": {
+          "device": "0",
+          "release_policy": "keep",
+          "settings": {
+            "version": "0.1.0",
+            "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+            "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+            "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+            "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+            "device": "0",
+            "imgsz": 640,
+            "max_det": 300,
+            "iou": 0.45,
+            "agnostic_nms": false,
+            "release_policy": "keep",
+            "include_mask_area": false,
+            "classes": [
+              {
+                "prompt": "door",
+                "class": "door",
+                "report_class": "door",
+                "candidate_for": null,
+                "confidence": 0.1
+              },
+              {
+                "prompt": "person",
+                "class": "person",
+                "report_class": "person",
+                "candidate_for": null,
+                "confidence": 0.25
+              }
+            ]
+          },
+          "success": true,
+          "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+          "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+          "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+          "cuda_allocated_before_predict": 54096384,
+          "ultralytics": "8.4.191",
+          "input_size": [
+            640,
+            480
+          ],
+          "model_end2end_before_predict": false,
+          "backend_end2end": false,
+          "candidate_limit_reached": false,
+          "cuda_peak_allocated_predict": 83735040,
+          "release_completed": true,
+          "cuda_allocated_after_cleanup": 54096384,
+          "processing_time_seconds": 0.13459810003405437
+        }
+      },
+      "map_publishers": [
+        "slam_toolbox"
+      ],
+      "clock_publishers": 1
+    }
+  ],
+  "tests": {
+    "offline_passed": 729,
+    "ros_specific_skipped": 5,
+    "ros_specific_passed_in_isolated_environment": 5,
+    "mapping_semantic_colcon": {
+      "tests": 273,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "geometry_tests": 16,
+    "markdown_files": 58,
+    "markdown_errors": 0
+  },
+  "limitations": [
+    "반열림 문을 먼저 검출한 뒤 같은 출입구 상태만 갱신",
+    "새로 시작한 완전 열림 문의 검출 문제는 남아 있음",
+    "각도 변경은 순간 set_pose이며 연속 경첩 물리 운동 아님",
+    "시간과 상태 샘플은 polling 기록이며 모든 센서 프레임 성능이 아님"
+  ],
+  "ros_replay": {
+    "path": "experiments/door_probe/ros-reobservation-01/check.json",
+    "sha256": "158ed9fe8f892f7b1f943af91b034e74091244c53b8771dec46e699b9bb20e54",
+    "status": "complete",
+    "source_sha256": {
+      "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+      "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+      "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+      "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+      "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+      "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f"
+    }
+  },
+  "figure": {
+    "path": "docs/images/door-reobservation.png",
+    "sha256": "ea027e91ab09b73f225e22a91eb2af58cc313de4d168c02f7a8a1bf2d0308472",
+    "generator_sha256": "d2dc333c79c29daf4d4772f48f3b15446f2f5b8d9f001d90ee86a280c2a0c123"
+  },
+  "reobservation_config": {
+    "minimum_visible_fraction": 0.5,
+    "maximum_anchor_distance_m": 0.1,
+    "maximum_plane_distance_m": 0.08,
+    "maximum_normal_angle_rad": 0.17453292519943295,
+    "maximum_width_relative_error": 0.2
+  },
+  "default_reobserve_known_doors": true
+}

@@ -22,5 +22,6 @@
 | [0009](0009-door-ros-pipeline.md) | 문 상태 ROS 연결 | 일반 객체 / 문 전용 노드 / 전용 메시지 | 문 위치·상태 분리, 관측 시각 TF, 개발 JSON·마커 | ✅ 개발 연결 결정 |
 | [0010](0010-live-door-detector.md) | 실시간 검출 연결 | 프레임별 CLI / ROS 직접 적재 / 상주 worker | 별도 가상환경 worker와 원본 RGB-D 묶음 발행 | ✅ 로컬 개발 연결 |
 | [0011](0011-door-dataset-contract.md) | 라벨·분할 계약 | 단일 bbox / 이중 bbox / 마스크 | 문짝·출입구 분리, RGB 해시·장면 그룹 누출 검증 | ✅ 개발 자료 계약 |
+| [0012](0012-known-door-reobservation.md) | 알려진 출입구 재관측 | 매 프레임 검출 / 과거 상태 재사용 / 기하 재투영 | 검출로 확인한 기하와 현재 RGB-D 대조, 기존 ID만 갱신 | ✅ 제한적 개발 구현 |
 
 > 번호는 예정값입니다. 실제로 작성하는 순서대로 번호를 붙이고, 이 표와 [architecture.md](../architecture.md#7-미결정-사항)를 함께 갱신합니다.

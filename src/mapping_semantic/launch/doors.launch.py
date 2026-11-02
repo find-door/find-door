@@ -12,7 +12,7 @@ def generate_launch_description():
         optical_frame='camera_color_optical_frame', rgb_topic='/camera/color/image_raw',
         depth_topic='/camera/depth/image_raw', camera_info_topic='/camera/camera_info',
         detections_topic='/semantic/detections2d', output_path='', input_path='')
-    typed = dict(use_sim_time=('true', bool), confidence_threshold=('0.1', float),
+    typed = dict(use_sim_time=('true', bool), reobserve_known_doors=('true', bool), confidence_threshold=('0.1', float),
         state_ttl_sec=('2.0', float), max_source_age_sec=('10.0', float),
         tf_wait_seconds=('1.0', float), queue_size=('20', int),
         association_distance=('0.25', float), minimum_observations=('3', int),

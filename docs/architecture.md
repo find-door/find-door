@@ -10,6 +10,8 @@ RGB-D·문 검출에서 [출입구·문턱 위치를 추정하는 후보](doorwa
 [상주 YOLOE 발행 어댑터와 실제 LiDAR SLAM 동시 실행](door-live.md)을 단일 문·정지 관측에서 확인했습니다
 ([ADR-0010](adr/0010-live-door-detector.md)). [짧은 직선 주행](door-motion.md)과
 [작은 회전](door-rotation.md)도 확인했으며 장거리·독립 장면·실물 검증은 아직 미완료입니다.
+[이미 확인한 출입구의 RGB-D 재관측](door-reobservation.md)은 문짝 검출 누락 중 같은 ID의 상태를 갱신합니다
+([ADR-0012](adr/0012-known-door-reobservation.md)). 처음 보는 열린 문 검출은 여전히 미해결입니다.
 기존 `mapping_semantic`의 표면 대표점과 정적 객체 JSON을 문 상태 지도 구현으로 간주하지 않습니다.
 
 > ⚠️ 초안. `🔍 미정` 항목은 [ADR](adr/)로 결정한 뒤 이 문서를 갱신합니다.
@@ -160,6 +162,7 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 | 객체 지도 정책 | 정적 객체만 누적, 큰 보정에 epoch 초기화·고정 지도 우선 | [ADR-0008](adr/0008-semantic-map-policy.md) |
 | 문 ROS 개발 연결 | 문 위치·상태 분리, 관측 시각 TF·JSON·마커 | [ADR-0009](adr/0009-door-ros-pipeline.md) |
 | 문 실시간 검출 연결 | 별도 가상환경의 상주 YOLOE와 원본 RGB-D 묶음 발행 | [ADR-0010](adr/0010-live-door-detector.md) |
+| 알려진 문 재관측 | 검출로 확인한 출입구의 현재 RGB-D 재관측, 새 ID 생성 금지 | [ADR-0012](adr/0012-known-door-reobservation.md) |
 | 문 자료 계약 | 문짝·출입구 이중 bbox, 장면 그룹 분할·해시 중복 검증 | [ADR-0011](adr/0011-door-dataset-contract.md) |
 | 결정됨: 개발 플랫폼 | JetAuto (지상 로봇) | [ADR-0001](adr/0001-dev-platform-jetauto.md) |
 | 결정됨: 개발 환경 | Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic | [ADR-0002](adr/0002-dev-environment.md) |

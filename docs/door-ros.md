@@ -45,6 +45,12 @@ ros2 service call /semantic/doors/load std_srvs/srv/Trigger '{}'
 실물에서는 `use_sim_time:=false`를 지정하고 센서·프레임 인자를 확인해야 한다(실물 미검증).
 map→odom은 SLAM 등이 제공하며 이 노드는 TF를 발행하지 않는다.
 
+## 알려진 문 재관측
+
+[ADR-0012](adr/0012-known-door-reobservation.md) 이후 reobserve_known_doors:=true가 기본이다.
+검출로 먼저 확인한 출입구를 현재 RGB-D에서 재관측해 문짝 무검출 중에도 같은 ID의 상태를 갱신한다.
+처음 보는 열린 문의 검출은 보완하지 않는다. [기하·TTL·복원 정책과 ON/OFF 결과](door-reobservation.md)를 따른다.
+
 ## 실제 ROS 재생 진단
 
 저장 Gazebo RGB-D와 실제 C 검출을 닫힘 3장→열림 3장→닫힘 3장으로 재생한다.

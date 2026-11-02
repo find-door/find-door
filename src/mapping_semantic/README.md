@@ -4,7 +4,9 @@
 연결합니다. 외부 RGB-D·문 Detection2DArray·SLAM TF가 필요합니다.
 [문 ROS 계약·재생 진단](../../docs/door-ros.md)을 확인하세요.
 `live_doors.launch.py recon_root:=... map_id:=...`는 기존 로컬 YOLOE 검출 발행기도 함께 시작합니다.
-[실시간 연결·LiDAR SLAM 검증](../../docs/door-live.md)은 단일 문 정지 관측 범위입니다.
+[실시간 연결·LiDAR SLAM 검증](../../docs/door-live.md)을 확인하세요.
+`reobserve_known_doors:=true`가 기본이며 이미 확인한 출입구의 현재 RGB-D 재관측을 지원합니다.
+false는 매 프레임 검출이 필요한 기존 경로입니다. [계약·ON/OFF 결과](../../docs/door-reobservation.md)를 따릅니다.
 
 `doorway.estimate_doorway`와 `door_position.threshold_point`는 RGB-D·문짝 검출에서
 돌출된 문틀의 출입구 영역과 벽 평면 위 문턱 위치를 구하는 후보입니다.
@@ -12,13 +14,13 @@
 
 `mapping_semantic.door_map.DoorMap`은 호출자가 제공하는 고정 문 위치에 대해
 ID 유지·세 번 연속 상태 종합·관측 만료·JSON 복원을 제공합니다.
-[문 메모리 계약과 진단](../../docs/door-memory.md)을 참고하세요. 기존 ROS mapper와의 연결은 진행 전입니다.
+[문 메모리 계약과 진단](../../docs/door-memory.md)을 참고하세요. 문 전용 door_mapper에 연결했으며 일반 정적 객체 mapper와 분리합니다.
 
 ## 문 상태 깊이 후보
 
 `mapping_semantic.door_state.estimate_state`는 미터 깊이·K·출입구 ROI를 받아
 주변 벽 평면 대비 깊이로 open/closed/unknown과 근거를 반환하는 순수 Python 후보입니다.
-기존 mapper와 별도이며 ROS 문 지도 출력은 아직 연결하지 않았습니다.
+일반 정적 객체 mapper와 별도이며 문 전용 door_mapper에 연결했습니다.
 [정답 ROI 개발 진단과 한계](../../docs/door-state-evaluation.md)를 확인하세요.
 
 `detector_mode:=external_detections`는 별도 검출기가 발행한

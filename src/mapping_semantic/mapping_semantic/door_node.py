@@ -14,6 +14,7 @@ from mapping_semantic.door_map import DoorMap
 from mapping_semantic.door_position import threshold_point
 from mapping_semantic.door_state import estimate_state
 from mapping_semantic.doorway import estimate_doorway
+from mapping_semantic.door_reobservation import doorway_quad, project_quad, compatible_quad
 
 
 def detection_seed(array, header, width, height, threshold):
@@ -73,7 +74,7 @@ def main(args=None):
                 detections_topic='/semantic/detections2d', output_path='', input_path='',
                 association_distance=.25, minimum_observations=3, state_ttl_sec=2.,
                 confidence_threshold=.1, queue_size=20, tf_wait_seconds=1., max_source_age_sec=10.,
-                reset_translation=.2, reset_rotation=.1)
+                reset_translation=.2, reset_rotation=.1, reobserve_known_doors=True)
             for name, value in defaults.items():
                 self.declare_parameter(name, value)
             self.p = {name: self.get_parameter(name).value for name in defaults}
@@ -86,6 +87,9 @@ def main(args=None):
                 raise ValueError('큐/검출 임계값 설정 오류')
             if any(not self.p[name].strip() for name in ['map_frame', 'odom_frame', 'optical_frame']):
                 raise ValueError('프레임 이름을 명시해야 합니다')
+            if type(self.p['reobserve_known_doors']) is not bool:
+                raise ValueError('reobserve_known_doors는 bool이어야 합니다')
+            self.cached_doors = {}
             self.memory = DoorMap(self.p['map_id'], self.p['map_frame'], self.p['association_distance'],
                                   self.p['minimum_observations'], self.p['state_ttl_sec'])
             self.bridge, self.buffer = CvBridge(), Buffer()
@@ -120,6 +124,7 @@ def main(args=None):
 
         def reset(self, now, reason):
             self.memory.reset()
+            self.cached_doors.clear()
             self.pending.clear()
             if reason == 'clock_resets':
                 # Humble Buffer는 clock 역행 시 이전 epoch TF를 자동으로 지우지 않는다.
@@ -158,7 +163,8 @@ def main(args=None):
                 self.counters['synchronized'] += 1
                 if seed is None:
                     self.counters['no_detection'] += 1
-                    return
+                    if not self.p['reobserve_known_doors'] or not self.cached_doors:
+                        return
                 color = self.bridge.imgmsg_to_cv2(rgb, desired_encoding='rgb8')
                 metric = normalize_depth(self.bridge.imgmsg_to_cv2(depth, desired_encoding='passthrough'), depth.encoding)
                 if color.shape != (info.height, info.width, 3) or metric.shape != (info.height, info.width):
@@ -216,6 +222,20 @@ def main(args=None):
                     if distance > self.p['reset_translation'] or angle > self.p['reset_rotation']:
                         self.reject('epoch_tf_rejected', '관측 시각의 지도 보정이 현재 epoch와 다릅니다')
                         continue
+                    t, q = camera.translation, camera.rotation
+                    translation, quaternion = [t.x, t.y, t.z], [q.x, q.y, q.z, q.w]
+                    cached = None
+                    if seed is None:
+                        candidates = []
+                        for identifier, record in self.cached_doors.items():
+                            projected = project_quad(record['quad'], k, translation, quaternion,
+                                                     color.shape[1], color.shape[0])
+                            if projected is not None:
+                                candidates.append((identifier, record, projected))
+                        if len(candidates) != 1:
+                            self.reject('reobservation_unavailable', '보이는 기존 출입구가 하나로 정해지지 않습니다')
+                            continue
+                        identifier, cached, seed = candidates[0]
                     proposal = estimate_doorway(color, depth, k, seed)
                     if proposal['status'] != 'estimated':
                         self.reject('doorway_unavailable', proposal['reason'])
@@ -226,9 +246,26 @@ def main(args=None):
                         self.reject('position_unavailable', prediction['reason'])
                         continue
                     point = threshold_point(k, proposal['bbox'], evidence['wall_plane_normal'], evidence['wall_plane_offset_m'])
-                    t, q = camera.translation, camera.rotation
-                    position = transform_point(point, [t.x, t.y, t.z], [q.x, q.y, q.z, q.w]).tolist()
-                    self.memory.observe(position, prediction['state'], ns)
+                    position = transform_point(point, translation, quaternion).tolist()
+                    if cached is not None:
+                        quad = doorway_quad(k, proposal['bbox'], evidence['wall_plane_normal'],
+                                            evidence['wall_plane_offset_m'], translation, quaternion)
+                        if not compatible_quad(cached['quad'], quad, cached['position'], position):
+                            self.reject('reobservation_geometry_rejected', '기존 출입구의 위치·벽 평면·폭과 다릅니다')
+                            continue
+                        observed = self.memory.observe(position, prediction['state'], ns, expected_id=identifier)
+                        self.counters['reobserved'] += 1
+                    else:
+                        observed = self.memory.observe(position, prediction['state'], ns)
+                        # 연속 근거로 확정한 검출 기반 출입구만 임시 기하로 보관한다.
+                        if self.p['reobserve_known_doors'] and observed['state'] != 'unknown':
+                            try:
+                                quad = doorway_quad(k, proposal['bbox'], evidence['wall_plane_normal'],
+                                                    evidence['wall_plane_offset_m'], translation, quaternion)
+                                self.cached_doors[observed['id']] = dict(quad=quad, position=observed['position'])
+                            except ValueError as exc:
+                                self.cached_doors.pop(observed['id'], None)
+                                self.reject('cache_geometry_unavailable', exc)
                     self.last_source = ns
                     self.counters['processed'] += 1
                 except Exception as exc:
@@ -309,6 +346,7 @@ def main(args=None):
                 if distance > self.p['reset_translation'] or angle > self.p['reset_rotation']:
                     raise ValueError('저장 지도와 현재 TF 보정 불일치')
                 self.memory.load(document['memory'], now)
+                self.cached_doors.clear()
                 self.pending.clear()
                 self.last_source = self.last_input = now
                 self.reference, self.current_correction = reference, correction

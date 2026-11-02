@@ -79,7 +79,7 @@ class DoorMap:
             if now - record['last_stamp_ns'] > self._ttl_ns:
                 self._forget(record)
 
-    def observe(self, position, state, stamp_ns):
+    def observe(self, position, state, stamp_ns, expected_id=None):
         position, stamp = _position(position), self._time(stamp_ns)
         if state not in STATES:
             raise ValueError('state는 open/closed/unknown이어야 합니다')
@@ -88,6 +88,8 @@ class DoorMap:
                             if math.dist(position, item['position']) <= self.config['association_distance'])
         if len(candidates) > 1 and candidates[1][0] - candidates[0][0] < self.config['ambiguity_distance_m']:
             raise ValueError('출입구 연결이 모호합니다')
+        if expected_id is not None and (not candidates or self._objects[candidates[0][1]]['id'] != expected_id):
+            raise ValueError('기존 문 ID와 연결되지 않아 재관측을 거부합니다')
         if candidates:
             record = self._objects[candidates[0][1]]
             if stamp == record['last_stamp_ns']:
