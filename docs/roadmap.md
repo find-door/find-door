@@ -9,11 +9,12 @@
 - [x] 문짝 0°/45°/90° world와 문 없는 벽 대조군 추가
 - [x] 거리 1/2/3m·정면/사선의 Gazebo RGB-D 수집 및 C 검출 성공표 — [36조건·108프레임 결과](door-experiment.md#전체-행렬-결과--2026-11-02), 문짝/문틀 기준 차이와 잘림 한계 기록
 - [ ] 문 데이터·학습/평가 분리 및 문 검출 학습 방향 결정
+  - [자료 계약·인벤토리](door-dataset.md)와 [문짝·출입구 라벨 검수 도구](door-label-review.md) 구현. 새 이중 bbox 사람 검수·장면 분할·추가 학습 판단은 미완료.
 - [ ] 깊이·주변 벽과 여러 프레임을 이용한 열림/닫힘/불명 판단
-  - 깊이 단일 관측 후보와 [정답 ROI 개발 진단](door-state-evaluation.md), [시간 종합 메모리](door-memory.md) 구현. 실제 검출·ROS 연결은 미완료.
+  - 깊이 단일 관측 후보와 [정답 ROI 개발 진단](door-state-evaluation.md), [시간 종합 메모리](door-memory.md) 구현. [실시간 검출·ROS 연결](door-live.md)과 [상태 전이](door-transition.md)까지 개발 검증. 독립 장면·실물 검증은 미완료.
 - [ ] 고정 문 위치·ID와 상태를 연결한 지도 저장·표시
   - [출입구·문턱 위치 추정 후보](doorway-evaluation.md)의 오프라인 연결 완료.
-  - [ROS 노드·마커·저장 서비스](door-ros.md) 기록 재생 및 [실시간 검출·LiDAR SLAM 동시 실행](door-live.md) 정지 관측 검증. 주행은 미검증.
+  - [ROS 노드·마커·저장 서비스](door-ros.md) 기록 재생 및 [실시간 검출·LiDAR SLAM 동시 실행](door-live.md) 정지 관측 검증. 짧은 직선 주행은 아래 기록을 따르며 회전·장거리는 미검증.
   - [실행 중 문 각도 변경](door-transition.md)의 동일 ID·위치 유지·unknown 경유 상태 전환 검증. 연속 경첩 회전·실물은 미검증.
   - [짧은 직선 후진·복귀](door-motion.md)의 주행 관측 검증. 회전·장거리·실물은 미검증.
 - [ ] 실제 촬영 영상 평가를 Gazebo 결과와 분리하고 과목 데모·보고서 준비

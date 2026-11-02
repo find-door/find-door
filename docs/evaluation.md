@@ -233,3 +233,14 @@ OFF는 6.63cm·급변 후보 0개입니다. 실효 파라미터는 `do_loop_clos
 [수치·한계·원자료·독립 검토](robot-readiness-evaluation.md), [설치·배포·도착 당일 명령](robot-deployment.md)을 참고합니다. ARM64·실물 드라이버·보정·정지·Jetson 성능·실물 정확도는 미검증입니다.
 
 배포 준비 구현 커밋 `a4b5eaa`의 소스 bundle 63개 파일을 실제 추출해 manifest 검증·두 런타임 패키지 재빌드까지 통과했습니다. 모델 가중치·드라이버·바이너리는 소스 bundle에 포함하지 않습니다.
+
+
+## 문짝·출입구 라벨 검수 도구 — 2026-11-03
+
+기준 `ec1a239` 이후 `v0.2.0-door-labels.1` 단계에서
+[오프라인 라벨 작성·검수](door-label-review.md)를 구현했다.
+86프레임 HTML 생성·원본 해시와 크기 검사·별도 수정본 적용을 실행했고 결과는 여전히 86 draft / 0 reviewed다.
+Firefox 158 headless의 실제 pointer 박스 입력, 프레임 이동, 명시적 검수 체크, 로딩/복원 중 편집 차단을 확인했다.
+수정본 검증 12개·기존 계약 39개 통과. 전체 오프라인 673개 통과·ROS 전용 2개 건너뜀. 원본 이미지·기존 라벨·외부 recon-report는 수정하지 않았다.
+[원문·도구 해시 요약](data/door-label-review-summary.json)을 보존했다.
+사람의 이중 bbox 검수·학습·독립 장면 분할·실제 RGB-D 깊이 평가는 아직 완료되지 않았다.
