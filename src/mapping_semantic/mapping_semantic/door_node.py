@@ -4,6 +4,7 @@ from collections import Counter, deque
 from copy import deepcopy
 import json
 import math
+import signal
 import time
 
 from mapping_semantic.core import (correction_delta, finite_vector, load_json, normalize_depth,
@@ -325,7 +326,11 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        if node is not None:
-            node.destroy_node()
-        if rclpy.ok():
-            rclpy.shutdown()
+        previous = signal.signal(signal.SIGINT, signal.SIG_IGN)
+        try:
+            if node is not None:
+                node.destroy_node()
+            if rclpy.ok():
+                rclpy.shutdown()
+        finally:
+            signal.signal(signal.SIGINT, previous)
