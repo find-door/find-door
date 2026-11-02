@@ -24,6 +24,7 @@ setup(
     tests_require=['pytest'],
     entry_points={'console_scripts': [
         'semantic_mapper = mapping_semantic.node:main',
+        'door_mapper = mapping_semantic.door_node:main',
         'nanodet_detect = mapping_semantic.nanodet_detector:main',
         'detector_node = mapping_semantic.detector_node:main',
     ]},
