@@ -29,11 +29,14 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--recon-root', type=Path, required=True)
     parser.add_argument('--timeout', type=float, default=120.)
+    parser.add_argument('--transition', action='store_true', help='닫힘 시작 후 같은 문을 열고 닫는 실제 센서 전이 검사')
     args = parser.parse_args()
     if (os.environ.get('ROS_DOMAIN_ID'), os.environ.get('GZ_PARTITION')) != ('12', 'codex'):
         parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 필요')
     if args.output.exists() or not math.isfinite(args.timeout) or args.timeout <= 0:
         parser.error('새 출력 경로와 양수 timeout이 필요합니다')
+    if args.transition and args.state != 'closed':
+        parser.error('전이 검사는 --state closed로 시작합니다')
     args.output = args.output.resolve()
     args.output.mkdir(parents=True)
     root = Path(__file__).resolve().parents[2]
@@ -93,6 +96,55 @@ def main():
                 break
         else:
             raise TimeoutError('LiDAR 지도·실시간 문 상태 확인 시간 초과')
+        if args.transition:
+            initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == 'closed')
+            if image[0] is not None:
+                PILImage.fromarray(bridge.imgmsg_to_cv2(image[0], desired_encoding='rgb8')).save(args.output / 'initial-rgb.png')
+            report['mode'] = 'live_gazebo_yoloe_lidar_slam_door_transition'
+            report['limitations'] = ['단일 문 모델·2m 정면·로봇 정지', '지도 정확도·실물·독립 장소 시험 아님']
+            report['transitions'] = []
+            for expected, angle in [('open', -math.pi/2), ('closed', 0.)]:
+                begin_ns = data['doors'][-1]['stamp_ns']
+                begin_wall = time.monotonic()
+                request = (f'name: "door_leaf", position: {{x: 0, y: -0.5, z: 0}}, '
+                           f'orientation: {{z: {math.sin(angle/2)}, w: {math.cos(angle/2)}}}')
+                command = ['gz', 'service', '-s', '/world/door_probe_v1/set_pose', '--reqtype', 'gz.msgs.Pose',
+                           '--reptype', 'gz.msgs.Boolean', '--timeout', '5000', '--req', request]
+                action = subprocess.run(command, capture_output=True, text=True, timeout=10)
+                event = {'expected_state': expected, 'command': command, 'stdout': action.stdout,
+                         'stderr': action.stderr, 'begin_sim_ns': begin_ns}
+                report['transitions'].append(event)
+                if action.returncode or 'data: true' not in action.stdout:
+                    raise RuntimeError(f'문 pose 변경 실패: {action.stdout} {action.stderr}')
+                history = []
+                end = time.monotonic() + args.timeout
+                while time.monotonic() < end:
+                    pump(.1)
+                    current = data['doors'][-1]
+                    objects = current['objects']
+                    history.append(current)
+                    matching = [obj for obj in objects if obj['id'] == initial['id']]
+                    if len(objects) != 1 or len(matching) != 1:
+                        event['history'] = history
+                        raise RuntimeError('전이 중 문 ID 손실·중복 발생')
+                    observed = matching[0]
+                    if observed['position'] != initial['position']:
+                        raise RuntimeError('전이 중 고정 문 위치 변경')
+                    if observed['state'] == expected and observed['last_stamp_ns'] > begin_ns:
+                        event.update(history=history, final=observed,
+                                     confirmation_wall_sec=time.monotonic()-begin_wall,
+                                     confirmation_sim_sec=(observed['last_stamp_ns']-begin_ns)/1e9,
+                                     unknown_seen=any(any(o['state']=='unknown' for o in h['objects']) for h in history))
+                        if image[0] is not None:
+                            path = args.output / f'transition-{expected}-rgb.png'
+                            PILImage.fromarray(bridge.imgmsg_to_cv2(image[0], desired_encoding='rgb8')).save(path)
+                            event['rgb'] = path.name
+                            event['rgb_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+                            event['rgb_stamp_ns'] = image[0].header.stamp.sec*1_000_000_000+image[0].header.stamp.nanosec
+                        break
+                else:
+                    event['history'] = history
+                    raise TimeoutError(f'문 {expected} 상태 확정 시간 초과')
         if node.count_publishers('/clock') != 1:
             raise RuntimeError('/clock 발행자 수 오류')
         grid = data['maps'][-1]
