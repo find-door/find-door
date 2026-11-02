@@ -1,5 +1,12 @@
 # mapping_semantic
 
+## 문 상태 깊이 후보
+
+`mapping_semantic.door_state.estimate_state`는 미터 깊이·K·출입구 ROI를 받아
+주변 벽 평면 대비 깊이로 open/closed/unknown과 근거를 반환하는 순수 Python 후보입니다.
+기존 mapper와 별도이며 ROS 문 지도 출력은 아직 연결하지 않았습니다.
+[정답 ROI 개발 진단과 한계](../../docs/door-state-evaluation.md)를 확인하세요.
+
 `detector_mode:=external_detections`는 별도 검출기가 발행한
 `/semantic/detections2d` (`vision_msgs/msg/Detection2DArray`)를 RGB·depth·CameraInfo와
 기본 4방향 exact-time 동기화합니다. 배열과 각 detection의 header도 RGB의 frame/stamp와
