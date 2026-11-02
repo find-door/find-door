@@ -13,11 +13,30 @@ import numpy as np
 from PIL import Image as PILImage, ImageDraw
 
 
+def motion_odom(message, now_ns):
+    """주행 검사에 쓰는 odom의 프레임·수치·관측 시각을 검증한다."""
+    if message is None or message.header.frame_id != 'odom' or message.child_frame_id != 'base_footprint':
+        raise ValueError('주행 odom 프레임 불일치')
+    p, q, stamp = message.pose.pose.position, message.pose.pose.orientation, message.header.stamp
+    values = [p.x, p.y, p.z, q.x, q.y, q.z, q.w]
+    if any(isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) for v in values):
+        raise ValueError('주행 odom에 유한하지 않은 좌표가 있습니다')
+    if not .99 <= math.sqrt(q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w) <= 1.01:
+        raise ValueError('주행 odom quaternion 오류')
+    if stamp.sec < 0 or not 0 <= stamp.nanosec < 1_000_000_000:
+        raise ValueError('주행 odom 시각 오류')
+    ns = stamp.sec*1_000_000_000+stamp.nanosec
+    if ns <= 0 or not -100_000_000 <= now_ns-ns <= 500_000_000:
+        raise ValueError('주행 odom이 오래됐거나 미래 시각입니다')
+    return p.x, p.y
+
+
 def main():
     import rclpy
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data, QoSProfile, DurabilityPolicy
-    from nav_msgs.msg import OccupancyGrid
+    from nav_msgs.msg import OccupancyGrid, Odometry
+    from geometry_msgs.msg import Twist
     from sensor_msgs.msg import Image, LaserScan
     from std_msgs.msg import String
     from std_srvs.srv import Trigger
@@ -30,6 +49,7 @@ def main():
     parser.add_argument('--recon-root', type=Path, required=True)
     parser.add_argument('--timeout', type=float, default=120.)
     parser.add_argument('--transition', action='store_true', help='닫힘 시작 후 같은 문을 열고 닫는 실제 센서 전이 검사')
+    parser.add_argument('--motion', action='store_true', help='격리된 Gazebo 로봇을 후진·복귀시키는 관측 검사')
     args = parser.parse_args()
     if (os.environ.get('ROS_DOMAIN_ID'), os.environ.get('GZ_PARTITION')) != ('12', 'codex'):
         parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 필요')
@@ -37,6 +57,8 @@ def main():
         parser.error('새 출력 경로와 양수 timeout이 필요합니다')
     if args.transition and args.state != 'closed':
         parser.error('전이 검사는 --state closed로 시작합니다')
+    if args.motion and args.transition:
+        parser.error('--motion과 --transition은 별도 실행으로 검사합니다')
     args.output = args.output.resolve()
     args.output.mkdir(parents=True)
     root = Path(__file__).resolve().parents[2]
@@ -45,6 +67,11 @@ def main():
     bridge = CvBridge()
     data = {'maps': [], 'doors': [], 'detector': [], 'scan_count': 0}
     image = [None]
+    odom = [None]
+    command_pub = node.create_publisher(Twist, '/cmd_vel', 10) if args.motion else None
+    motion_control_started = False
+    if args.motion:
+        node.create_subscription(Odometry, '/odom', lambda m: odom.__setitem__(0, m), qos_profile_sensor_data)
     transient = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
     node.create_subscription(OccupancyGrid, '/map', lambda m: data['maps'].append(m), transient)
     node.create_subscription(String, '/semantic/door_map', lambda m: data['doors'].append(json.loads(m.data)), transient)
@@ -96,6 +123,58 @@ def main():
                 break
         else:
             raise TimeoutError('LiDAR 지도·실시간 문 상태 확인 시간 초과')
+        if args.motion:
+            if odom[0] is None:
+                raise RuntimeError('주행 odom 입력 없음')
+            initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == args.state)
+            origin_x, origin_y = motion_odom(odom[0], data['doors'][-1]['stamp_ns'])
+            report.update(mode='live_gazebo_yoloe_lidar_slam_motion', motion=[],
+                          limitations=['단일 문 모델·정면 후진과 복귀', 'Gazebo pose odom, 휠 오차·실물·독립 장소 시험 아님'])
+            for label, velocity in [('retreat', -.1), ('return', .1)]:
+                begin_ns = data['doors'][-1]['stamp_ns']
+                begin_x = motion_odom(odom[0], begin_ns)[0]
+                stage = {'name': label, 'command_mps': velocity, 'duration_sim_sec': 5.,
+                         'begin_sim_ns': begin_ns, 'begin_odom_x': begin_x, 'history': []}
+                report['motion'].append(stage)
+                deadline = time.monotonic() + 30
+                while (data['doors'][-1]['stamp_ns']-begin_ns)/1e9 < 5.:
+                    if time.monotonic() > deadline:
+                        raise TimeoutError('주행 중 시뮬레이션 시각 정체')
+                    message = Twist()
+                    message.linear.x = velocity
+                    motion_control_started = True
+                    command_pub.publish(message)
+                    pump(.1)
+                    current = data['doors'][-1]
+                    px, py = motion_odom(odom[0], current['stamp_ns'])
+                    stage['history'].append({'map': current, 'odom_xy': [px, py]})
+                    if len(current['objects']) != 1 or current['objects'][0]['id'] != initial['id']:
+                        raise RuntimeError('주행 중 문 ID 손실·중복')
+                    if current['objects'][0]['position'] != initial['position']:
+                        raise RuntimeError('주행 중 문 anchor 위치 변경')
+                    if abs(py-origin_y) > .1:
+                        raise RuntimeError('예상 직선 경로에서 벗어남')
+                command_pub.publish(Twist())
+                pump(.4)
+                stage['stop_boundary_sim_ns'] = data['doors'][-1]['stamp_ns']
+                stage['end_odom_x'] = motion_odom(odom[0], stage['stop_boundary_sim_ns'])[0]
+                stage['travel_x_m'] = stage['end_odom_x']-begin_x
+                if abs(stage['travel_x_m']-velocity*5) > .1:
+                    raise RuntimeError('실제 odom 이동량이 목표 허용 범위 밖입니다')
+                settle = time.monotonic() + 10
+                while time.monotonic() < settle:
+                    current = data['doors'][-1]
+                    if (current['objects'] and current['objects'][0]['id']==initial['id']
+                            and current['objects'][0]['state']==args.state
+                            and current['objects'][0]['last_stamp_ns']>stage['stop_boundary_sim_ns']):
+                        stage['final'] = current
+                        break
+                    pump(.1)
+                else:
+                    raise TimeoutError('주행 후 새 관측의 문 상태 확인 실패')
+            report['return_error_m'] = abs(motion_odom(odom[0], data['doors'][-1]['stamp_ns'])[0]-origin_x)
+            if report['return_error_m'] > .1:
+                raise RuntimeError('초기 위치 복귀 오차 초과')
         if args.transition:
             initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == 'closed')
             if image[0] is not None:
@@ -195,6 +274,11 @@ def main():
         raise
     finally:
         cleanup_errors = []
+        if command_pub is not None and motion_control_started and rclpy.ok():
+            try:
+                command_pub.publish(Twist())
+            except Exception as exc:
+                cleanup_errors.append(f'정지 명령 실패: {exc}')
         for child in reversed(children):
             try:
                 stop_group(child)
