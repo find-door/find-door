@@ -1,0 +1,1236 @@
+{
+  "stage": "v0.2.0-door-view.1",
+  "date": "2026-11-03",
+  "results_path": "experiments/door_probe/view-detection-01/results.json",
+  "results_sha256": "6eb1d989079c6281a5e3b1c3c0576fb0dc8dba9e91b21a76dd62b6217455f4af",
+  "results": {
+    "status": "complete",
+    "expected_frames": 6,
+    "frames": [
+      {
+        "view": "low",
+        "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/low.png",
+        "sha256": "38a13952e31a9752f45db15f4a31ed756ed4c3ea06e0dbdcdf5c8610517d6499",
+        "stamp_ns": 3036000000,
+        "frame_id": "camera_color_optical_frame",
+        "k": [
+          499.4093345717091,
+          0.0,
+          320.0,
+          0.0,
+          499.4093345717091,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width": 640,
+        "height": 480,
+        "frame_bounds_unclipped": [
+          199.9347506330158,
+          -137.8149731993655,
+          440.06524936684747,
+          260.67744733587114
+        ],
+        "state": "closed",
+        "status": "complete",
+        "doors": [],
+        "door_count": 0,
+        "door_present": false,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-detection-01/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 0,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 83735040,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54096384,
+            "processing_time_seconds": 3.797252362011932
+          }
+        }
+      },
+      {
+        "view": "high",
+        "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/high.png",
+        "sha256": "400867994ab699096cbc9b6914f1ee75806789dfd0031626884591d9895805cf",
+        "stamp_ns": 3036000000,
+        "frame_id": "door_aux_optical_frame",
+        "k": [
+          499.40929412841797,
+          0.0,
+          320.0,
+          0.0,
+          499.40935134887695,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width": 640,
+        "height": 480,
+        "frame_bounds_unclipped": [
+          199.93476037534407,
+          41.61631984414209,
+          440.06523962465593,
+          440.108755635474
+        ],
+        "state": "closed",
+        "status": "complete",
+        "doors": [
+          {
+            "class": "door",
+            "source_label": "door",
+            "report_class": "door",
+            "candidate_for": null,
+            "confidence": 0.45082470774650574,
+            "bbox": [
+              218.64727783203125,
+              65.74276733398438,
+              414.70489501953125,
+              434.050048828125
+            ],
+            "mask_area": null
+          }
+        ],
+        "door_count": 1,
+        "door_present": true,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-detection-01/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54096384,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 83735040,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54404096,
+            "processing_time_seconds": 0.13948844803962857
+          }
+        }
+      },
+      {
+        "view": "low",
+        "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/low.png",
+        "sha256": "52534cd888a27cdff82f826c3106d180265e8f9cc1e5b733ea15dc5b6afa2cee",
+        "stamp_ns": 3036000000,
+        "frame_id": "camera_color_optical_frame",
+        "k": [
+          499.4093345717091,
+          0.0,
+          320.0,
+          0.0,
+          499.4093345717091,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width": 640,
+        "height": 480,
+        "frame_bounds_unclipped": [
+          199.9347506330158,
+          -137.8149731993655,
+          440.06524936684747,
+          260.67744733587114
+        ],
+        "state": "half",
+        "status": "complete",
+        "doors": [
+          {
+            "class": "door",
+            "source_label": "door",
+            "report_class": "door",
+            "candidate_for": null,
+            "confidence": 0.11596639454364777,
+            "bbox": [
+              286.71478271484375,
+              0.0,
+              420.41729736328125,
+              257.47314453125
+            ],
+            "mask_area": null
+          }
+        ],
+        "door_count": 1,
+        "door_present": true,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-detection-01/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54404096,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 84042752,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54404096,
+            "processing_time_seconds": 0.1335381589597091
+          }
+        }
+      },
+      {
+        "view": "high",
+        "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/high.png",
+        "sha256": "31dc9a8ddea0252562a086cbe201b77832bfb009f8312d06ff5b124433ae95a6",
+        "stamp_ns": 3036000000,
+        "frame_id": "door_aux_optical_frame",
+        "k": [
+          499.40929412841797,
+          0.0,
+          320.0,
+          0.0,
+          499.40935134887695,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width": 640,
+        "height": 480,
+        "frame_bounds_unclipped": [
+          199.93476037534407,
+          41.61631984414209,
+          440.06523962465593,
+          440.108755635474
+        ],
+        "state": "half",
+        "status": "complete",
+        "doors": [
+          {
+            "class": "door",
+            "source_label": "door",
+            "report_class": "door",
+            "candidate_for": null,
+            "confidence": 0.11520547419786453,
+            "bbox": [
+              285.91265869140625,
+              66.52752685546875,
+              420.75628662109375,
+              435.7171630859375
+            ],
+            "mask_area": null
+          }
+        ],
+        "door_count": 1,
+        "door_present": true,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-detection-01/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54404096,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 84042752,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54404096,
+            "processing_time_seconds": 0.13348166295327246
+          }
+        }
+      },
+      {
+        "view": "low",
+        "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/low.png",
+        "sha256": "f151f958e8d4f81dff363ad7d77d9645adc33200dd27be90258c5b0c3b52ca35",
+        "stamp_ns": 3036000000,
+        "frame_id": "camera_color_optical_frame",
+        "k": [
+          499.4093345717091,
+          0.0,
+          320.0,
+          0.0,
+          499.4093345717091,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width": 640,
+        "height": 480,
+        "frame_bounds_unclipped": [
+          199.9347506330158,
+          -137.8149731993655,
+          440.06524936684747,
+          260.67744733587114
+        ],
+        "state": "open",
+        "status": "complete",
+        "doors": [],
+        "door_count": 0,
+        "door_present": false,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-detection-01/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54404096,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 84042752,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54096384,
+            "processing_time_seconds": 0.13862176198745146
+          }
+        }
+      },
+      {
+        "view": "high",
+        "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/high.png",
+        "sha256": "e70aa2d70dcbe4e409fe476eddabf5fe4e8fa8fe41ede55ff7d85263c5437cf2",
+        "stamp_ns": 3036000000,
+        "frame_id": "door_aux_optical_frame",
+        "k": [
+          499.40929412841797,
+          0.0,
+          320.0,
+          0.0,
+          499.40935134887695,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width": 640,
+        "height": 480,
+        "frame_bounds_unclipped": [
+          199.93476037534407,
+          41.61631984414209,
+          440.06523962465593,
+          440.108755635474
+        ],
+        "state": "open",
+        "status": "complete",
+        "doors": [],
+        "door_count": 0,
+        "door_present": false,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-detection-01/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54096384,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 83735040,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54096384,
+            "processing_time_seconds": 0.11573841801146045
+          }
+        }
+      }
+    ],
+    "captures": [
+      {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/capture.json",
+        "sha256": "2e08f38dc8e5f23e7c96580fe16c77211b5dfa0ec4b08aa5d46e8fb7efb92aa9"
+      },
+      {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/capture.json",
+        "sha256": "76a289d6be3f30b0114f7cdcd12b31c971bd938c4b388467f74240e750489816"
+      },
+      {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/capture.json",
+        "sha256": "241c25602c375a17226828a48c4d8605ab4297fca1186163a0c7ded266d01372"
+      }
+    ],
+    "recon": {
+      "root": "/home/blind/cv-middle/CV-VLM/recon-report",
+      "revision": "fca8bb9c1c7c546c025e2a15f8811f5c1cd79e24",
+      "git_status_short": "",
+      "config_path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person.json",
+      "config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+      "config": {
+        "version": "0.1.0",
+        "prompts_config": "yoloe-door-person-prompts.json",
+        "checkpoint": "../../models/yoloe/yoloe-26n-seg.pt",
+        "embeddings": "../../models/yoloe/recon-door-person.npz",
+        "manifest": "../../models/yoloe/preparation-door-person.json",
+        "device": "0",
+        "imgsz": 640,
+        "max_det": 300,
+        "iou": 0.45,
+        "agnostic_nms": false,
+        "release_policy": "unload",
+        "include_mask_area": false,
+        "classes": [
+          {
+            "prompt": "door",
+            "class": "door",
+            "report_class": "door",
+            "confidence": 0.1
+          },
+          {
+            "prompt": "person",
+            "class": "person",
+            "report_class": "person",
+            "confidence": 0.25
+          }
+        ]
+      },
+      "assets": {
+        "checkpoint": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+          "sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b"
+        },
+        "embeddings": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+          "sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872"
+        },
+        "manifest": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+          "sha256": "8c9d29dd45d0b38cfd4fdf54f88d0cc4dc2f6f67d0e2645f47b543b0e45c401d"
+        },
+        "prompts_config": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+          "sha256": "ca3630eddb6426ce7d08977eaa4440901a0e441a883700b14abfa7e0b8806c81"
+        }
+      },
+      "sources_sha256": {
+        "src/recon_report/run.py": "df3abbc14a7be7ee923351525f34e9c2e05db495cfff515803b0fe7883c52a6a",
+        "src/recon_report/focused.py": "fb828d523627436f19642e2210e9670ee97c3b449600167c41a669af177153bd",
+        "src/recon_report/tasks/door_person.py": "3337107927f5995652052096a98951b4bfd26b04fa14005ce41a5684066a9150",
+        "src/recon_report/grounding/yoloe.py": "332116ebf849ade53a3aae8d10d79ff72d457560d4a1e5d68da51c8a4ccfd936"
+      }
+    },
+    "source_sha256": "df5e0f1f5123aa6de9682017089c27ab7445217245ab5ea705dc49b57683a962",
+    "view_validator_sha256": "5a75b66270574445d1d2d0b68aaecab52219ca92bc5692cfe42a39d82c7aabf3",
+    "worker_source_sha256": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+    "worker_pgid": 2582118,
+    "worker_start_ticks": 167269271,
+    "worker_group_gone": true,
+    "not_completed_frames": 0
+  },
+  "preregister_path": "experiments/door_probe/view-preregister-01/preregister.json",
+  "preregister_sha256": "887135970a2342fa07158c5986a328e146d41d79204b82e0b4bbfccf65dfa38f",
+  "preregister": {
+    "status": "before_inference",
+    "files": {
+      "docs/door-view-diagnostic.md": "110efa21674cbeab80c2b7f2703b127fa6cad5813c682383279219d9c38276dd",
+      "scripts/door_probe/view_detect.py": "df5e0f1f5123aa6de9682017089c27ab7445217245ab5ea705dc49b57683a962",
+      "scripts/door_probe/view_capture.py": "5a75b66270574445d1d2d0b68aaecab52219ca92bc5692cfe42a39d82c7aabf3",
+      "experiments/door_probe/view-closed-01/capture.json": "2e08f38dc8e5f23e7c96580fe16c77211b5dfa0ec4b08aa5d46e8fb7efb92aa9",
+      "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/world.sdf": "b1605ecf633b33c0c0e860e64da07c260bb480b5a5ac955bcd7ce434d19a575f",
+      "experiments/door_probe/view-half-01/capture.json": "76a289d6be3f30b0114f7cdcd12b31c971bd938c4b388467f74240e750489816",
+      "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/world.sdf": "8fcccfa4746f5019056b82c64afd7e656befb59c5b33c43822b885a5f5de2a52",
+      "experiments/door_probe/view-open-01/capture.json": "241c25602c375a17226828a48c4d8605ab4297fca1186163a0c7ded266d01372",
+      "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/world.sdf": "b9c62d0ab826650412c582d48c16fa3ee926998a863f9fb19d70b5b6fa2067b6"
+    },
+    "protocol_text": "# 낮은 로봇 시점과 전체 문 보조 시점의 검출 비교\n\n[금속문 개발 변형](door-scene-variation.md)의 닫힘·완전 열림 실패가 카메라 잘림과 관련 있는지 진단한다.\n벽으로 분류했다는 로그는 없으며, 이전 실패는 문 클래스·점수·bbox 조건을 통과하는 seed가 없었다는 뜻이다.\n\n## 추론 전 고정 조건\n\n- 닫힘/반열림/완전 열림을 각각 한 번 생성하고, 같은 실행에서 낮은 로봇 RGB와 높은 보조 RGB를 한 장씩 촬영한다.\n- 수평 위치는 두 광학 원점 모두 (−3, 0)m, 시선 방향 +x다. 높이만 바꾼다. 보조 높이는 1.16m다.\n- 두 시점은 모두 640×480·수평 FOV 1.1397rad·15Hz, 같은 렌더 엔진·조명·재질을 사용한다.\n  FOV·해상도 수치는 외부 센서 설정을 읽어 확인했으며 외부 모델·설정은 수정하거나 복사하지 않는다.\n- 두 시점의 CameraInfo K가 일치하고 왜곡은 0이어야 한다. 각 RGB/CameraInfo는 exact 시각,\n  두 시점 간 RGB 시각 차이는 50ms 이내다. 정적 장면이며 정확한 동시 촬영이라고 가정하지 않는다.\n- 기존 TF에서 로봇 카메라의 수평 위치·광축을 확인한다. 보조 위치·방향은 별도 정적 SDF 설정이다.\n- 문틀 외곽의 기하 투영이 낮은 시점에서는 영상 밖으로, 보조 시점에서는 영상 안으로 들어오는지 검사한다.\n  투영 검사는 전체 문틀의 기하 구도이며 가림 여부·문짝 bbox 정답을 뜻하지 않는다.\n- 같은 기존 YOLOE worker·문 confidence 0.1·설정·가중치로 6장을 순차 추론한다. 학습·VLM 호출은 하지 않는다.\n- 주 지표는 각 영상의 유효 door 검출 유무·개수다. 실행 오류·누락도 6장 분모에 남긴다.\n  문짝/출입구 정답 bbox 검수 전이므로 IoU·precision/recall·위치 정확도를 주장하지 않는다.\n\n기존 실패 시험은 2m였고 이번 쌍 비교는 전체 문틀이 같은 K로 들어오는 **3m**다.\n따라서 두 시점 간 높이의 영향은 3m 조건에서 비교하며 이전 2m 실패의 원인을 직접 확정하지 않는다.\n높이를 바꾸면 투시·바닥 비율·문 손잡이 노출도 함께 달라지므로 잘림 하나만 독립적으로 조작한 실험은 아니다.\n보조 RGB는 검출 진단용이며 깊이 투영·문 상태·지도 알고리즘에 입력하지 않는다.\n\n```bash\n# door-live.md의 ROS·오버레이·도메인·DDS 환경을 준비한 뒤 각 조건을 따로 실행\n/usr/bin/python3 scripts/door_probe/view_capture.py --state closed \\\n  --output experiments/door_probe/view-closed-new\n# 종료·정리 후 --state half / --state open을 별도 새 출력 경로로 실행\n```\n\n## 결과\n\n🚧 추론 전 조건만 고정했으며 실제 검출 결과는 아직 미기록이다.\n이 자료는 기존 장면에서 파생한 개발 진단이며 독립 시험셋·실제 영상 결과가 아니다.\n",
+    "recon": {
+      "root": "/home/blind/cv-middle/CV-VLM/recon-report",
+      "revision": "fca8bb9c1c7c546c025e2a15f8811f5c1cd79e24",
+      "git_status_short": "",
+      "config_path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person.json",
+      "config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+      "config": {
+        "version": "0.1.0",
+        "prompts_config": "yoloe-door-person-prompts.json",
+        "checkpoint": "../../models/yoloe/yoloe-26n-seg.pt",
+        "embeddings": "../../models/yoloe/recon-door-person.npz",
+        "manifest": "../../models/yoloe/preparation-door-person.json",
+        "device": "0",
+        "imgsz": 640,
+        "max_det": 300,
+        "iou": 0.45,
+        "agnostic_nms": false,
+        "release_policy": "unload",
+        "include_mask_area": false,
+        "classes": [
+          {
+            "prompt": "door",
+            "class": "door",
+            "report_class": "door",
+            "confidence": 0.1
+          },
+          {
+            "prompt": "person",
+            "class": "person",
+            "report_class": "person",
+            "confidence": 0.25
+          }
+        ]
+      },
+      "assets": {
+        "checkpoint": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+          "sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b"
+        },
+        "embeddings": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+          "sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872"
+        },
+        "manifest": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+          "sha256": "8c9d29dd45d0b38cfd4fdf54f88d0cc4dc2f6f67d0e2645f47b543b0e45c401d"
+        },
+        "prompts_config": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+          "sha256": "ca3630eddb6426ce7d08977eaa4440901a0e441a883700b14abfa7e0b8806c81"
+        }
+      },
+      "sources_sha256": {
+        "src/recon_report/run.py": "df3abbc14a7be7ee923351525f34e9c2e05db495cfff515803b0fe7883c52a6a",
+        "src/recon_report/focused.py": "fb828d523627436f19642e2210e9670ee97c3b449600167c41a669af177153bd",
+        "src/recon_report/tasks/door_person.py": "3337107927f5995652052096a98951b4bfd26b04fa14005ce41a5684066a9150",
+        "src/recon_report/grounding/yoloe.py": "332116ebf849ade53a3aae8d10d79ff72d457560d4a1e5d68da51c8a4ccfd936"
+      }
+    },
+    "expected_frames": 6
+  },
+  "captures": [
+    {
+      "path": "experiments/door_probe/view-closed-01/capture.json",
+      "sha256": "2e08f38dc8e5f23e7c96580fe16c77211b5dfa0ec4b08aa5d46e8fb7efb92aa9",
+      "metadata": {
+        "state": "closed",
+        "status": "complete",
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/world.sdf",
+        "world_sha256": "b1605ecf633b33c0c0e860e64da07c260bb480b5a5ac955bcd7ce434d19a575f",
+        "source_sha256": "2c0069eea8a8e50154da6f7364f44144cc2e2e3f7174b78e6241693b1a875f83",
+        "variant_source_sha256": "8edbb34ca9a7167694f652f67a05f12b30a2d1fcdd40dfc38125b456834a2d64",
+        "distance_m": 3,
+        "aux_position": [
+          -3.0,
+          0.0,
+          1.16
+        ],
+        "aux_optical_quaternion": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "notes": [
+          "보조 RGB 검출 진단이며 깊이 상태·지도·실물 평가가 아님"
+        ],
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_gazebo",
+            "indoor.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/world.sdf",
+            "x:=-3.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2579785
+        },
+        "aux_bridge": {
+          "command": [
+            "ros2",
+            "run",
+            "ros_gz_bridge",
+            "parameter_bridge",
+            "/door_aux/image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/door_aux/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo"
+          ],
+          "pgid": 2579786
+        },
+        "frames": [
+          {
+            "view": "low",
+            "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/low.png",
+            "sha256": "38a13952e31a9752f45db15f4a31ed756ed4c3ea06e0dbdcdf5c8610517d6499",
+            "stamp_ns": 3036000000,
+            "frame_id": "camera_color_optical_frame",
+            "k": [
+              499.4093345717091,
+              0.0,
+              320.0,
+              0.0,
+              499.4093345717091,
+              240.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "width": 640,
+            "height": 480,
+            "frame_bounds_unclipped": [
+              199.9347506330158,
+              -137.8149731993655,
+              440.06524936684747,
+              260.67744733587114
+            ]
+          },
+          {
+            "view": "high",
+            "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/high.png",
+            "sha256": "400867994ab699096cbc9b6914f1ee75806789dfd0031626884591d9895805cf",
+            "stamp_ns": 3036000000,
+            "frame_id": "door_aux_optical_frame",
+            "k": [
+              499.40929412841797,
+              0.0,
+              320.0,
+              0.0,
+              499.40935134887695,
+              240.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "width": 640,
+            "height": 480,
+            "frame_bounds_unclipped": [
+              199.93476037534407,
+              41.61631984414209,
+              440.06523962465593,
+              440.108755635474
+            ]
+          }
+        ],
+        "robot_camera": {
+          "translation": [
+            -3.0000000003087464,
+            -5.708492489472916e-13,
+            0.11986400052876744
+          ],
+          "quaternion": [
+            -0.4999999983923329,
+            0.4999999983980804,
+            -0.5000000016021087,
+            0.500000001607478
+          ]
+        },
+        "pair_stamp_delta_ns": 0,
+        "clock_publishers": 1
+      },
+      "revalidated_with_current_source_sha256": "5a75b66270574445d1d2d0b68aaecab52219ca92bc5692cfe42a39d82c7aabf3",
+      "groups_gone": true
+    },
+    {
+      "path": "experiments/door_probe/view-half-01/capture.json",
+      "sha256": "76a289d6be3f30b0114f7cdcd12b31c971bd938c4b388467f74240e750489816",
+      "metadata": {
+        "state": "half",
+        "status": "complete",
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/world.sdf",
+        "world_sha256": "8fcccfa4746f5019056b82c64afd7e656befb59c5b33c43822b885a5f5de2a52",
+        "source_sha256": "2c0069eea8a8e50154da6f7364f44144cc2e2e3f7174b78e6241693b1a875f83",
+        "variant_source_sha256": "8edbb34ca9a7167694f652f67a05f12b30a2d1fcdd40dfc38125b456834a2d64",
+        "distance_m": 3,
+        "aux_position": [
+          -3.0,
+          0.0,
+          1.16
+        ],
+        "aux_optical_quaternion": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "notes": [
+          "보조 RGB 검출 진단이며 깊이 상태·지도·실물 평가가 아님"
+        ],
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_gazebo",
+            "indoor.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/world.sdf",
+            "x:=-3.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2580552
+        },
+        "aux_bridge": {
+          "command": [
+            "ros2",
+            "run",
+            "ros_gz_bridge",
+            "parameter_bridge",
+            "/door_aux/image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/door_aux/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo"
+          ],
+          "pgid": 2580553
+        },
+        "frames": [
+          {
+            "view": "low",
+            "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/low.png",
+            "sha256": "52534cd888a27cdff82f826c3106d180265e8f9cc1e5b733ea15dc5b6afa2cee",
+            "stamp_ns": 3036000000,
+            "frame_id": "camera_color_optical_frame",
+            "k": [
+              499.4093345717091,
+              0.0,
+              320.0,
+              0.0,
+              499.4093345717091,
+              240.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "width": 640,
+            "height": 480,
+            "frame_bounds_unclipped": [
+              199.9347506330158,
+              -137.8149731993655,
+              440.06524936684747,
+              260.67744733587114
+            ]
+          },
+          {
+            "view": "high",
+            "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/high.png",
+            "sha256": "31dc9a8ddea0252562a086cbe201b77832bfb009f8312d06ff5b124433ae95a6",
+            "stamp_ns": 3036000000,
+            "frame_id": "door_aux_optical_frame",
+            "k": [
+              499.40929412841797,
+              0.0,
+              320.0,
+              0.0,
+              499.40935134887695,
+              240.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "width": 640,
+            "height": 480,
+            "frame_bounds_unclipped": [
+              199.93476037534407,
+              41.61631984414209,
+              440.06523962465593,
+              440.108755635474
+            ]
+          }
+        ],
+        "robot_camera": {
+          "translation": [
+            -3.0000000003087464,
+            -5.708492489472916e-13,
+            0.11986400052876744
+          ],
+          "quaternion": [
+            -0.4999999983923329,
+            0.4999999983980804,
+            -0.5000000016021087,
+            0.500000001607478
+          ]
+        },
+        "pair_stamp_delta_ns": 0,
+        "clock_publishers": 1
+      },
+      "revalidated_with_current_source_sha256": "5a75b66270574445d1d2d0b68aaecab52219ca92bc5692cfe42a39d82c7aabf3",
+      "groups_gone": true
+    },
+    {
+      "path": "experiments/door_probe/view-open-01/capture.json",
+      "sha256": "241c25602c375a17226828a48c4d8605ab4297fca1186163a0c7ded266d01372",
+      "metadata": {
+        "state": "open",
+        "status": "complete",
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/world.sdf",
+        "world_sha256": "b9c62d0ab826650412c582d48c16fa3ee926998a863f9fb19d70b5b6fa2067b6",
+        "source_sha256": "5a75b66270574445d1d2d0b68aaecab52219ca92bc5692cfe42a39d82c7aabf3",
+        "variant_source_sha256": "8edbb34ca9a7167694f652f67a05f12b30a2d1fcdd40dfc38125b456834a2d64",
+        "distance_m": 3,
+        "aux_position": [
+          -3.0,
+          0.0,
+          1.16
+        ],
+        "aux_optical_quaternion": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "notes": [
+          "보조 RGB 검출 진단이며 깊이 상태·지도·실물 평가가 아님"
+        ],
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_gazebo",
+            "indoor.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/world.sdf",
+            "x:=-3.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2581379
+        },
+        "aux_bridge": {
+          "command": [
+            "ros2",
+            "run",
+            "ros_gz_bridge",
+            "parameter_bridge",
+            "/door_aux/image@sensor_msgs/msg/Image[gz.msgs.Image",
+            "/door_aux/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo"
+          ],
+          "pgid": 2581380
+        },
+        "frames": [
+          {
+            "view": "low",
+            "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/low.png",
+            "sha256": "f151f958e8d4f81dff363ad7d77d9645adc33200dd27be90258c5b0c3b52ca35",
+            "stamp_ns": 3036000000,
+            "frame_id": "camera_color_optical_frame",
+            "k": [
+              499.4093345717091,
+              0.0,
+              320.0,
+              0.0,
+              499.4093345717091,
+              240.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "width": 640,
+            "height": 480,
+            "frame_bounds_unclipped": [
+              199.9347506330158,
+              -137.8149731993655,
+              440.06524936684747,
+              260.67744733587114
+            ]
+          },
+          {
+            "view": "high",
+            "rgb": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/high.png",
+            "sha256": "e70aa2d70dcbe4e409fe476eddabf5fe4e8fa8fe41ede55ff7d85263c5437cf2",
+            "stamp_ns": 3036000000,
+            "frame_id": "door_aux_optical_frame",
+            "k": [
+              499.40929412841797,
+              0.0,
+              320.0,
+              0.0,
+              499.40935134887695,
+              240.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "width": 640,
+            "height": 480,
+            "frame_bounds_unclipped": [
+              199.93476037534407,
+              41.61631984414209,
+              440.06523962465593,
+              440.108755635474
+            ]
+          }
+        ],
+        "robot_camera": {
+          "translation": [
+            -3.0000000003087464,
+            -5.708492489472916e-13,
+            0.11986400052876744
+          ],
+          "quaternion": [
+            -0.4999999983923329,
+            0.4999999983980804,
+            -0.5000000016021087,
+            0.500000001607478
+          ]
+        },
+        "pair_stamp_delta_ns": 0,
+        "clock_publishers": 1
+      },
+      "revalidated_with_current_source_sha256": "5a75b66270574445d1d2d0b68aaecab52219ca92bc5692cfe42a39d82c7aabf3",
+      "groups_gone": true
+    }
+  ],
+  "tests": {
+    "view_metadata_tests": 18,
+    "offline_passed": 713,
+    "ros_specific_skipped": 2,
+    "markdown_files": 56,
+    "markdown_errors": 0
+  },
+  "figure": {
+    "path": "docs/images/door-view-diagnostic.png",
+    "sha256": "35fa5f8058f358072426ff54559ee3f1acd4a38411f353db5b509b8c66dc0f6b",
+    "generator_sha256": "3284b2eb8447e58d3a1e57188c7b670fb6fd3a4b2baca50c94bf66983fb0f01c"
+  },
+  "limitations": [
+    "3m 높이 비교이며 이전 2m 실패의 원인을 직접 확정하지 않음",
+    "문짝·출입구 정답 bbox를 검수하지 않아 유효 door 존재와 정확한 TP를 구분함",
+    "높이와 함께 투시·바닥비율·손잡이 노출이 바뀌어 잘림만 독립 조작한 시험이 아님",
+    "새 학습·VLM·깊이 상태·지도 추론을 수행하지 않음"
+  ],
+  "raw_replies": [
+    {
+      "path": "experiments/door_probe/view-detection-01/closed-low-raw.json",
+      "sha256": "c38dca0808dd08ed076d3588deb32217d8f23ed53fe7815a911de9a143407f7b"
+    },
+    {
+      "path": "experiments/door_probe/view-detection-01/closed-high-raw.json",
+      "sha256": "ef6be540d8751713de4d58ffa21c744998855f44cd766e04eb214fb28a323e64"
+    },
+    {
+      "path": "experiments/door_probe/view-detection-01/half-low-raw.json",
+      "sha256": "1b286b4907e0fcc23ba72bd36f8601ebf2c66b9c74b9fbc0395518f20fbedfc6"
+    },
+    {
+      "path": "experiments/door_probe/view-detection-01/half-high-raw.json",
+      "sha256": "bb464addf541320764192a8131cdd15fd87da23744760f9797cd870758fcb7f2"
+    },
+    {
+      "path": "experiments/door_probe/view-detection-01/open-low-raw.json",
+      "sha256": "7ca323a95ffbd539a063c525ce90061c2c0a76408b299aba4b1cc1f3ecd949ef"
+    },
+    {
+      "path": "experiments/door_probe/view-detection-01/open-high-raw.json",
+      "sha256": "10dbb210516d94bd17c4aeb0f1246444676ecd9e0391c394d7e52f57fc30ed97"
+    }
+  ],
+  "worker_client_source_sha256": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63"
+}
