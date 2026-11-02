@@ -21,5 +21,6 @@
 | [0008](0008-semantic-map-policy.md) | 객체 지도 정책 | 재투영 / 고정 지도 / epoch 초기화 | 정적 객체·고정 지도 우선·큰 보정 초기화 | ✅ 제한 범위 결정 |
 | [0009](0009-door-ros-pipeline.md) | 문 상태 ROS 연결 | 일반 객체 / 문 전용 노드 / 전용 메시지 | 문 위치·상태 분리, 관측 시각 TF, 개발 JSON·마커 | ✅ 개발 연결 결정 |
 | [0010](0010-live-door-detector.md) | 실시간 검출 연결 | 프레임별 CLI / ROS 직접 적재 / 상주 worker | 별도 가상환경 worker와 원본 RGB-D 묶음 발행 | ✅ 로컬 개발 연결 |
+| [0011](0011-door-dataset-contract.md) | 라벨·분할 계약 | 단일 bbox / 이중 bbox / 마스크 | 문짝·출입구 분리, RGB 해시·장면 그룹 누출 검증 | ✅ 개발 자료 계약 |
 
 > 번호는 예정값입니다. 실제로 작성하는 순서대로 번호를 붙이고, 이 표와 [architecture.md](../architecture.md#7-미결정-사항)를 함께 갱신합니다.

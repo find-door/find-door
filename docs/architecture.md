@@ -157,6 +157,9 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 | LiDAR 장착 방향 (3D) | 수평 / 세로 / 비스듬히(30~45°) / 수평+세로 2개 | 0006 (예정) |
 | 검출 개발 기준선 | NanoDet CPU·COCO80, 실물 목표 모델·Jetson 검증 유보 | [ADR-0007](adr/0007-cpu-detector-baseline.md) |
 | 객체 지도 정책 | 정적 객체만 누적, 큰 보정에 epoch 초기화·고정 지도 우선 | [ADR-0008](adr/0008-semantic-map-policy.md) |
+| 문 ROS 개발 연결 | 문 위치·상태 분리, 관측 시각 TF·JSON·마커 | [ADR-0009](adr/0009-door-ros-pipeline.md) |
+| 문 실시간 검출 연결 | 별도 가상환경의 상주 YOLOE와 원본 RGB-D 묶음 발행 | [ADR-0010](adr/0010-live-door-detector.md) |
+| 문 자료 계약 | 문짝·출입구 이중 bbox, 장면 그룹 분할·해시 중복 검증 | [ADR-0011](adr/0011-door-dataset-contract.md) |
 | 결정됨: 개발 플랫폼 | JetAuto (지상 로봇) | [ADR-0001](adr/0001-dev-platform-jetauto.md) |
 | 결정됨: 개발 환경 | Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic | [ADR-0002](adr/0002-dev-environment.md) |
 | 결정됨: `wf_gazebo` 재사용 | 오버레이 의존 (`worker_following_ws`) | [ADR-0003](adr/0003-wf-gazebo-reuse.md) |
