@@ -77,6 +77,7 @@ def main():
     parser.add_argument('--transition', action='store_true', help='닫힘 시작 후 같은 문을 열고 닫는 실제 센서 전이 검사')
     parser.add_argument('--motion', action='store_true', help='격리된 Gazebo 로봇을 후진·복귀시키는 관측 검사')
     parser.add_argument('--rotate', action='store_true', help='격리된 Gazebo 로봇의 제자리 회전·복귀 관측 검사')
+    parser.add_argument('--world', type=Path, help='정지 관측용 별도 world. 기대 상태는 --state로 지정')
     args = parser.parse_args()
     if (os.environ.get('ROS_DOMAIN_ID'), os.environ.get('GZ_PARTITION')) != ('12', 'codex'):
         parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 필요')
@@ -86,6 +87,8 @@ def main():
         parser.error('전이 검사는 --state closed로 시작합니다')
     if sum([args.motion, args.transition, args.rotate]) > 1:
         parser.error('--motion, --transition, --rotate는 별도 실행으로 검사합니다')
+    if args.world and (not args.world.is_file() or any([args.motion, args.transition, args.rotate])):
+        parser.error('--world는 존재하는 파일로 정지 관측에서만 사용합니다')
     args.output = args.output.resolve()
     args.output.mkdir(parents=True)
     root = Path(__file__).resolve().parents[2]
@@ -134,7 +137,8 @@ def main():
         pump(2)
         if node.count_publishers('/clock'):
             raise RuntimeError('도메인에 기존 /clock 발행자 존재')
-        world = root / f'src/mapping_gazebo/worlds/door_probe_{args.state}.sdf'
+        world = args.world.resolve() if args.world else root / f'src/mapping_gazebo/worlds/door_probe_{args.state}.sdf'
+        report['world_path'] = str(world)
         report['world_sha256'] = hashlib.sha256(world.read_bytes()).hexdigest()
         x, y, yaw = spawn_pose(2, 0)
         start('simulation', ['ros2', 'launch', 'mapping_slam', 'simulation.launch.py', 'gui:=false',
@@ -393,6 +397,14 @@ def main():
                 cleanup_recorded_launch(record, os.getpid())
         if cleanup_errors:
             report.update(status='failed', cleanup_errors=cleanup_errors)
+        if report['status'] == 'failed' and image[0] is not None:
+            try:
+                path = args.output / 'failure-rgb.png'
+                PILImage.fromarray(bridge.imgmsg_to_cv2(image[0], desired_encoding='rgb8')).save(path)
+                report['failure_rgb'] = dict(path=path.name, sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                                            stamp_ns=image[0].header.stamp.sec*1_000_000_000+image[0].header.stamp.nanosec)
+            except Exception as exc:
+                report.setdefault('cleanup_errors', []).append(f'실패 영상 보존 오류: {exc}')
         report['source_sha256'] = {name: hashlib.sha256((root / 'src/mapping_semantic/mapping_semantic' / name).read_bytes()).hexdigest()
                                   for name in ['live_detector.py', 'detector_worker.py', 'door_node.py', 'doorway.py', 'door_state.py', 'door_map.py', 'door_position.py']}
         report['harness_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()

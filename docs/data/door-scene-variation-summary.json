@@ -1,0 +1,457 @@
+{
+  "stage": "v0.2.0-door-scene.1",
+  "date": "2026-11-03",
+  "category": "derived_development_variation",
+  "preregister": {
+    "path": "experiments/door_probe/metal-scene-01/preregister.json",
+    "sha256": "156faa245f9351d1d77a32cd46db2b84f7217f72808f7602850fa1e89f558afb",
+    "content": {
+      "status": "before_execution",
+      "conditions": [
+        {
+          "name": "closed",
+          "expected_state": "closed"
+        },
+        {
+          "name": "half",
+          "expected_state": "open"
+        },
+        {
+          "name": "open",
+          "expected_state": "open"
+        }
+      ],
+      "timeout_wall_sec": 45,
+      "files": {
+        "docs/door-scene-variation.md": "5ac31852aea4d81baa6099d34023c13241529602485dfd88a5926ecc373656dd",
+        "scripts/door_probe/live_check.py": "163083bd8825a045b6bf9d6f2a8a26abade39667ddf04ed32512926ab0ccc60c",
+        "scripts/door_probe/scene_variant.py": "8edbb34ca9a7167694f652f67a05f12b30a2d1fcdd40dfc38125b456834a2d64",
+        "experiments/door_probe/metal-scene-01/door_metal_open.sdf": "e8cdd10a74900ebcddb6635f31243f657466f4bceccf041c68d877e1ada39e5e",
+        "experiments/door_probe/metal-scene-01/door_metal_closed.sdf": "bb5c93a6aa108ad2860dba7a636e2ec99532759efcd5b27b4bf492799988f286",
+        "experiments/door_probe/metal-scene-01/door_metal_half.sdf": "50b3f2a90e46f642282191fc2e1c7227fc33d1bb428076d1956484e8a358a060",
+        "src/mapping_semantic/mapping_semantic/door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "src/mapping_semantic/mapping_semantic/door_dataset.py": "8d3e1fb0457e4c9d1ca14fea963351837dbfde213d706432c634e156ce3234c4",
+        "src/mapping_semantic/mapping_semantic/door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "src/mapping_semantic/mapping_semantic/door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+        "src/mapping_semantic/mapping_semantic/door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "src/mapping_semantic/mapping_semantic/doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e"
+      }
+    },
+    "protocol_snapshot_path": "experiments/door_probe/metal-scene-01/protocol-before-run.txt",
+    "protocol_text": "# 평판 금속문 Gazebo 장면 변형 시험\n\n기존 목재 패널 문 장면에서 개발한 검출·상태 파이프라인이 다른 외형에도 동작하는지 확인한다.\n기존 world와 제품 알고리즘·임계값·모델 가중치는 바꾸지 않는다.\n이 장면은 기존 생성기에서 파생한 **개발 변형**이며 완전히 독립된 시험 장소나 실물 자료가 아니다.\n\n## 실행 전 고정 조건\n\n[scene_variant.py](../scripts/door_probe/scene_variant.py)는 기존 world XML의 별도 사본을 변환한다.\n문폭 1.2m·높이 2.2m, 경첩 y=−0.6m, 평판 청회색 문짝과 회색 문틀을 사용한다.\n목재 패널·몰딩을 제거하고 손잡이는 보존한다. 뒤벽은 x=4m에서 3m로 당기고 측벽 길이도 맞춘다.\n시각 형상과 충돌 형상을 함께 변환하며 로봇·센서는 기존 외부 오버레이를 그대로 사용한다.\n기존 생성기와 저장소 world 파일은 변경하지 않고 결과는 Git 제외 실험 폴더에 생성한다.\n\n| 조건 | 문짝 각도 | 기대 상태 | 로봇 조건 |\n|---|---:|---|---|\n| closed | 0° | closed | 2m 정면 정지 |\n| half | 45° | open | 2m 정면 정지 |\n| open | 90° | open | 2m 정면 정지 |\n\n각 조건에서 실제 Gazebo RGB-D→기존 YOLOE→출입구 추정→시간 종합→지도 저장을 실행한다.\n모델 적재를 포함해 하네스 시작 후 45초 내 LiDAR 지도와 기대 상태가 확인돼야 한다.\n성공 출력에도 문 객체가 정확히 1개인지 별도 확인한다. unknown·누락·반대 상태·실행 오류는 실패다.\n통과는 최초 상태 확정과 저장 확인이며, 45초 전 구간의 정확도나 상태 유지율을 의미하지 않는다.\n문 pose·각도는 정답에만 사용하고 검출·상태 노드 입력에 넣지 않는다.\n실패 시에도 마지막 지도·검출 상태와 RGB를 보존한다. 실패를 없애기 위해 이 시험의 외형·임계값을 조정하지 않는다.\n\n```bash\n/usr/bin/python3 scripts/door_probe/scene_variant.py \\\n  --output-dir experiments/door_probe/metal-scene-new\n# door-live.md의 ROS·오버레이·도메인·DDS 환경을 준비한 뒤\n/usr/bin/python3 scripts/door_probe/live_check.py --state closed \\\n  --world experiments/door_probe/metal-scene-new/door_metal_closed.sdf \\\n  --recon-root /home/blind/cv-middle/CV-VLM/recon-report \\\n  --output experiments/door_probe/metal-closed-new --timeout 45\n# 정리 후 half/open world는 각각 --state open으로 별도 실행\n```\n\n`--world`는 정지 관측에서만 허용하며 기존 전이·주행·회전 모드와 결합하지 않는다.\n기존 `/clock` 발행자가 있으면 시작을 거부하고 생성한 프로세스 그룹만 종료한다.\n\n## 결과\n\n🚧 실행 전 조건을 기록한 상태이며 실제 결과는 아직 미기록이다.\n이 시험으로 문짝 bbox 정답 평가·검출 추가 학습 판단·독립 장면 분할·실제 RGB-D 평가를 완료했다고 간주하지 않는다.\n"
+  },
+  "runs": [
+    {
+      "condition": "closed",
+      "angle_deg": 0,
+      "expected_state": "closed",
+      "passed": false,
+      "path": "experiments/door_probe/metal-closed-01/check.json",
+      "sha256": "769fa1a09bc7255ee2b15be71fbc08915fa875326c4133980be20f273cb66007",
+      "status": "failed",
+      "error": "TimeoutError: LiDAR 지도·실시간 문 상태 확인 시간 초과",
+      "worker_group_gone": true,
+      "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_closed.sdf",
+      "world_sha256": "bb5c93a6aa108ad2860dba7a636e2ec99532759efcd5b27b4bf492799988f286",
+      "door_map": {
+        "map_id": "live-door-probe-closed-metal-closed-01",
+        "frame": "map",
+        "stamp_ns": 40619000000,
+        "observation_stamp_ns": 0,
+        "epoch": 0,
+        "objects": [],
+        "counters": {
+          "received_rgb": 232,
+          "received_depth": 232,
+          "received_camera_info": 232,
+          "received_detections": 232,
+          "synchronized": 232,
+          "no_detection": 232
+        },
+        "last_error": ""
+      },
+      "saved_memory": null,
+      "saved_path": null,
+      "saved_sha256": null,
+      "detector_status": {
+        "counters": {
+          "received": 616,
+          "submitted": 233,
+          "replaced": 382,
+          "completed": 232
+        },
+        "epoch": 0,
+        "worker_pgid": 2572693,
+        "worker_start_ticks": 167191477,
+        "latency_sec": 0.1385542619973421,
+        "source_age_sec": 0.169,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/tmp/find-door-live-rx4hdq5r/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54096384,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 83735040,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54096384,
+            "processing_time_seconds": 0.13120679499115795
+          }
+        },
+        "last_error": ""
+      },
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+      },
+      "harness_sha256": "163083bd8825a045b6bf9d6f2a8a26abade39667ddf04ed32512926ab0ccc60c",
+      "rgb": {
+        "path": "experiments/door_probe/metal-closed-01/failure-rgb.png",
+        "sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+        "stamp_ns": 40656000000,
+        "tracked_path": "docs/images/door-metal/closed.png"
+      }
+    },
+    {
+      "condition": "half",
+      "angle_deg": 45,
+      "expected_state": "open",
+      "passed": true,
+      "path": "experiments/door_probe/metal-half-01/check.json",
+      "sha256": "5450e88ba3df3d4720c6246e0119172166fa4c3bae4f3af9382cdabc4a5a8228",
+      "status": "complete",
+      "error": null,
+      "worker_group_gone": true,
+      "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_half.sdf",
+      "world_sha256": "50b3f2a90e46f642282191fc2e1c7227fc33d1bb428076d1956484e8a358a060",
+      "door_map": {
+        "map_id": "live-door-probe-open-metal-half-01",
+        "frame": "map",
+        "stamp_ns": 4825000000,
+        "observation_stamp_ns": 4489000000,
+        "epoch": 0,
+        "objects": [
+          {
+            "id": "door_000001",
+            "position": [
+              -0.05000006470974183,
+              4.191309836388943e-08,
+              0.0027256377781369467
+            ],
+            "state": "open",
+            "last_stamp_ns": 4489000000,
+            "observations": 4
+          }
+        ],
+        "counters": {
+          "received_rgb": 5,
+          "received_depth": 5,
+          "received_camera_info": 5,
+          "received_detections": 5,
+          "synchronized": 5,
+          "no_detection": 1,
+          "processed": 4
+        },
+        "last_error": ""
+      },
+      "saved_memory": {
+        "door_map_schema_version": 1,
+        "map_id": "live-door-probe-open-metal-half-01",
+        "frame": "map",
+        "config": {
+          "association_distance": 0.25,
+          "minimum_observations": 3,
+          "state_ttl_sec": 2.0,
+          "ambiguity_distance_m": 0.05
+        },
+        "next_id": 2,
+        "watermark_ns": 4489000000,
+        "objects": [
+          {
+            "id": "door_000001",
+            "position": [
+              -0.05000006470974183,
+              4.191309836388943e-08,
+              0.0027256377781369467
+            ],
+            "state": "open",
+            "last_stamp_ns": 4489000000,
+            "observations": 4
+          }
+        ]
+      },
+      "saved_path": "experiments/door_probe/metal-half-01/doors.json",
+      "saved_sha256": "dfb42594cac89c913da47b7aa221a0527912e24c23345dc8de25df2663d80b0f",
+      "detector_status": {
+        "counters": {
+          "received": 74,
+          "submitted": 7,
+          "replaced": 67,
+          "completed": 6
+        },
+        "epoch": 0,
+        "worker_pgid": 2573698,
+        "worker_start_ticks": 167197666,
+        "latency_sec": 0.18059932003961876,
+        "source_age_sec": 0.226,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/tmp/find-door-live-3xm_y6f9/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54404096,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 84042752,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54404096,
+            "processing_time_seconds": 0.14159842795925215
+          }
+        },
+        "last_error": ""
+      },
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+      },
+      "harness_sha256": "163083bd8825a045b6bf9d6f2a8a26abade39667ddf04ed32512926ab0ccc60c",
+      "rgb": {
+        "path": "experiments/door_probe/metal-half-01/rgb.png",
+        "sha256": "f23d9c7248b2454c9c555393c544b040a2970df7c36de0269bb89c24f22684e5",
+        "stamp_ns": 4818000000,
+        "tracked_path": "docs/images/door-metal/half.png"
+      }
+    },
+    {
+      "condition": "open",
+      "angle_deg": 90,
+      "expected_state": "open",
+      "passed": false,
+      "path": "experiments/door_probe/metal-open-01/check.json",
+      "sha256": "8dd5b335d9c4d7d809d9d53b113eaefdd026cd8a8a73dd44325443aac53a2f21",
+      "status": "failed",
+      "error": "TimeoutError: LiDAR 지도·실시간 문 상태 확인 시간 초과",
+      "worker_group_gone": true,
+      "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_open.sdf",
+      "world_sha256": "e8cdd10a74900ebcddb6635f31243f657466f4bceccf041c68d877e1ada39e5e",
+      "door_map": {
+        "map_id": "live-door-probe-open-metal-open-01",
+        "frame": "map",
+        "stamp_ns": 40597000000,
+        "observation_stamp_ns": 0,
+        "epoch": 0,
+        "objects": [],
+        "counters": {
+          "received_rgb": 236,
+          "received_depth": 236,
+          "received_camera_info": 236,
+          "received_detections": 236,
+          "synchronized": 236,
+          "no_detection": 236
+        },
+        "last_error": ""
+      },
+      "saved_memory": null,
+      "saved_path": null,
+      "saved_sha256": null,
+      "detector_status": {
+        "counters": {
+          "received": 615,
+          "submitted": 237,
+          "replaced": 377,
+          "completed": 236
+        },
+        "epoch": 0,
+        "worker_pgid": 2574365,
+        "worker_start_ticks": 167202135,
+        "latency_sec": 0.13989064999623224,
+        "source_age_sec": 0.215,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "/tmp/find-door-live-biirknvt/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54096384,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 83735040,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54096384,
+            "processing_time_seconds": 0.1345876189880073
+          }
+        },
+        "last_error": ""
+      },
+      "source_sha256": {
+        "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+        "detector_worker.py": "eb238ad926d0c48ad5c02b33d329382ebdac89667702b24454978227c6d26f80",
+        "door_node.py": "01cdc2051763c1fa5102113b7d9f957899787c4a18f6b06e05c46bdfd0d4c75e",
+        "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+        "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+        "door_map.py": "ee6b1dfcf2f2df542f8f2f4205c4753084c3c121ef6cd9258e95cfb28956a940",
+        "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144"
+      },
+      "harness_sha256": "163083bd8825a045b6bf9d6f2a8a26abade39667ddf04ed32512926ab0ccc60c",
+      "rgb": {
+        "path": "experiments/door_probe/metal-open-01/failure-rgb.png",
+        "sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+        "stamp_ns": 40591000000,
+        "tracked_path": "docs/images/door-metal/open.png"
+      }
+    }
+  ],
+  "total_conditions": 3,
+  "passed_conditions": 1,
+  "tests": {
+    "offline_passed": 695,
+    "ros_specific_skipped": 2,
+    "variant_tests": 5,
+    "world_motion_variant_tests": 42,
+    "markdown_files": 55,
+    "markdown_errors": 0
+  },
+  "limitations": [
+    "같은 기본 장면에서 파생한 개발 변형이며 독립 시험셋이 아님",
+    "평판 색상과 기하를 바꿨지만 금속 반사·깊이 결손을 물리 재현하지 않음",
+    "폭·높이·패널·색상·뒤벽이 함께 바뀌어 원인을 분리할 수 없음",
+    "낮은 로봇 카메라의 문 상단 잘림이 유지됨",
+    "45초는 두 launch를 시작한 뒤 최초 확정을 기다리는 벽시계 제한이며 전체 프레임 정확도가 아님"
+  ]
+}
