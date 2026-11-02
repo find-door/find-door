@@ -1,5 +1,9 @@
 # mapping_semantic
 
+`mapping_semantic.door_map.DoorMap`은 호출자가 제공하는 고정 문 위치에 대해
+ID 유지·세 번 연속 상태 종합·관측 만료·JSON 복원을 제공합니다.
+[문 메모리 계약과 진단](../../docs/door-memory.md)을 참고하세요. 기존 ROS mapper와의 연결은 진행 전입니다.
+
 ## 문 상태 깊이 후보
 
 `mapping_semantic.door_state.estimate_state`는 미터 깊이·K·출입구 ROI를 받아
