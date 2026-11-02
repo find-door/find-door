@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><title>문짝·출입구 라벨 검수</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font:16px sans-serif;max-width:1100px;margin:24px auto;padding:0 16px;background:#f6f7f9;color:#18222d}
+button,select,input{font:inherit;margin:4px;padding:7px}canvas{max-width:100%;background:#ddd;touch-action:none;border:1px solid #697b8b}
+textarea{width:100%;height:210px;font:14px monospace;box-sizing:border-box}#error{color:#a71919;min-height:1.5em}
+.controls{display:flex;flex-wrap:wrap;align-items:center}#meta{white-space:pre-wrap}button{cursor:pointer}
+</style>
+<h1>문짝·출입구 라벨 검수</h1>
+<p>문짝은 보이는 부분, 출입구는 문틀을 포함한 영역입니다. 일부 가림은 보이는 박스를 그립니다.
+완전 가림은 occluded, 판단 불가는 unknown과 null로 기록합니다. 박스 색: 문짝 파랑 / 출입구 주황.</p>
+<p>네트워크 전송 없이 이 페이지에서 편집합니다. <b>작업 중 수정본 JSON을 내려받아 보관하세요.</b>
+페이지를 닫으면 저장하지 않은 작업은 사라집니다. 기존 라벨의 검수 상태는 승계하지 않습니다.</p>
+<div class="controls"><button id="prev">이전</button><select id="frame" aria-label="프레임"></select><button id="next">다음</button>
+<button id="download">수정본 JSON 저장</button><label>수정본 이어서 열기 <input id="restore" type="file" accept=".json"></label></div>
+<p id="meta"></p><canvas id="canvas" width="640" height="480"></canvas>
+<div class="controls"><label>문 <select id="door"></select></label><label>대상 <select id="target"><option value="leaf">문짝</option><option value="doorway">출입구</option></select></label>
+<button id="add">문 추가</button><button id="remove">선택 문 삭제</button><button id="unknown">선택 대상 불명</button><button id="occluded">선택 대상 완전 가림</button></div>
+<p>선택한 대상은 영상 위에서 드래그해 박스를 그립니다. 문 상태·문 ID는 아래 JSON에서 수정하고 적용하세요.
+반열림도 open이며 영상만으로 판단하기 어려우면 unknown을 사용합니다. 문이 없는 대조군은 빈 목록 []입니다.</p>
+<textarea id="labels" aria-label="문 라벨 JSON" spellcheck="false"></textarea><button id="commit">JSON 적용</button>
+<label><input id="reviewed" type="checkbox">이 프레임의 모든 문·박스·상태·누락 여부 검수 완료</label>
+<p id="error" role="alert"></p>
+<script>
+'use strict';
+const data = /*__DATA__*/;
+const $ = id => document.getElementById(id);
+let index=0, start=null, image=new Image(), ready=false, restoring=false;
+const canvas=$('canvas'), ctx=canvas.getContext('2d');
+const clone=value=>JSON.parse(JSON.stringify(value));
+const current=()=>data.frames[index];
+function fail(error){$('error').textContent=String(error.message || error);}
+function validDoors(doors,w,h){
+ if(!Array.isArray(doors)) throw Error('문 라벨은 목록이어야 합니다.');
+ const ids=new Set();
+ for(const door of doors){
+  if(!door || typeof door!=='object' || typeof door.id!=='string' || !door.id.trim() || ids.has(door.id)) throw Error('고유한 문 ID가 필요합니다.');
+  ids.add(door.id);
+  if(!['open','closed','unknown'].includes(door.state)) throw Error('state 값을 확인하세요.');
+  for(const target of ['leaf','doorway']){
+   const v=door[target+'_visibility'], b=door[target+'_bbox'];
+   if(!['visible','occluded','unknown'].includes(v)) throw Error('가시성 값을 확인하세요.');
+   if(v==='visible'){
+    if(!Array.isArray(b)||b.length!==4||!b.every(Number.isFinite)||!(0<=b[0]&&b[0]<b[2]&&b[2]<=w&&0<=b[1]&&b[1]<b[3]&&b[3]<=h)) throw Error('영상 안의 양수 면적 xyxy 박스가 필요합니다.');
+   }else if(b!==null) throw Error('비가시·불명 대상의 박스는 null이어야 합니다.');
+  }
+ }
+}
+function saveEditor(){
+ if(!ready || restoring)throw Error('영상 로딩 또는 복원 중입니다.');
+ const doors=JSON.parse($('labels').value);
+ validDoors(doors,canvas.width,canvas.height);
+ if(JSON.stringify(doors)!==JSON.stringify(current().doors)) current().reviewed=false;
+ current().doors=doors;
+}
+function renderLabels(selected=0){
+ const f=current(); $('labels').value=JSON.stringify(f.doors,null,2);
+ $('door').replaceChildren(); f.doors.forEach((d,i)=>{const o=new Option(d.id,String(i));$('door').add(o);});
+ $('door').value=String(Math.min(selected,f.doors.length-1)); $('reviewed').checked=f.reviewed;draw();
+}
+function draw(){
+ if(!ready)return;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0);
+ for(const d of current().doors)for(const t of ['leaf','doorway']){
+  const b=d[t+'_bbox'];if(!b)continue;
+  ctx.strokeStyle=t==='leaf'?'#0077ff':'#ff8800';ctx.lineWidth=2;ctx.strokeRect(b[0],b[1],b[2]-b[0],b[3]-b[1]);
+  ctx.fillStyle=ctx.strokeStyle;ctx.font='14px sans-serif';ctx.fillText(d.id+' '+t,b[0]+3,Math.max(16,b[1]+16));
+ }
+}
+function controls(enabled){
+ for(const id of ['labels','commit','reviewed','download','add','remove','unknown','occluded','restore','frame','prev','next','door','target'])$(id).disabled=!enabled;
+}
+function show(next){
+ ready=false;controls(false);start=null;index=next;$('frame').value=String(index);$('error').textContent='';
+ const f=current();$('meta').textContent=`${index+1}/${data.frames.length} · ${f.id}\n${f.environment} · ${f.group_id} · ${f.split}`;
+ const loaded=new Image();image=loaded;
+ loaded.onload=()=>{if(image!==loaded)return;canvas.width=loaded.naturalWidth;canvas.height=loaded.naturalHeight;ready=true;controls(true);renderLabels();};
+ loaded.onerror=()=>fail('영상 로드 실패');loaded.src=f.image;
+}
+function navigate(next){try{if(!ready || restoring)throw Error('영상 로딩 또는 복원 중입니다.');saveEditor();show(next);}catch(e){fail(e);}}
+function patch(){return {schema_version:1,base_sha256:data.base_sha256,frames:data.frames.map(f=>({id:f.id,doors:clone(f.doors),reviewed:f.reviewed}))};}
+function point(e){const r=canvas.getBoundingClientRect();return [Math.max(0,Math.min(canvas.width,(e.clientX-r.left)*canvas.width/r.width)),Math.max(0,Math.min(canvas.height,(e.clientY-r.top)*canvas.height/r.height))];}
+function mutate(action){try{if(!ready || restoring)throw Error('영상 로딩 또는 복원 중입니다.');saveEditor();const selected=Number($('door').value);action(current(),selected);current().reviewed=false;renderLabels(selected);$('error').textContent='';}catch(e){fail(e);}}
+canvas.onpointerdown=e=>{try{if(!ready)return;saveEditor();if(!current().doors.length)throw Error('먼저 문을 추가하세요.');start=point(e);canvas.setPointerCapture(e.pointerId);}catch(err){fail(err);}};
+canvas.onpointerup=e=>{if(!start)return;const end=point(e),begin=start;start=null;mutate((f,i)=>{const b=[Math.min(begin[0],end[0]),Math.min(begin[1],end[1]),Math.max(begin[0],end[0]),Math.max(begin[1],end[1])];if(b[0]===b[2]||b[1]===b[3])throw Error('박스 면적이 0입니다.');f.doors[i][$('target').value+'_bbox']=b;f.doors[i][$('target').value+'_visibility']='visible';});};
+canvas.onpointercancel=()=>{start=null;};
+$('prev').onclick=()=>navigate(Math.max(0,index-1));$('next').onclick=()=>navigate(Math.min(data.frames.length-1,index+1));
+$('frame').onchange=e=>{const next=Number(e.target.value);$('frame').value=String(index);navigate(next);};
+$('commit').onclick=()=>{try{saveEditor();renderLabels();$('error').textContent='';}catch(e){fail(e);}};
+$('labels').oninput=()=>{current().reviewed=false;$('reviewed').checked=false;};
+$('reviewed').onchange=e=>{const checked=e.target.checked;if(!checked)current().reviewed=false;try{saveEditor();current().reviewed=checked;}catch(err){current().reviewed=false;e.target.checked=false;fail(err);}};
+$('add').onclick=()=>mutate(f=>{let n=1;while(f.doors.some(d=>d.id==='door_'+n))n++;f.doors.push({id:'door_'+n,state:'unknown',leaf_bbox:null,doorway_bbox:null,leaf_visibility:'unknown',doorway_visibility:'unknown'});});
+$('remove').onclick=()=>mutate((f,i)=>{if(i>=0)f.doors.splice(i,1);});
+for(const v of ['unknown','occluded'])$(v).onclick=()=>mutate((f,i)=>{if(!f.doors[i])throw Error('문을 선택하세요.');f.doors[i][$('target').value+'_bbox']=null;f.doors[i][$('target').value+'_visibility']=v;});
+$('download').onclick=()=>{try{saveEditor();const url=URL.createObjectURL(new Blob([JSON.stringify(patch(),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='door-label-patch.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('reviewed').checked=current().reviewed;}catch(e){fail(e);}};
+$('restore').onchange=async e=>{if(restoring)return;restoring=true;controls(false);try{
+ const p=JSON.parse(await e.target.files[0].text());
+ if(p.schema_version!==1||p.base_sha256!==data.base_sha256||!Array.isArray(p.frames)||p.frames.length!==data.frames.length)throw Error('원본과 다른 수정본입니다.');
+ const updates=new Map();for(const f of p.frames){if(!f||typeof f.id!=='string'||typeof f.reviewed!=='boolean'||updates.has(f.id))throw Error('수정본 프레임 오류');updates.set(f.id,f);}
+ for(const f of data.frames){const update=updates.get(f.id);if(!update)throw Error('프레임 누락');const img=new Image();img.src=f.image;await img.decode();validDoors(update.doors,img.naturalWidth,img.naturalHeight);}
+ for(const f of data.frames){f.doors=clone(updates.get(f.id).doors);f.reviewed=updates.get(f.id).reviewed;}show(index);
+ }catch(err){fail(err);}finally{restoring=false;controls(ready);e.target.value='';}};
+data.frames.forEach((f,i)=>$('frame').add(new Option(f.id,String(i))));
+if(data.frames.length)show(0);else fail('프레임이 없습니다.');
+</script></html>

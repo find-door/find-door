@@ -1,0 +1,73 @@
+{
+  "stage": "v0.2.0-door-labels.1",
+  "date": "2026-11-03",
+  "artifacts": [
+    {
+      "path": "experiments/door_probe/dataset-intake-03/dataset.json",
+      "sha256": "0eef254c814be2449e6839383423c386a5624cbb296942a8bac8b102359d3f5f"
+    },
+    {
+      "path": "experiments/door_probe/dataset-intake-03/review-03.html",
+      "sha256": "67aabd45d9f589d6e0edf367f2a13d7ee53119cec46ff656f9bca8de2414e537"
+    },
+    {
+      "path": "experiments/door_probe/dataset-intake-03/review-browser-check-04.json",
+      "sha256": "1461348b7111c8bd8375ac5e0e2c9e2a1597aa8493d8234747e96ee1803a4e12"
+    },
+    {
+      "path": "experiments/door_probe/dataset-intake-03/nochange-patch.json",
+      "sha256": "ea5f8464d7d38aa7db08d613da5f72a9842d9a743490e651a008b82332914d7f"
+    },
+    {
+      "path": "experiments/door_probe/dataset-intake-03/nochange-applied.json",
+      "sha256": "ca8741cba7ca047f20872b1ae4f61d0c347c313b421df2b6de7c0b7cf6e05be0"
+    },
+    {
+      "path": "scripts/door_probe/label_review.py",
+      "sha256": "5338944ef6c0cc91fc978b666d9ea8ed3f2c6e676c5ff36c5e2fee2b03b500a1"
+    },
+    {
+      "path": "scripts/door_probe/label_review.html",
+      "sha256": "d53ef0a75203cb90579635337ca38fdb97d081b0462a09b323495a77d462a236"
+    },
+    {
+      "path": "scripts/door_probe/review_browser_check.mjs",
+      "sha256": "9c820c766fba7ff9c646975bcb0a75c69b9bf779b6747d184c833399b42c7fa7"
+    }
+  ],
+  "browser_check": {
+    "status": "passed",
+    "browser": "158.0",
+    "frames": 86,
+    "checks": [
+      "image_loaded",
+      "pointer_bbox",
+      "explicit_review",
+      "uncheck_with_invalid_json",
+      "loading_guard",
+      "restore_patch",
+      "restore_edit_guard",
+      "patch_export"
+    ],
+    "limitations": [
+      "headless UI 동작 검사이며 사람 라벨 검수·정답 평가가 아님"
+    ]
+  },
+  "nochange_apply": {
+    "frames": 86,
+    "reviewed": 0,
+    "draft": 86
+  },
+  "limitations": [
+    "브라우저 시험 편집은 실제 검수 라벨로 저장하지 않음",
+    "실제 사람이 검수한 이중 bbox는 0프레임",
+    "실제 RGB-D 자료와 독립 장면 분할은 미확보·미완료"
+  ],
+  "tests": {
+    "offline_passed": 673,
+    "ros_specific_skipped": 2,
+    "focused_contract_and_patch_passed": 51,
+    "markdown_files": 53,
+    "markdown_errors": 0
+  }
+}
