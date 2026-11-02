@@ -11,6 +11,7 @@
 [순간 문 각도 전이](docs/door-transition.md), [짧은 직선 주행](docs/door-motion.md),
 [작은 제자리 회전](docs/door-rotation.md)에서도 ID·상태를 확인했습니다.
 문 검출 추가 학습 필요성 평가, 큰 회전·장거리·독립 장소·실제 촬영 자료 검증은 남아 있습니다.
+[평판 금속문 개발 변형](docs/door-scene-variation.md)은 반열림만 성공했고 닫힘·완전 열림은 검출 실패로 남았습니다.
 실행 계약·조건별 결과·실제 카메라 비교 그림은 [문 실험](docs/door-experiment.md)을 따릅니다.
 Gazebo와 실제 촬영 영상의 평가는 별도로 기록합니다.
 
