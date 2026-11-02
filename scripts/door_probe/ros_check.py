@@ -219,7 +219,7 @@ def main():
         report['last_map'] = latest[-1] if latest else None
         package = Path(__file__).resolve().parents[2] / 'src/mapping_semantic/mapping_semantic'
         report['source_sha256'] = {name: hashlib.sha256((package / name).read_bytes()).hexdigest()
-                                   for name in ['door_node.py', 'doorway.py', 'door_position.py', 'door_state.py', 'door_map.py']}
+                                   for name in ['door_node.py', 'doorway.py', 'door_position.py', 'door_state.py', 'door_map.py', 'door_reobservation.py']}
         report['dds_profile'] = os.environ.get('FASTRTPS_DEFAULT_PROFILES_FILE')
         if process is not None:
             stop_group(process)

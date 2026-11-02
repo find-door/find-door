@@ -78,6 +78,8 @@ def main():
     parser.add_argument('--motion', action='store_true', help='격리된 Gazebo 로봇을 후진·복귀시키는 관측 검사')
     parser.add_argument('--rotate', action='store_true', help='격리된 Gazebo 로봇의 제자리 회전·복귀 관측 검사')
     parser.add_argument('--world', type=Path, help='정지 관측용 별도 world. 기대 상태는 --state로 지정')
+    parser.add_argument('--known-door-cycle', action='store_true', help='별도 반열림 world에서 알려진 문의 무검출 재관측 비교')
+    parser.add_argument('--reobserve-known-doors', choices=['true', 'false'], default='true')
     args = parser.parse_args()
     if (os.environ.get('ROS_DOMAIN_ID'), os.environ.get('GZ_PARTITION')) != ('12', 'codex'):
         parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 필요')
@@ -85,10 +87,12 @@ def main():
         parser.error('새 출력 경로와 양수 timeout이 필요합니다')
     if args.transition and args.state != 'closed':
         parser.error('전이 검사는 --state closed로 시작합니다')
-    if sum([args.motion, args.transition, args.rotate]) > 1:
-        parser.error('--motion, --transition, --rotate는 별도 실행으로 검사합니다')
+    if sum([args.motion, args.transition, args.rotate, args.known_door_cycle]) > 1:
+        parser.error('주행·전이·회전·기존 문 재관측은 별도 실행으로 검사합니다')
     if args.world and (not args.world.is_file() or any([args.motion, args.transition, args.rotate])):
         parser.error('--world는 존재하는 파일로 정지 관측에서만 사용합니다')
+    if args.known_door_cycle and (args.world is None or args.state != 'open'):
+        parser.error('--known-door-cycle은 별도 half world와 --state open이 필요합니다')
     args.output = args.output.resolve()
     args.output.mkdir(parents=True)
     root = Path(__file__).resolve().parents[2]
@@ -144,7 +148,7 @@ def main():
         start('simulation', ['ros2', 'launch', 'mapping_slam', 'simulation.launch.py', 'gui:=false',
                              f'world:={world}', f'x:={x}', f'y:={y}', f'yaw:={yaw}'])
         start('doors', ['ros2', 'launch', 'mapping_semantic', 'live_doors.launch.py',
-                        f'recon_root:={args.recon_root.resolve()}', f'map_id:=live-door-probe-{args.state}-{args.output.name}',
+                        f'recon_root:={args.recon_root.resolve()}', f'reobserve_known_doors:={args.reobserve_known_doors}', f'map_id:=live-door-probe-{args.state}-{args.output.name}',
                         f'output_path:={args.output / "doors.json"}'])
         deadline = time.monotonic() + args.timeout
         while time.monotonic() < deadline:
@@ -271,6 +275,62 @@ def main():
             report['return_xy_error_m'] = math.hypot(px-origin_x, py-origin_y)
             if report['return_yaw_error_rad'] > .04 or report['return_xy_error_m'] > .1:
                 raise RuntimeError('초기 방향·위치 복귀 오차 초과')
+        if args.known_door_cycle:
+            import xml.etree.ElementTree as ET
+            xml = ET.parse(world).getroot().find('world')
+            leaf = xml.find("model[@name='door_leaf']")
+            hinge = list(map(float, leaf.findtext('pose').split()))[:3]
+            initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == 'open')
+            enabled = args.reobserve_known_doors == 'true'
+            report.update(mode='known_door_rgbd_reobservation', initial_state='open',
+                          reobserve_known_doors=enabled, known_door_cycle=[],
+                          limitations=['단일 반열림 문에서 먼저 검출 확인한 뒤 순간 각도 변경',
+                                       '처음 보는 열린 문 검출·독립 장소·실물·연속 경첩 시험 아님'])
+            for expected, angle in [('open', -math.pi/2), ('closed', 0.)]:
+                begin_ns = data['doors'][-1]['stamp_ns']
+                initial_reobserved = data['doors'][-1]['counters'].get('reobserved', 0)
+                initial_no_detection = data['doors'][-1]['counters'].get('no_detection', 0)
+                request = (f'name: "door_leaf", position: {{x: {hinge[0]}, y: {hinge[1]}, z: {hinge[2]}}}, '
+                           f'orientation: {{z: {math.sin(angle/2)}, w: {math.cos(angle/2)}}}')
+                command = ['gz', 'service', '-s', f'/world/{xml.get("name")}/set_pose', '--reqtype', 'gz.msgs.Pose',
+                           '--reptype', 'gz.msgs.Boolean', '--timeout', '5000', '--req', request]
+                action = subprocess.run(command, capture_output=True, text=True, timeout=10)
+                event = dict(expected_state=expected, required_output=expected if enabled else 'unknown',
+                             begin_sim_ns=begin_ns, command=command, stdout=action.stdout,
+                             stderr=action.stderr, history=[])
+                report['known_door_cycle'].append(event)
+                if action.returncode or 'data: true' not in action.stdout:
+                    raise RuntimeError('기존 문 각도 변경 실패')
+                deadline = time.monotonic() + args.timeout
+                while time.monotonic() < deadline:
+                    pump(.1)
+                    current = data['doors'][-1]
+                    event['history'].append(current)
+                    if len(current['objects']) != 1 or current['objects'][0]['id'] != initial['id']:
+                        raise RuntimeError('기존 문 재관측 중 ID 손실·중복')
+                    observed = current['objects'][0]
+                    if observed['position'] != initial['position']:
+                        raise RuntimeError('기존 문 재관측 중 anchor 변경')
+                    reobserved = current['counters'].get('reobserved', 0)-initial_reobserved
+                    no_detection = current['counters'].get('no_detection', 0)-initial_no_detection
+                    age_ns = current['stamp_ns']-observed['last_stamp_ns']
+                    fresh = (observed['last_stamp_ns'] > begin_ns and age_ns < 500_000_000) if enabled else age_ns > 2_000_000_000
+                    gain_ok = reobserved > 0 if enabled else reobserved == 0
+                    if (current['stamp_ns']-begin_ns >= 3_000_000_000 and no_detection > 0 and gain_ok and fresh
+                            and observed['state'] == event['required_output']):
+                        event.update(final=current, reobserved_gain=reobserved, no_detection_gain=no_detection,
+                                     unknown_seen=any(h['objects'][0]['state']=='unknown' for h in event['history']),
+                                     elapsed_sim_sec=(current['stamp_ns']-begin_ns)/1e9)
+                        if image[0] is not None:
+                            path = args.output/f'known-{expected}-rgb.png'
+                            PILImage.fromarray(bridge.imgmsg_to_cv2(image[0], desired_encoding='rgb8')).save(path)
+                            event['rgb'] = path.name
+                            event['rgb_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+                            event['rgb_stamp_ns'] = image[0].header.stamp.sec*1_000_000_000+image[0].header.stamp.nanosec
+                        break
+                else:
+                    raise TimeoutError('기존 문 무검출 재관측 조건 확인 시간 초과')
+            report['final_truth_state'] = 'closed'
         if args.transition:
             initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == 'closed')
             if image[0] is not None:
@@ -354,7 +414,7 @@ def main():
             gx = (math.cos(theta)*px+math.sin(theta)*py)/grid.info.resolution
             gy = (-math.sin(theta)*px+math.cos(theta)*py)/grid.info.resolution
             u, v = gx*4+40, (grid.info.height-1-gy)*4+40
-            draw.ellipse((u-4, v-4, u+4, v+4), fill='green' if obj['state']=='open' else 'red')
+            draw.ellipse((u-4, v-4, u+4, v+4), fill={'open':'green', 'closed':'red', 'unknown':'orange'}[obj['state']])
             draw.text((u+5, v+5), obj['state'], fill='blue')
         canvas.save(args.output / 'map-doors.png')
         report['map_metadata'] = {'width': grid.info.width, 'height': grid.info.height,
@@ -406,7 +466,7 @@ def main():
             except Exception as exc:
                 report.setdefault('cleanup_errors', []).append(f'실패 영상 보존 오류: {exc}')
         report['source_sha256'] = {name: hashlib.sha256((root / 'src/mapping_semantic/mapping_semantic' / name).read_bytes()).hexdigest()
-                                  for name in ['live_detector.py', 'detector_worker.py', 'door_node.py', 'doorway.py', 'door_state.py', 'door_map.py', 'door_position.py']}
+                                  for name in ['live_detector.py', 'detector_worker.py', 'door_node.py', 'doorway.py', 'door_state.py', 'door_map.py', 'door_position.py', 'door_reobservation.py']}
         report['harness_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
         report['dds_profile'] = os.environ.get('FASTRTPS_DEFAULT_PROFILES_FILE')
         (args.output / 'check.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')

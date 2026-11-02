@@ -285,3 +285,17 @@ odom·회전 판정 24검사, 전체 오프라인 690검사 통과·ROS 전용 2
 이전 2m 실패의 원인을 직접 확정하지 않으며 높이에 따른 투시·잘림·손잡이 노출을 구분하지 않는다.
 [사전 조건·촬영·모델·설정·원 응답 해시](data/door-view-diagnostic-summary.json)와 실제 RGB 비교 그림을 보존했다.
 18개 경계 검사·전체 오프라인 713개 통과·ROS 전용 2개 건너뜀. 제품·외부 오버레이·가중치는 변경하지 않았다.
+
+
+## 알려진 출입구의 무검출 RGB-D 재관측 — 2026-11-03
+
+기준 `0b4e6ae` 이후 `v0.2.0-door-reobserve.1`에서 [ADR-0012](adr/0012-known-door-reobservation.md)를 구현했다.
+문 검출로 확인한 출입구의 평면 영역을 현재 카메라에 재투영하고, 현재 RGB-D의 문틀·벽·문턱 기하를 대조해
+새 ID 생성 없이 같은 문의 상태를 갱신한다. epoch/load 때 캐시를 비우고 정상 검출 처리는 캐시 생성 실패와 분리했다.
+평판 금속문 반열림을 먼저 확인한 뒤 완전 열림→닫힘으로 순간 변경한 [Gazebo ON/OFF 비교](door-reobservation.md)에서
+ON은 무검출 재관측 15/21회로 open/closed를 갱신했고 OFF는 TTL 뒤 unknown이 됐다.
+모든 기록의 ID·anchor 유지와 두 worker 그룹 소멸, 실제 slam_toolbox 지도 발행자 1개를 확인했다.
+[원문·모델·설정·소스·하네스·저장 지도 해시](data/door-reobservation-summary.json)를 보존했다.
+처음 보는 완전 열림 문의 검출 성능·독립 장소·실물 정확도를 개선했다고 주장하지 않는다.
+전체 오프라인 729개 통과·ROS 전용 5개 건너뜀. 격리 ROS에서 해당 5개도 통과했고,
+mapping_semantic 재빌드·colcon 273검사 오류/실패/건너뜀 0. 기존 ROS 기록 재생의 epoch·TF·TTL·저장/복원도 통과했다.
