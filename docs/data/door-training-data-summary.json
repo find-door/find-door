@@ -1,0 +1,175 @@
+{
+  "stage": "v0.2.0-door-training-data.1",
+  "mode": "AI_label_development_training_inputs_no_training",
+  "exporter_sha256": "228f9f1183b15acecc3e4b42260864349e6c0149e00f9f53cb042be5e1238946",
+  "tests_sha256": "f3f1929a654d66c665f7d7df00410baffb9eeaf63eb9635adcf2d86680df3f35",
+  "split_plan_sha256": "cb506118993ee370a5f28521c1908820df40d080ecbdf1f02bc00bc057cba255",
+  "group_audit_sha256": "b52f7a676616c810f10f9dd07bf0103295b97ad646dc83740effbfe5d1472a0e",
+  "targets": {
+    "leaf": {
+      "export_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/training-data-01/leaf",
+      "report_sha256": "f84d825d91ababaad58669d37101fbe45feafe11b704e519f86a1f8d1c63d314",
+      "manifest_source_sha256": "85f8030aa852079fda85b71a9657fedd26d4751724c3db67336b230ddeee9d4f",
+      "source_manifest_sha256": "13850cd68d8af9bc0602e151f3a91dea03fd51f2fa3393d121741dc2d5562979",
+      "exported_manifest_sha256": "75bfca7aa665e51f72134e99dfe596732dd8902459fec9ae62ccb4d766fa70ca",
+      "yaml_sha256": "6189a004abd3f3bf9efc7147a525aac4f22db72714d5a9a79a9869b1296b4483",
+      "plan_sha256": "cb506118993ee370a5f28521c1908820df40d080ecbdf1f02bc00bc057cba255",
+      "split_counts": {
+        "train": 32,
+        "validation": 7
+      },
+      "negative_split_counts": {
+        "train": 7,
+        "validation": 4
+      },
+      "object_split_counts": {
+        "train": 27,
+        "validation": 3
+      },
+      "excluded": [
+        {
+          "id": "real_dd2_closed_Door0372",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_open_Door1016",
+          "reason": "target_visibility_unknown"
+        },
+        {
+          "id": "real_dd2_open_Door1081",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_open_Door1245",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_semi_Door2016",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_semi_Door2146",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_semi_Door2343",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_oi_5ba4992a5dec8a7a",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_oi_370c5423dc672f07",
+          "reason": "target_visibility_unknown"
+        },
+        {
+          "id": "real_oi_8caa5b06d30d1e75",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_oi_ee248bd9c09cba0c",
+          "reason": "uncertain_or_draft"
+        }
+      ],
+      "validation_frame_ids": [
+        "real_oi_28f45b12ee25ae19",
+        "real_oi_32255e4104d8f9b7",
+        "real_oi_44a1c33f790c5687",
+        "real_oi_294885a08c11dfa4",
+        "real_oi_e6d27669b2efb650",
+        "real_oi_05042cfa44abe4f6",
+        "real_oi_1229d5e203956ac6"
+      ]
+    },
+    "doorway": {
+      "export_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/training-data-01/doorway",
+      "report_sha256": "8bf247da18f42bca13e78b099ea93524b2f8e620ce50c9c76cf49a8e72f0cc32",
+      "manifest_source_sha256": "85f8030aa852079fda85b71a9657fedd26d4751724c3db67336b230ddeee9d4f",
+      "source_manifest_sha256": "13850cd68d8af9bc0602e151f3a91dea03fd51f2fa3393d121741dc2d5562979",
+      "exported_manifest_sha256": "83b60854e05d7bf20707cad91b81a702584e6cc3468b93b36c058be73abec7e9",
+      "yaml_sha256": "d1fb3815813a86d0d96b0349982ef7f81d9e5316ebea1c18eda961c58a17d15a",
+      "plan_sha256": "cb506118993ee370a5f28521c1908820df40d080ecbdf1f02bc00bc057cba255",
+      "split_counts": {
+        "train": 32,
+        "validation": 7
+      },
+      "negative_split_counts": {
+        "train": 7,
+        "validation": 4
+      },
+      "object_split_counts": {
+        "train": 28,
+        "validation": 3
+      },
+      "excluded": [
+        {
+          "id": "real_dd2_closed_Door0081",
+          "reason": "target_visibility_unknown"
+        },
+        {
+          "id": "real_dd2_closed_Door0372",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_open_Door1081",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_open_Door1245",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_semi_Door2016",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_semi_Door2146",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_dd2_semi_Door2343",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_oi_2d22708883788e8b",
+          "reason": "target_visibility_unknown"
+        },
+        {
+          "id": "real_oi_5ba4992a5dec8a7a",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_oi_8caa5b06d30d1e75",
+          "reason": "uncertain_or_draft"
+        },
+        {
+          "id": "real_oi_ee248bd9c09cba0c",
+          "reason": "uncertain_or_draft"
+        }
+      ],
+      "validation_frame_ids": [
+        "real_oi_28f45b12ee25ae19",
+        "real_oi_32255e4104d8f9b7",
+        "real_oi_44a1c33f790c5687",
+        "real_oi_294885a08c11dfa4",
+        "real_oi_e6d27669b2efb650",
+        "real_oi_05042cfa44abe4f6",
+        "real_oi_1229d5e203956ac6"
+      ]
+    }
+  },
+  "training_run": false,
+  "new_model_downloaded": false,
+  "independent_test_prepared": false,
+  "verification": {
+    "focused_tests_passed": 11,
+    "offline_tests_passed": 799,
+    "ros_tests_skipped": 5,
+    "exported_rows_checked_per_target": 39,
+    "normalized_bbox_roundtrip_tolerance_pixels": 1e-06,
+    "source_symlinks_and_hashes_verified": true,
+    "group_and_rgb_leakage_absent_in_exported_split": true,
+    "validation_rgb_identical": true
+  }
+}

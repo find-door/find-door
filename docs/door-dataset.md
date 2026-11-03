@@ -3,6 +3,8 @@
 2026-11-03 [후속 계획](door-next-stage-plan.md)의 라벨·분할 준비를 구현했다.
 설계는 [ADR-0011](adr/0011-door-dataset-contract.md)을 따른다.
 현재 95장 중 사용자 검수 9장·초안 86장이며, 학습·독립 시험 준비 완료 자료는 아니다.
+이는 사용자 검수 원본의 상태다. 이후 [실제 50장 AI 라벨](door-ai-labels.md)과
+[별도 개발 학습 입력](door-training-data.md)을 만들었으며 원본 manifest는 보존했다. 독립 시험은 미준비다.
 
 ## 라벨 계약
 
