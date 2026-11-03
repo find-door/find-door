@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "world_name": "door_patrol_v1",
+  "purpose": "복도 주행·좌우 문 관측을 위한 Gazebo 개발 장소 변형",
+  "ground_truth_policy": "문 위치·각도·상태는 경로·평가·시각화 전용이며 인식 입력으로 사용하지 않음",
+  "independent_test": false,
+  "spawn": {
+    "x": 0.0,
+    "y": -4.8,
+    "yaw": 1.5707963267948966
+  },
+  "bounds": {
+    "building": {
+      "x": [
+        -5.5,
+        5.5
+      ],
+      "y": [
+        -6.0,
+        6.0
+      ]
+    },
+    "corridor": {
+      "x": [
+        -2.0,
+        2.0
+      ],
+      "y": [
+        -6.0,
+        6.0
+      ]
+    },
+    "wall_height_m": 3.3,
+    "wall_thickness_m": 0.12,
+    "convention": "bounds는 경계 벽 중심선 기준이며 외벽 반두께는 바깥으로 돌출"
+  },
+  "room_count": 4,
+  "roof": false,
+  "doors": [
+    {
+      "id": "right_lower",
+      "center_world_xyz": [
+        2.0,
+        -3.0,
+        0.0
+      ],
+      "wall_yaw_rad": 0.0,
+      "angle_deg": 0,
+      "state": "closed",
+      "frame_model": "door_right_lower_frame",
+      "leaf_model": "door_right_lower_leaf",
+      "hinge_world_xyz": [
+        2.0,
+        -3.6,
+        0.0
+      ],
+      "clear_width_m": 1.2,
+      "clear_height_m": 2.2
+    },
+    {
+      "id": "right_upper",
+      "center_world_xyz": [
+        2.0,
+        3.0,
+        0.0
+      ],
+      "wall_yaw_rad": 0.0,
+      "angle_deg": 90,
+      "state": "open",
+      "frame_model": "door_right_upper_frame",
+      "leaf_model": "door_right_upper_leaf",
+      "hinge_world_xyz": [
+        2.0,
+        2.4,
+        0.0
+      ],
+      "clear_width_m": 1.2,
+      "clear_height_m": 2.2
+    },
+    {
+      "id": "left_lower",
+      "center_world_xyz": [
+        -2.0,
+        -3.0,
+        0.0
+      ],
+      "wall_yaw_rad": 3.141592653589793,
+      "angle_deg": 45,
+      "state": "open",
+      "frame_model": "door_left_lower_frame",
+      "leaf_model": "door_left_lower_leaf",
+      "hinge_world_xyz": [
+        -2.0,
+        -2.4,
+        0.0
+      ],
+      "clear_width_m": 1.2,
+      "clear_height_m": 2.2
+    },
+    {
+      "id": "left_upper",
+      "center_world_xyz": [
+        -2.0,
+        3.0,
+        0.0
+      ],
+      "wall_yaw_rad": 3.141592653589793,
+      "angle_deg": 0,
+      "state": "closed",
+      "frame_model": "door_left_upper_frame",
+      "leaf_model": "door_left_upper_leaf",
+      "hinge_world_xyz": [
+        -2.0,
+        3.6,
+        0.0
+      ],
+      "clear_width_m": 1.2,
+      "clear_height_m": 2.2
+    }
+  ],
+  "limitations": [
+    "사전 설계한 합성 개발 건물이며 독립·실물 성능 정답이 아님",
+    "문짝은 정적 각도로 고정되며 연속 경첩 물리 모델이 아님",
+    "로봇·카메라·LiDAR 모델은 포함하지 않음"
+  ]
+}

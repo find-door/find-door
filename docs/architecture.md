@@ -186,3 +186,13 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 표면 대표점은 물체 중심·크기·자세를 추정한 값이 아닙니다.
 지도 보정 epoch의 변위가 0.2m 또는 yaw 0.1rad를 넘으면 객체를 초기화하고 재관측합니다.
 작은 보정은 재투영하지 않으므로 정밀 누적에는 고정 지도 운용이 필요합니다.
+
+
+## 건물 문 순찰 개발 도구
+
+[순찰 하네스](door-patrol.md)는 기존 실시간 문 노드와 SLAM을 사용하며
+`/cmd_vel`의 `geometry_msgs/msg/Twist`로 사전 정의한 경로를 주행한다.
+`/demo/patrol_status`는 `std_msgs/msg/String`의 단계·odom·진행 JSON이고,
+`/demo/patrol_path`는 관측 시각 TF로 map 좌표를 구한 `nav_msgs/msg/Path`다.
+이 두 토픽은 시연·녹화용이며 문 추론 입력이나 GT 위치 발행 토픽이 아니다.
+여러 문의 순차 관측을 누적하며 현재 문 노드의 한 프레임 최고 점수 seed 경계는 유지한다.

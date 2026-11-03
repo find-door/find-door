@@ -1,0 +1,2158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.9">
+  <!-- patrol_world.py 생성: 지붕을 생략한 네 방·복도 개발 건물. 문 정답 manifest는 추론 입력으로 사용하지 않음. -->
+  <world name="door_patrol_v1">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <scene>
+      <ambient>0.5 0.5 0.5 1</ambient>
+      <background>0.7 0.75 0.8 1</background>
+    </scene>
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>-3 -3 8 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0.4 0.2 -0.9</direction>
+    </light>
+    <model name="building_foundation">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="body">
+        <collision name="foundation_collision">
+          <pose>0 0 -0.07 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>13 14 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="foundation_visual">
+          <pose>0 0 -0.07 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>13 14 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.33 0.36 0.39 1</ambient>
+            <diffuse>0.33 0.36 0.39 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="room_floors">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="body">
+        <collision name="corridor_collision">
+          <pose>0 0 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>4 12 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="corridor_visual">
+          <pose>0 0 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>4 12 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.64 0.65 0.63 1</ambient>
+            <diffuse>0.64 0.65 0.63 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_collision">
+          <pose>3.75 -3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_visual">
+          <pose>3.75 -3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.68 0.73 0.76 1</ambient>
+            <diffuse>0.68 0.73 0.76 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_collision">
+          <pose>3.75 3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_visual">
+          <pose>3.75 3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.73 0.72 0.65 1</ambient>
+            <diffuse>0.73 0.72 0.65 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_collision">
+          <pose>-3.75 -3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_visual">
+          <pose>-3.75 -3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.68 0.75 0.69 1</ambient>
+            <diffuse>0.68 0.75 0.69 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_collision">
+          <pose>-3.75 3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_visual">
+          <pose>-3.75 3 -0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 6 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.68 0.67 1</ambient>
+            <diffuse>0.75 0.68 0.67 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="building_walls">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="body">
+        <collision name="west_collision">
+          <pose>-5.5 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.12 12 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="west_visual">
+          <pose>-5.5 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.12 12 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="east_collision">
+          <pose>5.5 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.12 12 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="east_visual">
+          <pose>5.5 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.12 12 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="south_collision">
+          <pose>0 -6 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>11.12 0.12 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="south_visual">
+          <pose>0 -6 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>11.12 0.12 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="north_collision">
+          <pose>0 6 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>11.12 0.12 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="north_visual">
+          <pose>0 6 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>11.12 0.12 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_room_divider_collision">
+          <pose>-3.75 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 0.12 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_room_divider_visual">
+          <pose>-3.75 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 0.12 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_room_divider_collision">
+          <pose>3.75 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 0.12 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_room_divider_visual">
+          <pose>3.75 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 0.12 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_corridor_0_collision">
+          <pose>-2 -4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_corridor_0_visual">
+          <pose>-2 -4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_corridor_1_collision">
+          <pose>-2 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 4.8 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_corridor_1_visual">
+          <pose>-2 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 4.8 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_corridor_2_collision">
+          <pose>-2 4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_corridor_2_visual">
+          <pose>-2 4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_lintel_wall_collision">
+          <pose>-2 -3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_lintel_wall_visual">
+          <pose>-2 -3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_lintel_wall_collision">
+          <pose>-2 3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_lintel_wall_visual">
+          <pose>-2 3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_corridor_0_collision">
+          <pose>2 -4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_corridor_0_visual">
+          <pose>2 -4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_corridor_1_collision">
+          <pose>2 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 4.8 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_corridor_1_visual">
+          <pose>2 0 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 4.8 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_corridor_2_collision">
+          <pose>2 4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_corridor_2_visual">
+          <pose>2 4.8 1.65 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 2.4 3.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_lintel_wall_collision">
+          <pose>2 -3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_lintel_wall_visual">
+          <pose>2 -3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_lintel_wall_collision">
+          <pose>2 3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_lintel_wall_visual">
+          <pose>2 3 2.75 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 1.2 1.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.86 1</ambient>
+            <diffuse>0.88 0.88 0.86 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_right_lower_frame">
+      <static>true</static>
+      <pose>2 -3 0 0 0 0</pose>
+      <link name="body">
+        <collision name="left_jamb_collision">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_jamb_visual">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_jamb_collision">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_jamb_visual">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="lintel_collision">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="lintel_visual">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_right_lower_leaf">
+      <static>true</static>
+      <pose>2 -3.6 0 0 0 0</pose>
+      <link name="body">
+        <collision name="slab_collision">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="slab_visual">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_plate_collision">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_plate_visual">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_spindle_collision">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_spindle_visual">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_lever_collision">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_lever_visual">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_plate_collision">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_plate_visual">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_spindle_collision">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_spindle_visual">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_lever_collision">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_lever_visual">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_right_upper_frame">
+      <static>true</static>
+      <pose>2 3 0 0 0 0</pose>
+      <link name="body">
+        <collision name="left_jamb_collision">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_jamb_visual">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_jamb_collision">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_jamb_visual">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="lintel_collision">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="lintel_visual">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_right_upper_leaf">
+      <static>true</static>
+      <pose>2 2.4 0 0 0 -1.57079632679</pose>
+      <link name="body">
+        <collision name="slab_collision">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="slab_visual">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_plate_collision">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_plate_visual">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_spindle_collision">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_spindle_visual">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_lever_collision">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_lever_visual">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_plate_collision">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_plate_visual">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_spindle_collision">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_spindle_visual">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_lever_collision">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_lever_visual">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_left_lower_frame">
+      <static>true</static>
+      <pose>-2 -3 0 0 0 3.14159265359</pose>
+      <link name="body">
+        <collision name="left_jamb_collision">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_jamb_visual">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_jamb_collision">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_jamb_visual">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="lintel_collision">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="lintel_visual">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_left_lower_leaf">
+      <static>true</static>
+      <pose>-2 -2.4 0 0 0 2.35619449019</pose>
+      <link name="body">
+        <collision name="slab_collision">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="slab_visual">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_plate_collision">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_plate_visual">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_spindle_collision">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_spindle_visual">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_lever_collision">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_lever_visual">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_plate_collision">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_plate_visual">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_spindle_collision">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_spindle_visual">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_lever_collision">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_lever_visual">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_left_upper_frame">
+      <static>true</static>
+      <pose>-2 3 0 0 0 3.14159265359</pose>
+      <link name="body">
+        <collision name="left_jamb_collision">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_jamb_visual">
+          <pose>-0.075 -0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_jamb_collision">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_jamb_visual">
+          <pose>-0.075 0.648 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.096 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="lintel_collision">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="lintel_visual">
+          <pose>-0.075 0 2.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 1.392 0.11</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.5 0.52 1</ambient>
+            <diffuse>0.48 0.5 0.52 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_left_upper_leaf">
+      <static>true</static>
+      <pose>-2 3.6 0 0 0 3.14159265359</pose>
+      <link name="body">
+        <collision name="slab_collision">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="slab_visual">
+          <pose>0 0.6 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.04 1.2 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_plate_collision">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_plate_visual">
+          <pose>-0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_spindle_collision">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_spindle_visual">
+          <pose>-0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="front_handle_lever_collision">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_handle_lever_visual">
+          <pose>-0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_plate_collision">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_plate_visual">
+          <pose>0.027 1.08 1.1 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.014 0.054 0.198</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_spindle_collision">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_spindle_visual">
+          <pose>0.055 1.08 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.03 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="back_handle_lever_collision">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_handle_lever_visual">
+          <pose>0.085 1.014 1.122 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.162 0.0275</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.36 0.45 1</ambient>
+            <diffuse>0.25 0.36 0.45 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="room_furniture">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="body">
+        <collision name="right_lower_desk_top_collision">
+          <pose>4.65 -1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_desk_top_visual">
+          <pose>4.65 -1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.43 0.32 0.22 1</ambient>
+            <diffuse>0.43 0.32 0.22 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_desk_leg_-0.46_-0.58_collision">
+          <pose>4.19 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_desk_leg_-0.46_-0.58_visual">
+          <pose>4.19 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_desk_leg_-0.46_0.58_collision">
+          <pose>4.19 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_desk_leg_-0.46_0.58_visual">
+          <pose>4.19 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_desk_leg_0.46_-0.58_collision">
+          <pose>5.11 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_desk_leg_0.46_-0.58_visual">
+          <pose>5.11 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_desk_leg_0.46_0.58_collision">
+          <pose>5.11 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_desk_leg_0.46_0.58_visual">
+          <pose>5.11 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_shelf_collision">
+          <pose>4.9 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_shelf_visual">
+          <pose>4.9 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.45 0.48 0.5 1</ambient>
+            <diffuse>0.45 0.48 0.5 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_shelf_front_0.15_collision">
+          <pose>4.61 -4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_shelf_front_0.15_visual">
+          <pose>4.61 -4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_shelf_front_0.5_collision">
+          <pose>4.61 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_shelf_front_0.5_visual">
+          <pose>4.61 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_lower_shelf_front_0.85_collision">
+          <pose>4.61 -4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_lower_shelf_front_0.85_visual">
+          <pose>4.61 -4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_desk_top_collision">
+          <pose>4.65 1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_desk_top_visual">
+          <pose>4.65 1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.43 0.32 0.22 1</ambient>
+            <diffuse>0.43 0.32 0.22 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_desk_leg_-0.46_-0.58_collision">
+          <pose>4.19 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_desk_leg_-0.46_-0.58_visual">
+          <pose>4.19 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_desk_leg_-0.46_0.58_collision">
+          <pose>4.19 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_desk_leg_-0.46_0.58_visual">
+          <pose>4.19 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_desk_leg_0.46_-0.58_collision">
+          <pose>5.11 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_desk_leg_0.46_-0.58_visual">
+          <pose>5.11 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_desk_leg_0.46_0.58_collision">
+          <pose>5.11 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_desk_leg_0.46_0.58_visual">
+          <pose>5.11 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_shelf_collision">
+          <pose>4.9 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_shelf_visual">
+          <pose>4.9 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.45 0.48 0.5 1</ambient>
+            <diffuse>0.45 0.48 0.5 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_shelf_front_0.15_collision">
+          <pose>4.61 4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_shelf_front_0.15_visual">
+          <pose>4.61 4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_shelf_front_0.5_collision">
+          <pose>4.61 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_shelf_front_0.5_visual">
+          <pose>4.61 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="right_upper_shelf_front_0.85_collision">
+          <pose>4.61 4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_upper_shelf_front_0.85_visual">
+          <pose>4.61 4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_desk_top_collision">
+          <pose>-4.65 -1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_desk_top_visual">
+          <pose>-4.65 -1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.43 0.32 0.22 1</ambient>
+            <diffuse>0.43 0.32 0.22 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_desk_leg_-0.46_-0.58_collision">
+          <pose>-5.11 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_desk_leg_-0.46_-0.58_visual">
+          <pose>-5.11 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_desk_leg_-0.46_0.58_collision">
+          <pose>-5.11 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_desk_leg_-0.46_0.58_visual">
+          <pose>-5.11 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_desk_leg_0.46_-0.58_collision">
+          <pose>-4.19 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_desk_leg_0.46_-0.58_visual">
+          <pose>-4.19 -1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_desk_leg_0.46_0.58_collision">
+          <pose>-4.19 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_desk_leg_0.46_0.58_visual">
+          <pose>-4.19 -0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_shelf_collision">
+          <pose>-4.9 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_shelf_visual">
+          <pose>-4.9 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.45 0.48 0.5 1</ambient>
+            <diffuse>0.45 0.48 0.5 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_shelf_front_0.15_collision">
+          <pose>-4.61 -4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_shelf_front_0.15_visual">
+          <pose>-4.61 -4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_shelf_front_0.5_collision">
+          <pose>-4.61 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_shelf_front_0.5_visual">
+          <pose>-4.61 -4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_lower_shelf_front_0.85_collision">
+          <pose>-4.61 -4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_lower_shelf_front_0.85_visual">
+          <pose>-4.61 -4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_desk_top_collision">
+          <pose>-4.65 1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_desk_top_visual">
+          <pose>-4.65 1.3 0.76 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.15 1.4 0.08</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.43 0.32 0.22 1</ambient>
+            <diffuse>0.43 0.32 0.22 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_desk_leg_-0.46_-0.58_collision">
+          <pose>-5.11 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_desk_leg_-0.46_-0.58_visual">
+          <pose>-5.11 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_desk_leg_-0.46_0.58_collision">
+          <pose>-5.11 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_desk_leg_-0.46_0.58_visual">
+          <pose>-5.11 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_desk_leg_0.46_-0.58_collision">
+          <pose>-4.19 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_desk_leg_0.46_-0.58_visual">
+          <pose>-4.19 0.72 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_desk_leg_0.46_0.58_collision">
+          <pose>-4.19 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_desk_leg_0.46_0.58_visual">
+          <pose>-4.19 1.88 0.36 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.07 0.07 0.72</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_shelf_collision">
+          <pose>-4.9 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_shelf_visual">
+          <pose>-4.9 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 1.1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.45 0.48 0.5 1</ambient>
+            <diffuse>0.45 0.48 0.5 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_shelf_front_0.15_collision">
+          <pose>-4.61 4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_shelf_front_0.15_visual">
+          <pose>-4.61 4.8 0.15 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_shelf_front_0.5_collision">
+          <pose>-4.61 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_shelf_front_0.5_visual">
+          <pose>-4.61 4.8 0.5 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+        <collision name="left_upper_shelf_front_0.85_collision">
+          <pose>-4.61 4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_upper_shelf_front_0.85_visual">
+          <pose>-4.61 4.8 0.85 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 1 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.32 1</ambient>
+            <diffuse>0.25 0.29 0.32 1</diffuse>
+            <specular>0.08 0.08 0.08 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

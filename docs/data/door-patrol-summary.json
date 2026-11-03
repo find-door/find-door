@@ -1,0 +1,3045 @@
+{
+  "date": "2026-11-03",
+  "base_commit": "3911341",
+  "stage": "v0.2.0-door-patrol.1",
+  "scope": "새 건물 합성 개발 변형의 고정 경로 순찰·순차 문 관측. 자율 탐색·실물·독립 시험 아님",
+  "cases": [
+    {
+      "path": "experiments/door_probe/patrol-headless-02/check.json",
+      "sha256": "21de81409fcfda23a4635831269533cef1ccde0130b31fe8f174c5f358c37de0",
+      "report": {
+        "status": "complete",
+        "base_commit": "3911341",
+        "map_id": "door-patrol-patrol-headless-02",
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_patrol_v1.sdf",
+        "world_sha256": "e3b361377f97b4b6804372778984d2edd0909db4d9a9ac33de8f57a088ce17db",
+        "manifest_sha256": "c3d9b383c9001de28714cc893515b2131dc2aba8dd1a71661fe29b5164da786b",
+        "stages": [
+          {
+            "name": "south_arrive",
+            "label": "복도 남쪽 지점 이동",
+            "kind": "move",
+            "x": 0.0,
+            "y": -3.0,
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 785000000,
+            "begin_odom": [
+              -7.92817039018533e-13,
+              -4.799999999539316,
+              1.570796326794504
+            ],
+            "begin_objects": [],
+            "end_sim_ns": 6866000000,
+            "end_odom": [
+              -3.417445055608755e-14,
+              -3.0595939211381995,
+              1.5707963267945995
+            ],
+            "end_objects": []
+          },
+          {
+            "name": "south_east_turn",
+            "label": "남쪽 · 우측 방향 탐색",
+            "kind": "turn",
+            "yaw": 0.0,
+            "begin_sim_ns": 7010000000,
+            "begin_odom": [
+              -3.359379482952745e-14,
+              -3.0585822278769137,
+              1.5707963267945995
+            ],
+            "begin_objects": [],
+            "end_sim_ns": 11153000000,
+            "end_odom": [
+              -5.697088747366108e-06,
+              -3.0585886340552375,
+              0.023330405404997524
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "closed",
+                "last_stamp_ns": 10759000000,
+                "observations": 16
+              }
+            ]
+          },
+          {
+            "name": "south_east_scan",
+            "label": "남쪽 · 우측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 11304000000,
+            "begin_odom": [
+              -5.697202768332865e-06,
+              -3.0585886340560324,
+              0.023122714391230842
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "closed",
+                "last_stamp_ns": 10891000000,
+                "observations": 18
+              }
+            ],
+            "end_sim_ns": 18338000000,
+            "end_odom": [
+              -5.697202768332865e-06,
+              -3.0585886340560324,
+              0.023122714391230842
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "closed",
+                "last_stamp_ns": 17953000000,
+                "observations": 121
+              }
+            ]
+          },
+          {
+            "name": "south_west_turn",
+            "label": "남쪽 · 좌측 방향 탐색",
+            "kind": "turn",
+            "yaw": 3.141592653589793,
+            "begin_sim_ns": 18517000000,
+            "begin_odom": [
+              -5.697202768332865e-06,
+              -3.0585886340560324,
+              0.023122714391230842
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "closed",
+                "last_stamp_ns": 18151000000,
+                "observations": 124
+              }
+            ],
+            "end_sim_ns": 25788000000,
+            "end_odom": [
+              -6.788945795775726e-06,
+              -3.0586017303204165,
+              3.116975016209173
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "open",
+                "last_stamp_ns": 25477000000,
+                "observations": 18
+              }
+            ]
+          },
+          {
+            "name": "south_west_scan",
+            "label": "남쪽 · 좌측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 25940000000,
+            "begin_odom": [
+              -6.788073385200167e-06,
+              -3.0586017303573367,
+              3.1186207991437342
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "open",
+                "last_stamp_ns": 25477000000,
+                "observations": 18
+              }
+            ],
+            "end_sim_ns": 32991000000,
+            "end_odom": [
+              -6.788073385200167e-06,
+              -3.0586017303573367,
+              3.1186207991437342
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "open",
+                "last_stamp_ns": 32604000000,
+                "observations": 122
+              }
+            ]
+          },
+          {
+            "name": "south_face_corridor",
+            "label": "복도 진행 방향 복귀",
+            "kind": "turn",
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 33186000000,
+            "begin_odom": [
+              -6.788073385200167e-06,
+              -3.0586017303573367,
+              3.1186207991437342
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "open",
+                "last_stamp_ns": 32869000000,
+                "observations": 126
+              }
+            ],
+            "end_sim_ns": 37279000000,
+            "end_odom": [
+              -5.257105575035698e-07,
+              -3.0586074558182004,
+              1.5957707258554976
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              }
+            ]
+          },
+          {
+            "name": "north_arrive",
+            "label": "복도 북쪽 지점 이동",
+            "kind": "move",
+            "x": 0.0,
+            "y": 3.0,
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 37430000000,
+            "begin_odom": [
+              -5.257047380325366e-07,
+              -3.0586074565395127,
+              1.594428701393664
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              }
+            ],
+            "end_sim_ns": 55654000000,
+            "end_odom": [
+              4.970067958072583e-06,
+              2.9400675281016033,
+              1.5707963267950555
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              }
+            ]
+          },
+          {
+            "name": "north_east_turn",
+            "label": "북쪽 · 우측 방향 탐색",
+            "kind": "turn",
+            "yaw": 0.0,
+            "begin_sim_ns": 55807000000,
+            "begin_odom": [
+              4.932579312324048e-06,
+              2.940519591780972,
+              1.5707963267950555
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              }
+            ],
+            "end_sim_ns": 59998000000,
+            "end_odom": [
+              -7.756680445913826e-07,
+              2.9405131818088974,
+              0.023411997081589576
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "open",
+                "last_stamp_ns": 59664000000,
+                "observations": 15
+              }
+            ]
+          },
+          {
+            "name": "north_east_scan",
+            "label": "북쪽 · 우측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 60146000000,
+            "begin_odom": [
+              -7.766533886444584e-07,
+              2.9405131818027197,
+              0.021462068293119575
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "open",
+                "last_stamp_ns": 59797000000,
+                "observations": 17
+              }
+            ],
+            "end_sim_ns": 67161000000,
+            "end_odom": [
+              -7.766533886444584e-07,
+              2.9405131818027197,
+              0.021462068293119575
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 59929000000,
+                "observations": 18
+              }
+            ]
+          },
+          {
+            "name": "north_west_turn",
+            "label": "북쪽 · 좌측 방향 탐색",
+            "kind": "turn",
+            "yaw": 3.141592653589793,
+            "begin_sim_ns": 67350000000,
+            "begin_odom": [
+              -7.766533886444584e-07,
+              2.9405131818027197,
+              0.021462068293119575
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 59929000000,
+                "observations": 18
+              }
+            ],
+            "end_sim_ns": 74603000000,
+            "end_odom": [
+              -1.8626562031824543e-06,
+              2.940500082448174,
+              3.118389068961436
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "closed",
+                "last_stamp_ns": 74119000000,
+                "observations": 11
+              }
+            ]
+          },
+          {
+            "name": "north_west_scan",
+            "label": "북쪽 · 좌측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 74755000000,
+            "begin_odom": [
+              -1.8624984905680709e-06,
+              2.940500082441621,
+              3.1186782005593443
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "closed",
+                "last_stamp_ns": 74383000000,
+                "observations": 15
+              }
+            ],
+            "end_sim_ns": 81755000000,
+            "end_odom": [
+              -1.8624984905680709e-06,
+              2.940500082441621,
+              3.1186782005593443
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "closed",
+                "last_stamp_ns": 81181000000,
+                "observations": 106
+              }
+            ]
+          },
+          {
+            "name": "north_face_corridor",
+            "label": "복도 진행 방향 복귀",
+            "kind": "turn",
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 81909000000,
+            "begin_odom": [
+              -1.8624984905680709e-06,
+              2.940500082441621,
+              3.1186782005593443
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "closed",
+                "last_stamp_ns": 81181000000,
+                "observations": 106
+              }
+            ],
+            "end_sim_ns": 86024000000,
+            "end_odom": [
+              4.392284835041522e-06,
+              2.9404943880411527,
+              1.5947888819599474
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 82236000000,
+                "observations": 118
+              }
+            ]
+          },
+          {
+            "name": "finish",
+            "label": "복도 끝 지점 이동",
+            "kind": "move",
+            "x": 0.0,
+            "y": 4.5,
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 86178000000,
+            "begin_odom": [
+              4.392289071973452e-06,
+              2.9404943874554497,
+              1.5936552351735471
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 82236000000,
+                "observations": 118
+              }
+            ],
+            "end_sim_ns": 91608000000,
+            "end_odom": [
+              2.2062220374195502e-05,
+              4.444002380854278,
+              1.5707993890770275
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 82236000000,
+                "observations": 118
+              }
+            ]
+          },
+          {
+            "name": "save",
+            "label": "전체 지도·문 위치 저장",
+            "kind": "scan",
+            "duration_sim_sec": 3.0,
+            "begin_sim_ns": 91764000000,
+            "begin_odom": [
+              2.17344802372442e-05,
+              4.444835649118065,
+              1.57079930721952
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 82236000000,
+                "observations": 118
+              }
+            ],
+            "end_sim_ns": 94802000000,
+            "end_odom": [
+              2.17344802372442e-05,
+              4.444835649118065,
+              1.57079930721952
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495283424998169,
+                  -2.9622324578223247,
+                  -0.015546371005513357
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 19008000000,
+                "observations": 136
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504176779407736,
+                  -2.9875654723749596,
+                  0.009847689168515208
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 33660000000,
+                "observations": 138
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9500562955073024,
+                  3.025818125249671,
+                  -0.015727984948352536
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 67717000000,
+                "observations": 20
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.949819593091903,
+                  3.011079306653361,
+                  0.008681919006982064
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 82236000000,
+                "observations": 118
+              }
+            ]
+          }
+        ],
+        "recording_requested": false,
+        "limitations": [
+          "사전 정의 경로, 자율 프런티어 탐색 아님",
+          "Gazebo pose odom, 실물·독립 장소 성능 아님",
+          "TTL 초과 문은 unknown 표시"
+        ],
+        "processes": [
+          {
+            "name": "simulation",
+            "pid": 2815336,
+            "identity": {
+              "pgid": 2815336,
+              "start_ticks": 172101685
+            },
+            "command": [
+              "ros2",
+              "launch",
+              "mapping_slam",
+              "simulation.launch.py",
+              "gui:=false",
+              "world:=/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_patrol_v1.sdf",
+              "x:=0.0",
+              "y:=-4.8",
+              "yaw:=1.5707963267948966"
+            ]
+          },
+          {
+            "name": "doors",
+            "pid": 2815337,
+            "identity": {
+              "pgid": 2815337,
+              "start_ticks": 172101685
+            },
+            "command": [
+              "ros2",
+              "launch",
+              "mapping_semantic",
+              "live_doors.launch.py",
+              "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+              "reobserve_known_doors:=false",
+              "map_id:=door-patrol-patrol-headless-02",
+              "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+              "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/patrol-headless-02/doors.json"
+            ]
+          }
+        ],
+        "initial_odom": [
+          -7.92817039018533e-13,
+          -4.799999999539316,
+          1.570796326794504
+        ],
+        "initial_door_map": {
+          "map_id": "door-patrol-patrol-headless-02",
+          "frame": "map",
+          "stamp_ns": 763000000,
+          "observation_stamp_ns": 0,
+          "epoch": 0,
+          "objects": [],
+          "counters": {},
+          "last_error": ""
+        },
+        "path_tf_waits": 5,
+        "evaluation": {
+          "passed": true,
+          "doors": [
+            {
+              "truth_id": "right_lower",
+              "expected_state": "closed",
+              "observed_ids": [
+                "door_000001"
+              ],
+              "fresh_state_observations": {
+                "unknown": 2,
+                "closed": 58
+              },
+              "first_stamp_ns": 9703000000,
+              "minimum_correspondence_distance_m": 0.06303788902682476,
+              "passed": true
+            },
+            {
+              "truth_id": "right_upper",
+              "expected_state": "open",
+              "observed_ids": [
+                "door_000003"
+              ],
+              "fresh_state_observations": {
+                "unknown": 4,
+                "open": 9
+              },
+              "first_stamp_ns": 58543000000,
+              "minimum_correspondence_distance_m": 0.056222319499124276,
+              "passed": true
+            },
+            {
+              "truth_id": "left_lower",
+              "expected_state": "open",
+              "observed_ids": [
+                "door_000002"
+              ],
+              "fresh_state_observations": {
+                "unknown": 1,
+                "open": 59
+              },
+              "first_stamp_ns": 24420000000,
+              "minimum_correspondence_distance_m": 0.05111774777944293,
+              "passed": true
+            },
+            {
+              "truth_id": "left_upper",
+              "expected_state": "closed",
+              "observed_ids": [
+                "door_000004"
+              ],
+              "fresh_state_observations": {
+                "unknown": 2,
+                "closed": 37
+              },
+              "first_stamp_ns": 73393000000,
+              "minimum_correspondence_distance_m": 0.051388950888118054,
+              "passed": true
+            }
+          ],
+          "unmatched_ids": [],
+          "alignment_policy": "최초 map←odom 고정·Gazebo pose odom 사용, 독립 SLAM 정확도 평가 아님",
+          "map_from_odom_initial": [
+            2.725370628826707e-32,
+            -3.877409121342327e-35,
+            -1.262177448353653e-37
+          ],
+          "maximum_correspondence_distance_m": 0.45
+        },
+        "travel_distance_odom_m": 9.244963040962325,
+        "minimum_directional_clearance_m": 1.485291600227356,
+        "scan_count": 477,
+        "map_updates": 96,
+        "clock_publishers": 1,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "final_door_map": {
+          "map_id": "door-patrol-patrol-headless-02",
+          "frame": "map",
+          "stamp_ns": 95216000000,
+          "observation_stamp_ns": 82236000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                1.9495283424998169,
+                -2.9622324578223247,
+                -0.015546371005513357
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 19008000000,
+              "observations": 136
+            },
+            {
+              "id": "door_000002",
+              "position": [
+                -1.9504176779407736,
+                -2.9875654723749596,
+                0.009847689168515208
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 33660000000,
+              "observations": 138
+            },
+            {
+              "id": "door_000003",
+              "position": [
+                1.9500562955073024,
+                3.025818125249671,
+                -0.015727984948352536
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 67717000000,
+              "observations": 20
+            },
+            {
+              "id": "door_000004",
+              "position": [
+                -1.949819593091903,
+                3.011079306653361,
+                0.008681919006982064
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 82236000000,
+              "observations": 118
+            }
+          ],
+          "counters": {
+            "received_rgb": 1308,
+            "received_depth": 1308,
+            "received_camera_info": 1308,
+            "received_detections": 1308,
+            "synchronized": 1308,
+            "no_detection": 610,
+            "tf_timeout": 1,
+            "doorway_unavailable": 285,
+            "processed": 412
+          },
+          "last_error": "wall_plane_unreliable"
+        },
+        "final_detector": {
+          "counters": {
+            "received": 1443,
+            "submitted": 1324,
+            "replaced": 119,
+            "completed": 1323
+          },
+          "epoch": 0,
+          "worker_pgid": 2815448,
+          "worker_start_ticks": 172101766,
+          "latency_sec": 0.07817645999602973,
+          "source_age_sec": 0.183,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-fteknesk/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-fteknesk/ultralytics-config",
+              "success": true,
+              "input_sha256": "f4db1bf5d2c0e3faa52eb2571093ae43a3d470451a2ea191045695fb5f4b5529",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 0,
+              "inference_wall_sec": 0.025602056994102895
+            }
+          },
+          "last_error": ""
+        },
+        "final_odom": [
+          2.17344802372442e-05,
+          4.444835649118065,
+          1.57079930721952
+        ],
+        "save_response": {
+          "success": true,
+          "message": "문 지도 저장 완료"
+        },
+        "map_metadata": {
+          "width": 219,
+          "height": 239,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -5.475363493337087,
+            -5.969558912738609
+          ]
+        },
+        "process_returncodes": {
+          "simulation": 0,
+          "doors": 0
+        },
+        "worker_group_gone": true,
+        "elapsed_wall_sec": 102.00158164801542,
+        "harness_sha256": "1222537eabe9be51d6113bf066f899a82f29a756e1d33eafdb098dd92adab591"
+      },
+      "artifacts": {
+        "executed-harness.py": "1222537eabe9be51d6113bf066f899a82f29a756e1d33eafdb098dd92adab591",
+        "south_west_scan-rgb.png": "fec434d3362cecfacf3dd6cff81abe51ade070b445fb43c3c37ffb4ec3661a01",
+        "doors.json": "c64411d3a4925e41c6dbac7634b72334d801b1eb33348a1b33783a129f65c444",
+        "harness.log": "8607cf2a8cfe1a46764d48e61614e349471ade07031c3655d53863b94a59c865",
+        "occupancy.npy": "d90e111e8388fb3c7c926400fb04ca200f1fef780019ebe9211b1d1fba2e021d",
+        "south_east_scan-rgb.png": "720c75638c983c54189a9c7e9864bf7e46702a2e2d7ed3a120918609d5cb5550",
+        "save-rgb.png": "f4db1bf5d2c0e3faa52eb2571093ae43a3d470451a2ea191045695fb5f4b5529",
+        "simulation.log": "914e22f33103306552fce016e92fbfa6755e5b3e9750a71db0a0d40c7268b2d5",
+        "north_west_scan-rgb.png": "ddee63264ffff17ec74206c7b98e83594e5777db34109576f416dfd927b7153f",
+        "doors.log": "536873a4054c2a119618803b2262ed9651952722443a06eba544ab3ed2b8c522",
+        "check.json": "21de81409fcfda23a4635831269533cef1ccde0130b31fe8f174c5f358c37de0",
+        "history.json": "f2c5c38842418f0dc2baa8257a7a58e4abac5c216df982d5835ba5e90ca9f6aa",
+        "route-plan.json": "f95703db353f2808ea4a59cc24df8e796fbfebe00c632be4c0fc893b78a44fe6",
+        "north_east_scan-rgb.png": "3682021bbcd2aaddc76192ed82228ab67921e44d9ed9d86bea7e5953dcb9bd59"
+      }
+    },
+    {
+      "path": "experiments/door_probe/patrol-video-01/check.json",
+      "sha256": "bea2c5c018f39bb65157fd678b2288bba831d0a1ac332abeecc3bf700fa73044",
+      "report": {
+        "status": "complete",
+        "base_commit": "3911341",
+        "map_id": "door-patrol-patrol-video-01",
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_patrol_v1.sdf",
+        "world_sha256": "e3b361377f97b4b6804372778984d2edd0909db4d9a9ac33de8f57a088ce17db",
+        "manifest_sha256": "c3d9b383c9001de28714cc893515b2131dc2aba8dd1a71661fe29b5164da786b",
+        "stages": [
+          {
+            "name": "south_arrive",
+            "label": "복도 남쪽 지점 이동",
+            "kind": "move",
+            "x": 0.0,
+            "y": -3.0,
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 10803000000,
+            "begin_odom": [
+              -7.92817039018533e-13,
+              -4.799999999539316,
+              1.570796326794504
+            ],
+            "begin_objects": [],
+            "end_sim_ns": 16949000000,
+            "end_odom": [
+              -3.2824197525140906e-14,
+              -3.05727049338908,
+              1.5707963267945995
+            ],
+            "end_objects": []
+          },
+          {
+            "name": "south_east_turn",
+            "label": "남쪽 · 우측 방향 탐색",
+            "kind": "turn",
+            "yaw": 0.0,
+            "begin_sim_ns": 17098000000,
+            "begin_odom": [
+              -3.1148537834181983e-14,
+              -3.054349220496006,
+              1.5707963267945995
+            ],
+            "begin_objects": [],
+            "end_sim_ns": 21256000000,
+            "end_odom": [
+              -5.742038002917971e-06,
+              -3.0543556359739874,
+              0.02157690320685364
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "closed",
+                "last_stamp_ns": 20725000000,
+                "observations": 11
+              }
+            ]
+          },
+          {
+            "name": "south_east_scan",
+            "label": "남쪽 · 우측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 21395000000,
+            "begin_odom": [
+              -5.7422110388216265e-06,
+              -3.0543556359748947,
+              0.021233639560966123
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "closed",
+                "last_stamp_ns": 20989000000,
+                "observations": 14
+              }
+            ],
+            "end_sim_ns": 28440000000,
+            "end_odom": [
+              -5.7422110388216265e-06,
+              -3.0543556359748947,
+              0.021233639560966123
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "closed",
+                "last_stamp_ns": 27258000000,
+                "observations": 83
+              }
+            ]
+          },
+          {
+            "name": "south_west_turn",
+            "label": "남쪽 · 좌측 방향 탐색",
+            "kind": "turn",
+            "yaw": 3.141592653589793,
+            "begin_sim_ns": 28615000000,
+            "begin_odom": [
+              -5.7422110388216265e-06,
+              -3.0543556359748947,
+              0.021233639560966123
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "closed",
+                "last_stamp_ns": 27787000000,
+                "observations": 88
+              }
+            ],
+            "end_sim_ns": 35835000000,
+            "end_odom": [
+              -6.832790703054863e-06,
+              -3.0543687328230464,
+              3.1168884247281707
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "open",
+                "last_stamp_ns": 34915000000,
+                "observations": 8
+              }
+            ]
+          },
+          {
+            "name": "south_west_scan",
+            "label": "남쪽 · 좌측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 35974000000,
+            "begin_odom": [
+              -6.831976655606656e-06,
+              -3.0543687328576112,
+              3.118418941588868
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "open",
+                "last_stamp_ns": 35113000000,
+                "observations": 11
+              }
+            ],
+            "end_sim_ns": 43022000000,
+            "end_odom": [
+              -6.831976655606656e-06,
+              -3.0543687328576112,
+              3.118418941588868
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "open",
+                "last_stamp_ns": 41977000000,
+                "observations": 75
+              }
+            ]
+          },
+          {
+            "name": "south_face_corridor",
+            "label": "복도 진행 방향 복귀",
+            "kind": "turn",
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 43187000000,
+            "begin_odom": [
+              -6.831976655606656e-06,
+              -3.0543687328576112,
+              3.118418941588868
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "open",
+                "last_stamp_ns": 42240000000,
+                "observations": 78
+              }
+            ],
+            "end_sim_ns": 47264000000,
+            "end_odom": [
+              -5.718084019325151e-07,
+              -3.0543744598091287,
+              1.5952845101337325
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              }
+            ]
+          },
+          {
+            "name": "north_arrive",
+            "label": "복도 북쪽 지점 이동",
+            "kind": "move",
+            "x": 0.0,
+            "y": 3.0,
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 47410000000,
+            "begin_odom": [
+              -5.718055786159582e-07,
+              -3.054374460164773,
+              1.594608153975626
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              }
+            ],
+            "end_sim_ns": 65695000000,
+            "end_odom": [
+              4.557324257757686e-06,
+              2.942445691003395,
+              1.570796326795071
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              }
+            ]
+          },
+          {
+            "name": "north_east_turn",
+            "label": "북쪽 · 우측 방향 탐색",
+            "kind": "turn",
+            "yaw": 0.0,
+            "begin_sim_ns": 65843000000,
+            "begin_odom": [
+              4.346435563958944e-06,
+              2.945108997882664,
+              1.570796326795071
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              }
+            ],
+            "end_sim_ns": 69970000000,
+            "end_odom": [
+              -1.3784651753335677e-06,
+              2.9451025864355427,
+              0.02367576049774778
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "open",
+                "last_stamp_ns": 69499000000,
+                "observations": 11
+              }
+            ]
+          },
+          {
+            "name": "north_east_scan",
+            "label": "북쪽 · 우측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 70114000000,
+            "begin_odom": [
+              -1.3789754067072886e-06,
+              2.9451025864319713,
+              0.02267389146246068
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "open",
+                "last_stamp_ns": 69630000000,
+                "observations": 13
+              }
+            ],
+            "end_sim_ns": 77145000000,
+            "end_odom": [
+              -1.3789754067072886e-06,
+              2.9451025864319713,
+              0.02267389146246068
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 69828000000,
+                "observations": 15
+              }
+            ]
+          },
+          {
+            "name": "north_west_turn",
+            "label": "북쪽 · 좌측 방향 탐색",
+            "kind": "turn",
+            "yaw": 3.141592653589793,
+            "begin_sim_ns": 77296000000,
+            "begin_odom": [
+              -1.3789754067072886e-06,
+              2.9451025864319713,
+              0.02267389146246068
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 69828000000,
+                "observations": 15
+              }
+            ],
+            "end_sim_ns": 84515000000,
+            "end_odom": [
+              -2.4392748347302907e-06,
+              2.945089483425623,
+              3.1174558854584045
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "closed",
+                "last_stamp_ns": 83953000000,
+                "observations": 10
+              }
+            ]
+          },
+          {
+            "name": "north_west_scan",
+            "label": "북쪽 · 좌측 문 관측",
+            "kind": "scan",
+            "duration_sim_sec": 7.0,
+            "begin_sim_ns": 84664000000,
+            "begin_odom": [
+              -2.438868239661851e-06,
+              2.9450894834084265,
+              3.1182406074910918
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "closed",
+                "last_stamp_ns": 84151000000,
+                "observations": 12
+              }
+            ],
+            "end_sim_ns": 91664000000,
+            "end_odom": [
+              -2.438868239661851e-06,
+              2.9450894834084265,
+              3.1182406074910918
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "closed",
+                "last_stamp_ns": 91147000000,
+                "observations": 82
+              }
+            ]
+          },
+          {
+            "name": "north_face_corridor",
+            "label": "복도 진행 방향 복귀",
+            "kind": "turn",
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 91834000000,
+            "begin_odom": [
+              -2.438868239661851e-06,
+              2.9450894834084265,
+              3.1182406074910918
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "closed",
+                "last_stamp_ns": 91147000000,
+                "observations": 82
+              }
+            ],
+            "end_sim_ns": 95910000000,
+            "end_odom": [
+              3.8143664153423797e-06,
+              2.945083781304527,
+              1.594419817389763
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 92202000000,
+                "observations": 95
+              }
+            ]
+          },
+          {
+            "name": "finish",
+            "label": "복도 끝 지점 이동",
+            "kind": "move",
+            "x": 0.0,
+            "y": 4.5,
+            "yaw": 1.5707963267948966,
+            "begin_sim_ns": 96068000000,
+            "begin_odom": [
+              3.8143704329853155e-06,
+              2.9450837807154473,
+              1.593364223368442
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 92202000000,
+                "observations": 95
+              }
+            ],
+            "end_sim_ns": 101430000000,
+            "end_odom": [
+              2.20809469192445e-05,
+              4.440267435534874,
+              1.5707997033891772
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 92202000000,
+                "observations": 95
+              }
+            ]
+          },
+          {
+            "name": "save",
+            "label": "전체 지도·문 위치 저장",
+            "kind": "scan",
+            "duration_sim_sec": 3.0,
+            "begin_sim_ns": 101566000000,
+            "begin_odom": [
+              2.1269092548211905e-05,
+              4.442466087962689,
+              1.5707994888751893
+            ],
+            "begin_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 92202000000,
+                "observations": 95
+              }
+            ],
+            "end_sim_ns": 104590000000,
+            "end_odom": [
+              2.1269092548211905e-05,
+              4.442466087962689,
+              1.5707994888751893
+            ],
+            "end_objects": [
+              {
+                "id": "door_000001",
+                "position": [
+                  1.9495486550615062,
+                  -2.966780728470246,
+                  -0.01558930193778052
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 29107000000,
+                "observations": 100
+              },
+              {
+                "id": "door_000002",
+                "position": [
+                  -1.9504310649224097,
+                  -2.9801888546753226,
+                  0.009902098647657703
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 43230000000,
+                "observations": 88
+              },
+              {
+                "id": "door_000003",
+                "position": [
+                  1.9490151209898685,
+                  3.061394346654258,
+                  -0.015391748323320839
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 77683000000,
+                "observations": 19
+              },
+              {
+                "id": "door_000004",
+                "position": [
+                  -1.9508757589685837,
+                  3.0177791875118922,
+                  0.009812997861137818
+                ],
+                "state": "unknown",
+                "last_stamp_ns": 92202000000,
+                "observations": 95
+              }
+            ]
+          }
+        ],
+        "recording_requested": true,
+        "limitations": [
+          "사전 정의 경로, 자율 프런티어 탐색 아님",
+          "Gazebo pose odom, 실물·독립 장소 성능 아님",
+          "TTL 초과 문은 unknown 표시"
+        ],
+        "processes": [
+          {
+            "name": "simulation",
+            "pid": 2818005,
+            "identity": {
+              "pgid": 2818005,
+              "start_ticks": 172124312
+            },
+            "command": [
+              "ros2",
+              "launch",
+              "mapping_slam",
+              "simulation.launch.py",
+              "gui:=false",
+              "world:=/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_patrol_v1.sdf",
+              "x:=0.0",
+              "y:=-4.8",
+              "yaw:=1.5707963267948966"
+            ]
+          },
+          {
+            "name": "doors",
+            "pid": 2818006,
+            "identity": {
+              "pgid": 2818006,
+              "start_ticks": 172124312
+            },
+            "command": [
+              "ros2",
+              "launch",
+              "mapping_semantic",
+              "live_doors.launch.py",
+              "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+              "reobserve_known_doors:=false",
+              "map_id:=door-patrol-patrol-video-01",
+              "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+              "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/patrol-video-01/doors.json"
+            ]
+          },
+          {
+            "name": "xephyr",
+            "pid": 2818284,
+            "identity": {
+              "pgid": 2818284,
+              "start_ticks": 172124754
+            },
+            "command": [
+              "Xephyr",
+              ":92",
+              "-screen",
+              "1920x840",
+              "-ac",
+              "-noreset",
+              "-nolisten",
+              "tcp"
+            ]
+          },
+          {
+            "name": "gazebo-gui",
+            "pid": 2818297,
+            "identity": {
+              "pgid": 2818297,
+              "start_ticks": 172124854
+            },
+            "command": [
+              "gz",
+              "sim",
+              "-g",
+              "--gui-config",
+              "/home/blind/cv-middle/prometheus-mapping/scripts/demo/door_patrol_gui.config"
+            ]
+          },
+          {
+            "name": "rviz",
+            "pid": 2818298,
+            "identity": {
+              "pgid": 2818298,
+              "start_ticks": 172124854
+            },
+            "command": [
+              "rviz2",
+              "-d",
+              "/home/blind/cv-middle/prometheus-mapping/scripts/demo/door_patrol.rviz",
+              "--ros-args",
+              "-p",
+              "use_sim_time:=true"
+            ]
+          },
+          {
+            "name": "recorder",
+            "pid": 2818583,
+            "identity": {
+              "pgid": 2818583,
+              "start_ticks": 172125654
+            },
+            "command": [
+              "/usr/bin/python3",
+              "/home/blind/cv-middle/prometheus-mapping/scripts/demo/door_patrol_record.py",
+              "--output-dir",
+              "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/patrol-video-01",
+              "--expected-map-id",
+              "door-patrol-patrol-video-01",
+              "--display",
+              ":92",
+              "--fps",
+              "10",
+              "--timeout",
+              "300.0",
+              "--stop-file",
+              "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/patrol-video-01/recording-stop"
+            ]
+          }
+        ],
+        "initial_odom": [
+          -7.92817039018533e-13,
+          -4.799999999539316,
+          1.570796326794504
+        ],
+        "initial_door_map": {
+          "map_id": "door-patrol-patrol-video-01",
+          "frame": "map",
+          "stamp_ns": 776000000,
+          "observation_stamp_ns": 0,
+          "epoch": 0,
+          "objects": [],
+          "counters": {},
+          "last_error": ""
+        },
+        "path_tf_waits": 13,
+        "travel_distance_odom_m": 9.242593433662822,
+        "minimum_directional_clearance_m": 1.479882001876831,
+        "scan_count": 525,
+        "map_updates": 111,
+        "clock_publishers": 1,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "final_door_map": {
+          "map_id": "door-patrol-patrol-video-01",
+          "frame": "map",
+          "stamp_ns": 105036000000,
+          "observation_stamp_ns": 92202000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                1.9495486550615062,
+                -2.966780728470246,
+                -0.01558930193778052
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 29107000000,
+              "observations": 100
+            },
+            {
+              "id": "door_000002",
+              "position": [
+                -1.9504310649224097,
+                -2.9801888546753226,
+                0.009902098647657703
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 43230000000,
+              "observations": 88
+            },
+            {
+              "id": "door_000003",
+              "position": [
+                1.9490151209898685,
+                3.061394346654258,
+                -0.015391748323320839
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 77683000000,
+              "observations": 19
+            },
+            {
+              "id": "door_000004",
+              "position": [
+                -1.9508757589685837,
+                3.0177791875118922,
+                0.009812997861137818
+              ],
+              "state": "unknown",
+              "last_stamp_ns": 92202000000,
+              "observations": 95
+            }
+          ],
+          "counters": {
+            "received_rgb": 1186,
+            "received_depth": 1185,
+            "received_camera_info": 1184,
+            "received_detections": 1184,
+            "synchronized": 1184,
+            "no_detection": 654,
+            "tf_timeout": 3,
+            "doorway_unavailable": 223,
+            "processed": 302,
+            "position_unavailable": 2
+          },
+          "last_error": "wall_plane_unreliable"
+        },
+        "final_detector": {
+          "counters": {
+            "received": 1591,
+            "submitted": 1238,
+            "replaced": 353,
+            "completed": 1237
+          },
+          "epoch": 0,
+          "worker_pgid": 2818121,
+          "worker_start_ticks": 172124413,
+          "latency_sec": 0.06762283795978874,
+          "source_age_sec": 0.115,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-lmqfnxsf/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-lmqfnxsf/ultralytics-config",
+              "success": true,
+              "input_sha256": "20e26a03514f2acbe89affc161dc03635227dc81efcf46b4da2d3184a9d2656b",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 0,
+              "inference_wall_sec": 0.042754620022606105
+            }
+          },
+          "last_error": ""
+        },
+        "final_odom": [
+          2.1269092548211905e-05,
+          4.442466087962689,
+          1.5707994888751893
+        ],
+        "save_response": {
+          "success": true,
+          "message": "문 지도 저장 완료"
+        },
+        "evaluation": {
+          "passed": true,
+          "doors": [
+            {
+              "truth_id": "right_lower",
+              "expected_state": "closed",
+              "observed_ids": [
+                "door_000001"
+              ],
+              "fresh_state_observations": {
+                "unknown": 1,
+                "closed": 29
+              },
+              "first_stamp_ns": 19800000000,
+              "minimum_correspondence_distance_m": 0.06040577958333471,
+              "passed": true
+            },
+            {
+              "truth_id": "right_upper",
+              "expected_state": "open",
+              "observed_ids": [
+                "door_000003"
+              ],
+              "fresh_state_observations": {
+                "unknown": 4,
+                "open": 13
+              },
+              "first_stamp_ns": 68509000000,
+              "minimum_correspondence_distance_m": 0.079804283649319,
+              "passed": true
+            },
+            {
+              "truth_id": "left_lower",
+              "expected_state": "open",
+              "observed_ids": [
+                "door_000002"
+              ],
+              "fresh_state_observations": {
+                "unknown": 1,
+                "open": 24
+              },
+              "first_stamp_ns": 34452000000,
+              "minimum_correspondence_distance_m": 0.0533812776523928,
+              "passed": true
+            },
+            {
+              "truth_id": "left_upper",
+              "expected_state": "closed",
+              "observed_ids": [
+                "door_000004"
+              ],
+              "fresh_state_observations": {
+                "unknown": 2,
+                "closed": 41
+              },
+              "first_stamp_ns": 83161000000,
+              "minimum_correspondence_distance_m": 0.05224261254470063,
+              "passed": true
+            }
+          ],
+          "unmatched_ids": [],
+          "alignment_policy": "최초 map←odom 고정·Gazebo pose odom 사용, 독립 SLAM 정확도 평가 아님",
+          "map_from_odom_initial": [
+            2.725370628826707e-32,
+            -3.877409121342327e-35,
+            -1.262177448353653e-37
+          ],
+          "maximum_correspondence_distance_m": 0.45
+        },
+        "saved_snapshot_check": {
+          "objects": 4,
+          "ids": [
+            "door_000001",
+            "door_000002",
+            "door_000003",
+            "door_000004"
+          ],
+          "matched": true
+        },
+        "map_metadata": {
+          "width": 219,
+          "height": 239,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -5.460906010396862,
+            -5.980190531980734
+          ]
+        },
+        "recorder_returncode": 0,
+        "process_returncodes": {
+          "simulation": 0,
+          "doors": 0,
+          "xephyr": 0,
+          "gazebo-gui": 0,
+          "rviz": 0,
+          "recorder": 0
+        },
+        "worker_group_gone": true,
+        "elapsed_wall_sec": 120.4492878849851,
+        "harness_sha256": "050a2d55f0c890d2fae9dc071141af128effff133b65ff63f7e41d527fd3755a"
+      },
+      "artifacts": {
+        "preview-07-north_arrive.png": "29907c6e00d4b3d89073ae495df315bdf25fd071e07df518ccaf00558fe07313",
+        "observation-history.json": "eb2b11742350bf0c837f0bcedb8e5ef08e5b4cf606e29a1dfc713c6094dc5bc2",
+        "recorder.log": "d65d7d2c1fa2fec030c10e46cf9dcc979a350f299d0ea5fd78cf6ee051c64fb2",
+        "executed-harness.py": "050a2d55f0c890d2fae9dc071141af128effff133b65ff63f7e41d527fd3755a",
+        "preview-04-south_west_turn.png": "92eadd70529a494233ea75eb392b4375075d8d0dcfcb2b5779ee34d158603707",
+        "south_west_scan-rgb.png": "4c3d2f0e563f15316e06b25c559be5f78051d6bc16d6ac9d7aabae86cd14ade0",
+        "doors.json": "a95e2d399e3cd7d9243cd0aadb3e1ea265da7e6ff738858a3025bf721ab715e4",
+        "recording-ready.json": "0fa3c94f6963152fac2b2aac1eb32f37f73b4f383d837411abfd1d6bb2d925ef",
+        "executed-recorder.py": "5431197025bbd627e75d0ea828527de3f8e36ab2b1c9ff1d564869743bd19c32",
+        "harness.log": "ac501d26c3b1337550df214b438b583f6afb9b60f5d480761478cb8bed3b55da",
+        "occupancy.npy": "a0b3a54ae8ed78a18545bb21edab5c90632f3d71ea76085e9cdeb3fb0a0bea78",
+        "preview-10-north_west_turn.png": "a0d3b9090600fbbd22b88308d671080188f16968950de2977ed6cc963aaea892",
+        "south_east_scan-rgb.png": "bb8dbb4b85c2b1bf345890c97b26322131a7078f26bfa73067536b13118525e6",
+        "save-rgb.png": "20e26a03514f2acbe89affc161dc03635227dc81efcf46b4da2d3184a9d2656b",
+        "simulation.log": "609385d00fabfeb8b9f0791ad7ea16b6b61636ca1743a2deccb7397e61abda78",
+        "north_west_scan-rgb.png": "185d95de01ecbfe8a6c7ffaf6e72ffa24faaf0fc7a7b8977811064f9291dad63",
+        "frames.json": "beb0ea0fac46fa64f07ae077859847490daa88bc37bf0e4eb218b9fbd5fdc9d4",
+        "preview-03-south_east_scan.png": "21a02682343f7f8704fc32d0f04f6caa63deb903bbb1bb7351114146d2452237",
+        "recording-checks.json": "6e009ddc0616153d71f1105cd12822134463fbb09396ee5d12bf33027bf1a7af",
+        "preview-00-waiting.png": "aa113d98f2a923809e11c3ea8157682a0ba8feacc2d111ef3af057943234efb1",
+        "preview-02-south_east_turn.png": "c06b6914fe9f66c135f306f01207e7056545997162528fd3cbb05661cdae16f7",
+        "preview-05-south_west_scan.png": "60e8bda9558b134ae4e2789c606b31cd586355f7ff3d959ef1e687e5ee849f6a",
+        "preview-14-save.png": "58b34d575ab766c30a9dc7746e45751abebc146346ae48923dcfd2c5b492ea3e",
+        "doors.log": "a44d30b780e956f047cc1535b0d2c8662b72ada2b31bddd943ca71486c219d91",
+        "rviz.log": "29d31b9fe9b9989726c45821f03a2a0f405ae156ebbb8d3f25bd7b018a2915ca",
+        "preview-11-north_west_scan.png": "17c6b02476f1a2108da39f890ca5f0bc63e0fd634af377169d6345a4e5bd9752",
+        "preview-12-north_face_corridor.png": "0e13be05a8224bf415c16eacd7914fb2d9804c30fb2617bb6d711d68fa399478",
+        "preview-09-north_east_scan.png": "427c92f968dfb024e5126f2a117af0132f57f68d48b6a24fc0c56b97ee1113ad",
+        "check.json": "bea2c5c018f39bb65157fd678b2288bba831d0a1ac332abeecc3bf700fa73044",
+        "preview-08-north_east_turn.png": "6d41b31adc03d097c92b8f3c44a68dccbcad242ae55eda0033b25564868be714",
+        "door-map-history.json": "f5a79514cda7c47f4d18f24a7ffa9c30e2192ee3a482aea68b95d783bf671cbc",
+        "preview-01-south_arrive.png": "89eb57da04ae5a8fcca2b629747e85b718cd72455a0fdb91bf4d0227f1837c06",
+        "gazebo-gui.log": "996b61f628fa3830262775d72b41f7b57a7ac31d361d2b6f269d0dccbefc9703",
+        "preview-13-finish.png": "ee864aba55d14091a5245a5a70a03e3d0b65b87ad7acb841625e332766643eb3",
+        "history.json": "b551d908b7b06a1ba33399c3b2fb596efa2df9c25726fc1414b221b25b75cad4",
+        "route-plan.json": "f95703db353f2808ea4a59cc24df8e796fbfebe00c632be4c0fc893b78a44fe6",
+        "north_east_scan-rgb.png": "b34c7868980ebabc16705a52e321b891abe8c89b11dff555b3faeb263d2c5fc6",
+        "preview-06-south_face_corridor.png": "4eb6aa329aa4a9ba4244b378de7a4030217b5ead48e311df72d2a1791bfe83e3",
+        "xephyr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "recording": {
+    "status": "complete",
+    "reason": "종료 파일 수신",
+    "gazebo_xid": "0x600012",
+    "rviz_xid": "0x200092",
+    "display": ":92",
+    "recorded_frames": 1004,
+    "actual_captures": 990,
+    "repeated_frames": 14,
+    "fps": 10,
+    "video_duration_sec": 100.4,
+    "wall_duration_sec": 100.36751715705032,
+    "duration_error_sec": 0.032482842949690394,
+    "errors": [],
+    "map_id": "door-patrol-patrol-video-01",
+    "endpoints": {
+      "clock_publishers": 1,
+      "map_publishers": [
+        "slam_toolbox"
+      ],
+      "rviz_marker_subscriptions": [
+        "rviz"
+      ]
+    },
+    "observed_ids": [
+      "door_000001",
+      "door_000002",
+      "door_000003",
+      "door_000004"
+    ],
+    "final_door_map": {
+      "map_id": "door-patrol-patrol-video-01",
+      "frame": "map",
+      "stamp_ns": 105079000000,
+      "observation_stamp_ns": 92202000000,
+      "epoch": 0,
+      "objects": [
+        {
+          "id": "door_000001",
+          "position": [
+            1.9495486550615062,
+            -2.966780728470246,
+            -0.01558930193778052
+          ],
+          "state": "unknown",
+          "last_stamp_ns": 29107000000,
+          "observations": 100
+        },
+        {
+          "id": "door_000002",
+          "position": [
+            -1.9504310649224097,
+            -2.9801888546753226,
+            0.009902098647657703
+          ],
+          "state": "unknown",
+          "last_stamp_ns": 43230000000,
+          "observations": 88
+        },
+        {
+          "id": "door_000003",
+          "position": [
+            1.9490151209898685,
+            3.061394346654258,
+            -0.015391748323320839
+          ],
+          "state": "unknown",
+          "last_stamp_ns": 77683000000,
+          "observations": 19
+        },
+        {
+          "id": "door_000004",
+          "position": [
+            -1.9508757589685837,
+            3.0177791875118922,
+            0.009812997861137818
+          ],
+          "state": "unknown",
+          "last_stamp_ns": 92202000000,
+          "observations": 95
+        }
+      ],
+      "counters": {
+        "received_rgb": 1186,
+        "received_depth": 1185,
+        "received_camera_info": 1184,
+        "received_detections": 1184,
+        "synchronized": 1184,
+        "no_detection": 654,
+        "tf_timeout": 3,
+        "doorway_unavailable": 223,
+        "processed": 302,
+        "position_unavailable": 2
+      },
+      "last_error": "wall_plane_unreliable"
+    },
+    "final_detector": {
+      "counters": {
+        "received": 1591,
+        "submitted": 1238,
+        "replaced": 353,
+        "completed": 1237
+      },
+      "epoch": 0,
+      "worker_pgid": 2818121,
+      "worker_start_ticks": 172124413,
+      "latency_sec": 0.06762283795978874,
+      "source_age_sec": 0.115,
+      "metadata": {
+        "backend": "yolo11",
+        "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "release_policy_override": "keep",
+        "cache_override": "/tmp/find-door-live-lmqfnxsf/ultralytics-config",
+        "last_run": {
+          "model_backend": "yolo11",
+          "training_target": "doorway",
+          "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+          "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+          "ultralytics_version": "8.4.191",
+          "torch_version": "2.14.1+cu126",
+          "device": "0",
+          "release_policy": "keep",
+          "cache_override": "/tmp/find-door-live-lmqfnxsf/ultralytics-config",
+          "success": true,
+          "input_sha256": "20e26a03514f2acbe89affc161dc03635227dc81efcf46b4da2d3184a9d2656b",
+          "input_size": [
+            640,
+            480
+          ],
+          "imgsz": 640,
+          "confidence": 0.1,
+          "iou": 0.45,
+          "max_det": 300,
+          "detections": 0,
+          "inference_wall_sec": 0.042754620022606105
+        }
+      },
+      "last_error": ""
+    },
+    "final_patrol": {
+      "stage": "save",
+      "label": "전체 지도·문 위치 저장",
+      "elapsed_sec": 115.41288908396382,
+      "robot_odom": [
+        2.1269092548211905e-05,
+        4.442466087962689,
+        1.5707994888751893
+      ],
+      "route_index": 13,
+      "route_count": 14,
+      "status": "running"
+    },
+    "source_sha256": "5431197025bbd627e75d0ea828527de3f8e36ab2b1c9ff1d564869743bd19c32",
+    "capture_scope": "전용 Xephyr의 실제 앱 화면; 사용자 바탕화면 제외"
+  },
+  "exports": [
+    {
+      "path": "find-door-patrol-gazebo-rviz.mp4",
+      "bytes": 19565837,
+      "sha256": "ba4e2c18e652a97fc2bd489cced26d3b2085af3cffe97ce08e7c346cb57c9830",
+      "decoded_frames": 1004,
+      "duration_sec": 100.4
+    },
+    {
+      "path": "find-door-patrol-gazebo.mp4",
+      "bytes": 12088685,
+      "sha256": "21e68428a282c54ca2d553951f9661bd3649b5199d783dfc44fb2267c4706685",
+      "decoded_frames": 1004,
+      "duration_sec": 100.4
+    },
+    {
+      "path": "find-door-patrol-rviz.mp4",
+      "bytes": 12094116,
+      "sha256": "777dd9f4657c6e36e24279604ac0e0c056cbe389661b282a5978eabdc223a048",
+      "decoded_frames": 1004,
+      "duration_sec": 100.4
+    }
+  ],
+  "tests": {
+    "offline_passed": 929,
+    "offline_ros_skipped": 5,
+    "semantic_package_passed": 340,
+    "gazebo_package_failed": 0
+  },
+  "source_sha256": {
+    "scripts/door_probe/patrol_world.py": "77f27f5e3602c96d49c6e972d0be4aa7f5e6b3aaa2737f40e63b4cfa7737bdc4",
+    "scripts/door_probe/test_patrol_world.py": "0fae9f9382efe621f86108e3ef1430a0897eccd09e735700eec937c0b59966ad",
+    "scripts/door_probe/patrol_check.py": "050a2d55f0c890d2fae9dc071141af128effff133b65ff63f7e41d527fd3755a",
+    "scripts/door_probe/test_patrol_check.py": "87c323168e8fffafb0f39a696d126fce5f4226dc6cf661dbe8047a1b4f432c0e",
+    "scripts/door_probe/patrol_report.py": "41715e7c39d4bedd243ed69e64c58695e84be16bec64523142c4b494e9cb5ee1",
+    "scripts/demo/door_patrol_record.py": "5431197025bbd627e75d0ea828527de3f8e36ab2b1c9ff1d564869743bd19c32",
+    "scripts/demo/door_patrol.rviz": "0dda116fb2bfb5d4f9b25268c2f8a79c07c7ad5a6c252d55237a7262fc80964b",
+    "scripts/demo/door_patrol_gui.config": "fb269b0bd69975e95b578cc2ad5781c14c056c04a6eb665fdc48b544549d76f7",
+    "src/mapping_gazebo/worlds/door_patrol_v1.sdf": "e3b361377f97b4b6804372778984d2edd0909db4d9a9ac33de8f57a088ce17db",
+    "src/mapping_gazebo/config/door_patrol_v1.json": "c3d9b383c9001de28714cc893515b2131dc2aba8dd1a71661fe29b5164da786b",
+    "experiments/door_probe/yolo11-live-01/detector.json": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c"
+  },
+  "figure_sha256": {
+    "docs/images/door-patrol/video-preview.jpg": "3e01e254e93d839abde3ccb26e3fd85c101e0a03b54c57e2cda551558aba8cd8",
+    "docs/images/door-patrol/final-map.png": "13b624d64fef5e13a8c7972dd84b0e7bc7664b7b5f10d27de4f41cbd9a9c522b"
+  }
+}
