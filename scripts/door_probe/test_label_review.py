@@ -67,6 +67,7 @@ def test_review_requires_name(case):
     lambda p: p['frames'].append(copy.deepcopy(p['frames'][0])),
     lambda p: p['frames'][0].update(id='other'),
     lambda p: p['frames'][0].update(split='test'),
+    lambda p: p['frames'][0].update(review_context={'note':'변경 시도'}),
     lambda p: p['frames'][0].update(reviewed=1),
     lambda p: p['frames'][0]['doors'][0].update(leaf_bbox=[0, 0, 100, 10]),
     lambda p: p['frames'][0]['doors'][0].update(doorway_visibility='visible'),
@@ -95,6 +96,7 @@ def test_no_overwrite(case):
 def test_export_offline_and_escape(case):
     document = json.loads(case[0].read_text())
     document['frames'][0]['id'] = '</script><script>alert(1)</script>'
+    document['frames'][0]['review_context'] = {'note': '</script> 참고 정보'}
     document['frames'][0]['review_status'] = 'reviewed'
     document['frames'][0]['doors'] = []
     case[0].write_text(json.dumps(document))
@@ -107,5 +109,6 @@ def test_export_offline_and_escape(case):
     assert '/*__DATA__*/' not in text
     payload = text.split('const data = ', 1)[1].split(';\nconst $', 1)[0]
     assert json.loads(payload)['frames'][0]['id'] == document['frames'][0]['id']
+    assert json.loads(payload)['frames'][0]['review_context'] == document['frames'][0]['review_context']
     with pytest.raises(FileExistsError):
         export_html(case[0], output)

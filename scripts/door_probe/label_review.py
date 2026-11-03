@@ -50,7 +50,7 @@ def export_html(manifest_path, output_path):
         data = image_bytes(frame, Path(manifest_path).resolve().parent)
         frames.append(dict(id=frame['id'], environment=frame['environment'],
                            group_id=frame['group_id'], split=frame['split'],
-                           doors=frame['doors'], reviewed=False,
+                           doors=frame['doors'], reviewed=False, review_context=frame.get('review_context', {}),
                            image='data:image/png;base64,' + base64.b64encode(data).decode()))
     payload = json.dumps(dict(schema_version=1, base_sha256=checksum, frames=frames),
                          ensure_ascii=False).replace('<', chr(92) + 'u003c')

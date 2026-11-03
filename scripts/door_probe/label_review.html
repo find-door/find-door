@@ -14,7 +14,7 @@ textarea{width:100%;height:210px;font:14px monospace;box-sizing:border-box}#erro
 페이지를 닫으면 저장하지 않은 작업은 사라집니다. 기존 라벨의 검수 상태는 승계하지 않습니다.</p>
 <div class="controls"><button id="prev">이전</button><select id="frame" aria-label="프레임"></select><button id="next">다음</button>
 <button id="download">수정본 JSON 저장</button><label>수정본 이어서 열기 <input id="restore" type="file" accept=".json"></label></div>
-<p id="meta"></p><canvas id="canvas" width="640" height="480"></canvas>
+<p id="meta"></p><details><summary>촬영·검출 참고 — 정답 박스 아님</summary><pre id="context" style="white-space:pre-wrap"></pre></details><canvas id="canvas" width="640" height="480"></canvas>
 <div class="controls"><label>문 <select id="door"></select></label><label>대상 <select id="target"><option value="leaf">문짝</option><option value="doorway">출입구</option></select></label>
 <button id="add">문 추가</button><button id="remove">선택 문 삭제</button><button id="unknown">선택 대상 불명</button><button id="occluded">선택 대상 완전 가림</button></div>
 <p>선택한 대상은 영상 위에서 드래그해 박스를 그립니다. 문 상태·문 ID는 아래 JSON에서 수정하고 적용하세요.
@@ -72,7 +72,7 @@ function controls(enabled){
 }
 function show(next){
  ready=false;controls(false);start=null;index=next;$('frame').value=String(index);$('error').textContent='';
- const f=current();$('meta').textContent=`${index+1}/${data.frames.length} · ${f.id}\n${f.environment} · ${f.group_id} · ${f.split}`;
+ const f=current();$('context').textContent=JSON.stringify(f.review_context || {},null,2);$('meta').textContent=`${index+1}/${data.frames.length} · ${f.id}\n${f.environment} · ${f.group_id} · ${f.split}`;
  const loaded=new Image();image=loaded;
  loaded.onload=()=>{if(image!==loaded)return;canvas.width=loaded.naturalWidth;canvas.height=loaded.naturalHeight;ready=true;controls(true);renderLabels();};
  loaded.onerror=()=>fail('영상 로드 실패');loaded.src=f.image;
