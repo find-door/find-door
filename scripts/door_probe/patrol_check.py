@@ -5,6 +5,7 @@
 """
 import argparse
 from collections import Counter
+from copy import deepcopy
 import hashlib
 import json
 import math
@@ -35,6 +36,25 @@ def stages():
     result.append(dict(name='finish',label='복도 끝 지점 이동',kind='move',x=0.,y=4.5,yaw=math.pi/2))
     result.append(dict(name='save',label='전체 지도·문 위치 저장',kind='scan',duration_sim_sec=3.))
     return result
+
+
+def revisit_stages():
+    """시야 밖 상태 변경과 남쪽 문 두 차례 재방문을 사전 고정한다."""
+    return [
+        dict(name='revisit_open_change',label='시험 제어 · 시야 밖 남쪽 문 열기',kind='change',angle_deg=90,state='open'),
+        dict(name='revisit_open_away',label='시야 밖 · 이전 닫힘 확인 이력 유지',kind='scan',duration_sim_sec=3.),
+        dict(name='revisit_open_return',label='남쪽 문 재방문 주행',kind='move',x=0.,y=-3.,yaw=-math.pi/2),
+        dict(name='revisit_open_face',label='남쪽 문 방향 회전',kind='turn',yaw=0.),
+        dict(name='revisit_open_scan',label='재방문 · 새 열림 상태 관측',kind='scan',duration_sim_sec=7.),
+        dict(name='revisit_open_leave_turn',label='문에서 떠나 복도로 회전',kind='turn',yaw=math.pi/2),
+        dict(name='revisit_open_leave',label='문에서 떠나 북쪽으로 이동',kind='move',x=0.,y=3.,yaw=math.pi/2),
+        dict(name='revisit_closed_change',label='시험 제어 · 시야 밖 남쪽 문 닫기',kind='change',angle_deg=0,state='closed'),
+        dict(name='revisit_closed_away',label='시야 밖 · 이전 열림 확인 이력 유지',kind='scan',duration_sim_sec=3.),
+        dict(name='revisit_closed_return',label='남쪽 문 두 번째 재방문 주행',kind='move',x=0.,y=-3.,yaw=-math.pi/2),
+        dict(name='revisit_closed_face',label='남쪽 문 방향 회전',kind='turn',yaw=0.),
+        dict(name='revisit_closed_scan',label='재방문 · 새 닫힘 상태 관측',kind='scan',duration_sim_sec=7.),
+        dict(name='revisit_finish_turn',label='재방문 완료 · 복도 방향 정지',kind='turn',yaw=math.pi/2),
+        dict(name='revisit_finish_wait',label='최종 이력·미관측 표시 저장',kind='scan',duration_sim_sec=3.)]
 
 
 def command_for(stage, pose, speed=.35):
@@ -149,13 +169,17 @@ def main():
     parser.add_argument('--detector-config',type=Path,default=ROOT/'experiments/door_probe/yolo11-live-01/detector.json')
     parser.add_argument('--recon-root',type=Path,default=Path('/home/blind/cv-middle/CV-VLM/recon-report'))
     parser.add_argument('--record',action='store_true')
+    parser.add_argument('--revisit',action='store_true',help='문을 떠나 있는 동안 상태를 바꾸고 두 차례 재방문')
     parser.add_argument('--timeout',type=float,default=300.)
     args=parser.parse_args()
     if (os.environ.get('ROS_DOMAIN_ID'),os.environ.get('GZ_PARTITION'))!=('12','codex'):
         parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 필요')
     if args.output.exists():parser.error('새 출력 폴더가 필요합니다')
     args.output=args.output.resolve();args.output.mkdir(parents=True)
-    truth=json.loads(args.manifest.read_text());plan=stages()
+    truth=json.loads(args.manifest.read_text());initial_stage_count=len(stages())
+    plan=stages()+(revisit_stages() if args.revisit else [])
+    target=next((item for item in truth['doors'] if item['id']=='right_lower'),None)
+    if args.revisit and target is None:parser.error('재방문은 right_lower 시험 문이 필요합니다')
     (args.output/'route-plan.json').write_text(json.dumps(plan,ensure_ascii=False,indent=2)+'\n')
     import rclpy
     from rclpy.node import Node
@@ -171,6 +195,8 @@ def main():
     from cv_bridge import CvBridge
     from PIL import Image as PILImage
     from capture import stop_group,process_identity
+    from revisit import assert_identity,validate_away,validate_revisit
+    from revisit_final import validate_complete_history
     from mapping_semantic.door_node import correction_vector
     from mapping_semantic.core import rotation_matrix
     rclpy.init();node=Node('indoor_door_patrol',parameter_overrides=[Parameter('use_sim_time',value=True)])
@@ -198,11 +224,14 @@ def main():
     status_pub=node.create_publisher(String,'/demo/patrol_status',10)
     path_pub=node.create_publisher(PathMsg,'/demo/patrol_path',10)
     path=PathMsg();path.header.frame_id='map'
-    history=[];children=[];handles=[];report=dict(status='running',base_commit='3911341',map_id=map_id,
+    history=[];children=[];handles=[];report=dict(status='running',base_commit='0af09bf',map_id=map_id,
         world_path=str(args.world.resolve()),world_sha256=hashlib.sha256(args.world.read_bytes()).hexdigest(),
         manifest_sha256=hashlib.sha256(args.manifest.read_bytes()).hexdigest(),stages=[],recording_requested=args.record,
-        limitations=['사전 정의 경로, 자율 프런티어 탐색 아님','Gazebo pose odom, 실물·독립 장소 성능 아님','TTL 초과 문은 unknown 표시'])
+        revisit_requested=args.revisit,
+        limitations=['사전 정의 경로, 자율 프런티어 탐색 아님','Gazebo pose odom, 실물·독립 장소 성능 아님',
+                     '현재 판단과 마지막 확인 이력 분리','문 변경은 순간 pose 제어이며 연속 경첩 회전 아님'])
     started=time.monotonic();initial_alignment=None;traveled=0.;last_xy=None;minimum_clearance=None
+    initial_objects=None;revisit_events=[];active_event=None
     def start(name,command,environment=None):
         handle=(args.output/(name+'.log')).open('w');handles.append(handle)
         child=subprocess.Popen(command,stdout=handle,stderr=subprocess.STDOUT,start_new_session=True,env=environment)
@@ -279,6 +308,43 @@ def main():
             begin=node.get_clock().now().nanoseconds;stage_start=time.monotonic()
             result=dict(stage,begin_sim_ns=begin,begin_odom=pose(),begin_objects=data['doors']['objects'])
             report['stages'].append(result)
+            if stage['kind']=='change':
+                publish_command((0.,0.,0.));sample(stage,index)
+                original=next(item for item in report['initial_patrol_evaluation']['doors'] if item['truth_id']==target['id'])
+                identifier=original['observed_ids'][0]
+                before=deepcopy(next(obj for obj in data['doors']['objects'] if obj['id']==identifier))
+                if before['state']!='unknown' or before['observation_status']!='stale':
+                    raise RuntimeError('시야 밖 변경 전에 대상 문 관측이 만료되지 않았습니다')
+                # 배치 정답은 이 제어/시야 밖 증명에만 사용하며 검출·상태 노드에 전달하지 않는다.
+                sensor_stamp=data['rgb'].header.stamp;when=Time.from_msg(sensor_stamp)
+                deadline=time.monotonic()+5
+                while True:
+                    try:camera=buffer.lookup_transform('odom','camera_color_optical_frame',when).transform;break
+                    except TransformException:
+                        if time.monotonic()>deadline:raise RuntimeError('시야 밖 증명용 관측 시각 TF 없음')
+                        pump(.05)
+                t,q=camera.translation,camera.rotation
+                camera_rotation=rotation_matrix([q.x,q.y,q.z,q.w])
+                camera_point=camera_rotation.T@[target['center_world_xyz'][0]-t.x,
+                    target['center_world_xyz'][1]-t.y,1.-t.z]
+                if camera_point[2]>=0:raise RuntimeError('대상 문이 카메라 뒤에 있지 않습니다')
+                yaw=target['wall_yaw_rad']-math.radians(stage['angle_deg'])
+                hx,hy,hz=target['hinge_world_xyz']
+                request=(f'name: {json.dumps(target["leaf_model"])}, position: {{x: {hx}, y: {hy}, z: {hz}}}, '
+                         f'orientation: {{z: {math.sin(yaw/2)}, w: {math.cos(yaw/2)}}}')
+                command=['gz','service','-s',f'/world/{truth["world_name"]}/set_pose',
+                         '--reqtype','gz.msgs.Pose','--reptype','gz.msgs.Boolean','--timeout','5000','--req',request]
+                active_event=dict(expected_state=stage['state'],before=before,changed_sim_ns=node.get_clock().now().nanoseconds,
+                    history_start=len(observation_history),command=command,
+                    camera_out_of_view=dict(optical_point=camera_point.tolist(),
+                        rgb_stamp_ns=sensor_stamp.sec*1_000_000_000+sensor_stamp.nanosec,robot_odom=pose()))
+                revisit_events.append(active_event)
+                controlled=subprocess.run(command,capture_output=True,text=True,timeout=8)
+                active_event.update(returncode=controlled.returncode,stdout=controlled.stdout,stderr=controlled.stderr)
+                if controlled.returncode or 'data: true' not in controlled.stdout:raise RuntimeError('시야 밖 문 제어 실패')
+                pump(.2)
+                result.update(end_sim_ns=node.get_clock().now().nanoseconds,end_odom=pose(),end_objects=data['doors']['objects'])
+                continue
             while True:
                 pump(.05)
                 if time.monotonic()-data['odom_at']>2 or time.monotonic()-data['scan_at']>2:raise RuntimeError('odom/scan 수신 정지')
@@ -297,6 +363,20 @@ def main():
             result.update(end_sim_ns=node.get_clock().now().nanoseconds,end_odom=pose(),end_objects=data['doors']['objects'])
             if stage['kind']=='scan':save_rgb(stage['name']+'-rgb.png')
             pump(.15)
+            if args.revisit and index==initial_stage_count-1:
+                report['initial_patrol_evaluation']=evaluate_observations(observation_history,truth['doors'],initial_alignment)
+                if not report['initial_patrol_evaluation']['passed']:raise RuntimeError('재방문 전 네 문 최초 확인 실패')
+                report['initial_historical_state_check']=validate_historical_states(data['doors'],report['initial_patrol_evaluation'])
+                initial_objects=deepcopy(data['doors']['objects'])
+            if args.revisit and stage['name'] in ('revisit_open_away','revisit_closed_away'):
+                maps=[row['door_map']for row in observation_history[active_event['history_start']:]]
+                active_event['away_check']=validate_away(active_event['before'],maps,initial_objects)
+                active_event['away_history_end']=len(observation_history)
+            if args.revisit and stage['name'] in ('revisit_open_scan','revisit_closed_scan'):
+                maps=[row['door_map']for row in observation_history[active_event['history_start']:]]
+                active_event['evaluation']=validate_revisit(active_event['before'],maps,active_event['expected_state'],
+                    active_event['changed_sim_ns'],initial_objects)
+                active_event['history_end']=len(observation_history)
         publish_command((0.,0.,0.));pump(.3)
         report.update(travel_distance_odom_m=traveled,minimum_directional_clearance_m=minimum_clearance,
             scan_count=data['scan_count'],map_updates=data['map_updates'],clock_publishers=node.count_publishers('/clock'),
@@ -312,7 +392,16 @@ def main():
         # 저장 응답을 기다리며 수신한 관측도 최종 평가에 반드시 포함한다.
         report['final_door_map']=data['doors']
         report['final_detector']=data['detector']
-        report['evaluation']=evaluate_observations(observation_history,truth['doors'],initial_alignment)
+        if args.revisit:
+            assert_identity(initial_objects,[row['door_map']for row in observation_history
+                            if row['door_map']['stamp_ns']>=report['stages'][initial_stage_count-1]['end_sim_ns']])
+            if len(revisit_events)!=2 or any(not event.get('evaluation',{}).get('passed') for event in revisit_events):
+                raise RuntimeError('두 재방문 상태 전이 검증 실패')
+            report['evaluation']=report['initial_patrol_evaluation']
+            report['revisit']=dict(passed=True,target_truth_id=target['id'],events=revisit_events,
+                identity_preserved=True,initial_objects=initial_objects)
+            report['revisit']['complete_history_check']=validate_complete_history(initial_objects,revisit_events,observation_history)
+        else:report['evaluation']=evaluate_observations(observation_history,truth['doors'],initial_alignment)
         report['saved_snapshot_check']=validate_saved_snapshot(json.loads((args.output/'doors.json').read_text()),map_id,data['doors']['objects'])
         report['historical_state_check']=validate_historical_states(data['doors'],report['evaluation'])
         grid=data['grid']
@@ -327,7 +416,8 @@ def main():
     except BaseException as exc:
         report.update(status='failed',error=f'{type(exc).__name__}: {exc}',last_odom=pose()if data['odom']else None,
             final_door_map=data['doors'],final_detector=data['detector'])
-        if initial_alignment is not None:report['evaluation']=evaluate_observations(observation_history,truth['doors'],initial_alignment)
+        if args.revisit:report['revisit']=dict(passed=False,target_truth_id=target['id'],events=revisit_events)
+        elif initial_alignment is not None:report['evaluation']=evaluate_observations(observation_history,truth['doors'],initial_alignment)
         save_rgb('failure-rgb.png')
         raise
     finally:
@@ -356,6 +446,8 @@ def main():
         report['source_sha256']={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in [
             'src/mapping_semantic/mapping_semantic/door_map.py',
             'src/mapping_semantic/mapping_semantic/door_node.py',
+            'scripts/door_probe/revisit.py',
+            'scripts/door_probe/revisit_final.py',
             'scripts/demo/door_patrol_record.py']}
         (args.output/'check.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
         (args.output/'history.json').write_text(json.dumps(history,ensure_ascii=False,indent=2)+'\n')
