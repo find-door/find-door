@@ -1,0 +1,1240 @@
+{
+  "schema_version": 1,
+  "annotation_method": "ai_visual",
+  "human_reviewed": false,
+  "created_at": "2026-11-03T02:30:43.030164+00:00",
+  "base_dataset_sha256": "1ba7b7575744646e20baabf5058895c794f36e0c5d586338eebde7114d30943f",
+  "policy": [
+    "AI가 원본 RGB를 시각 관찰하여 작성. 사람 검수 정답이 아님.",
+    "기존 검출 박스를 정답으로 복사하지 않음. 모델 추론 실행 없음.",
+    "하나의 문틀을 공유하는 양개문은 한 인스턴스, 보이는 문짝들의 합집합 bbox.",
+    "문짝은 보이는 부분, 출입구는 식별 가능한 고정 문틀 포함. 영상 밖 복원 없음.",
+    "가구문·창문 제외. 가림/불명은 null과 가시성으로 보존.",
+    "프레임 내 문 정체·누락이 불확실하면 draft. 상태만 불명인 경우 state unknown.",
+    "실제 RGB는 unassigned 유지. 독립 시험셋·학습 분할 확정 아님."
+  ],
+  "frames": [
+    {
+      "id": "real_dd2_closed_Door0016",
+      "rgb_sha256": "955beb04b5a518c9550b532666617dbc374b4e78fb0c90ce60576341cf6fdb43",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            199,
+            256,
+            348,
+            640
+          ],
+          "doorway_bbox": [
+            191,
+            241,
+            365,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "문 하단은 영상 밖으로 잘림. 왼쪽 수납장·물품은 문에서 제외."
+        }
+      ],
+      "annotation_note": "문 하단은 영상 밖으로 잘림. 왼쪽 수납장·물품은 문에서 제외.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0081",
+      "rgb_sha256": "001a34bf59b9f91bf6cbbb4ec76e6182e4be114ab2e4aecc681807e7838f9aa4",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            19,
+            0,
+            159,
+            479
+          ],
+          "doorway_bbox": null,
+          "leaf_visibility": "visible",
+          "doorway_visibility": "unknown",
+          "annotation_note": "문 상단과 왼쪽 경계 일부가 영상 밖. 어두운 갈색 문짝의 보이는 부분만 기록. 문틀 하단과 계단의 경계를 분리하기 어려워 출입구 bbox는 불명으로 보류."
+        }
+      ],
+      "annotation_note": "문 상단과 왼쪽 경계 일부가 영상 밖. 어두운 갈색 문짝의 보이는 부분만 기록. 문틀 하단과 계단의 경계를 분리하기 어려워 출입구 bbox는 불명으로 보류.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0115",
+      "rgb_sha256": "3b5ef5ff1cd3e59075f4966484aa5ca36a69e1acfe45d2af7decd48c356552d7",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "unknown",
+          "leaf_bbox": [
+            23,
+            126,
+            231,
+            602
+          ],
+          "doorway_bbox": [
+            0,
+            107,
+            249,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "유리·루버가 있는 한 문짝이며 밝은 틈만으로 열린 문으로 확정하지 않음. 하단 문틀 일부는 잘림. 왼쪽 밝은 틈과 문짝 하단으로는 완전 닫힘/약간 열림을 확정할 수 없어 상태는 불명."
+        }
+      ],
+      "annotation_note": "유리·루버가 있는 한 문짝이며 밝은 틈만으로 열린 문으로 확정하지 않음. 하단 문틀 일부는 잘림. 왼쪽 밝은 틈과 문짝 하단으로는 완전 닫힘/약간 열림을 확정할 수 없어 상태는 불명.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0146",
+      "rgb_sha256": "65bc81eb07eb475df6d686676f472090a85bc9e7ee67cddd63118a54080c1b71",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            116,
+            42,
+            417,
+            582
+          ],
+          "doorway_bbox": [
+            93,
+            22,
+            445,
+            604
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "하나의 문틀을 공유하는 양개문을 한 출입구로 기록. 문짝 bbox는 좌우 보이는 문짝의 합집합. 탁자 가림 있음."
+        }
+      ],
+      "annotation_note": "하나의 문틀을 공유하는 양개문을 한 출입구로 기록. 문짝 bbox는 좌우 보이는 문짝의 합집합. 탁자 가림 있음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0208",
+      "rgb_sha256": "17107ce547a2692a10213ca21b2555dc8e725b58a5efccc8a8f3bb2e1f557aec",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            238,
+            188,
+            368,
+            526
+          ],
+          "doorway_bbox": [
+            230,
+            170,
+            395,
+            555
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "차양·우산 기둥은 문에서 제외. 문턱 포함한 고정 문틀 범위 기록."
+        }
+      ],
+      "annotation_note": "차양·우산 기둥은 문에서 제외. 문턱 포함한 고정 문틀 범위 기록.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0245",
+      "rgb_sha256": "8efa5c7e5f51229b418c8145b301624fcdcb97d64e538957bf074412bd25c586",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            194,
+            192,
+            330,
+            499
+          ],
+          "doorway_bbox": [
+            150,
+            146,
+            373,
+            517
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "닫힌 유리 삽입문. 석재 외곽 문틀을 출입구에 포함."
+        }
+      ],
+      "annotation_note": "닫힌 유리 삽입문. 석재 외곽 문틀을 출입구에 포함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0290",
+      "rgb_sha256": "e5b1060c461bf57df2d82d9a7941f298dc900e16f1af7d04d5a83a3f77610719",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            130,
+            209,
+            363,
+            640
+          ],
+          "doorway_bbox": [
+            104,
+            181,
+            399,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "문 하단이 잘림. 종이 표지는 문짝 표면의 일부로 취급."
+        }
+      ],
+      "annotation_note": "문 하단이 잘림. 종이 표지는 문짝 표면의 일부로 취급.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0343",
+      "rgb_sha256": "44ebbe49738db0310e53b05b250c992aa5e2ae522be9c5ee50996bd2fb4d2a52",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            221,
+            166,
+            409,
+            560
+          ],
+          "doorway_bbox": [
+            178,
+            108,
+            472,
+            581
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "왼쪽 잘린 창은 문에서 제외. 석재 외곽 문틀 포함."
+        }
+      ],
+      "annotation_note": "왼쪽 잘린 창은 문에서 제외. 석재 외곽 문틀 포함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_closed_Door0372",
+      "rgb_sha256": "8f17bc9b116152bed742af2636f7fbfec3d73e0962e28fb49b78a2c0b72ab8ea",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            251,
+            253,
+            411,
+            640
+          ],
+          "doorway_bbox": [
+            239,
+            238,
+            424,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "하단 잘림. 왼쪽 가장자리의 개방 공간은 문짝·경첩을 확인할 수 없어 추가 문으로 확정하지 않음."
+        }
+      ],
+      "annotation_note": "하단 잘림. 왼쪽 가장자리의 개방 공간은 문짝·경첩을 확인할 수 없어 추가 문으로 확정하지 않음.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_dd2_closed_Door0401",
+      "rgb_sha256": "6133acabb19cd143c7040358671b3a89042282ce8e3b70ee8a66fa18d46055f8",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            243,
+            196,
+            367,
+            557
+          ],
+          "doorway_bbox": [
+            221,
+            174,
+            391,
+            578
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "오른쪽 문짝·문틀 일부는 냉장고에 가림. 보이는 문짝·문틀만 포함. 유리 반사는 개방 근거로 쓰지 않음."
+        }
+      ],
+      "annotation_note": "오른쪽 문짝·문틀 일부는 냉장고에 가림. 보이는 문짝·문틀만 포함. 유리 반사는 개방 근거로 쓰지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1016",
+      "rgb_sha256": "0808e8612aee6530268aad49b60a68de695719a77871c1adec7c4c23b99257f0",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": null,
+          "doorway_bbox": [
+            0,
+            61,
+            155,
+            521
+          ],
+          "leaf_visibility": "unknown",
+          "doorway_visibility": "visible",
+          "annotation_note": "문짝이 영상에서 식별되지 않으며 빈 출입구는 보임"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1081",
+      "rgb_sha256": "6084d1c0effe68de4117ae9d8105d919ce494aaeb8c1a7c81797bc032cb52ce8",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            433,
+            7,
+            480,
+            640
+          ],
+          "doorway_bbox": [
+            369,
+            0,
+            480,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "오른쪽 가까운 파란 문짝과 갈색 문틀이 영상 밖으로 잘림"
+        },
+        {
+          "id": "door_2",
+          "state": "open",
+          "leaf_bbox": null,
+          "doorway_bbox": [
+            211,
+            179,
+            311,
+            502
+          ],
+          "leaf_visibility": "unknown",
+          "doorway_visibility": "visible",
+          "annotation_note": "복도 끝 별도 출입구. 문짝은 식별 불가"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료. 전경 왼쪽 흰 유리 요소는 창일 가능성이 있어 출입문 인스턴스에서 보류함.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_dd2_open_Door1115",
+      "rgb_sha256": "1ccde359ee65d6ca915883c62bedb65ac87c1841563e2c14cca9a924a051b9f4",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            244,
+            132,
+            302,
+            598
+          ],
+          "doorway_bbox": [
+            105,
+            111,
+            314,
+            610
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "오른쪽으로 젖혀진 유리 문짝. 뒤쪽 유리 장식장은 가구로 제외"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1146",
+      "rgb_sha256": "e9406883b4b96d09431e99797798c01e840e038e633ee098c3f6c9896bfe3845",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            194,
+            109,
+            276,
+            603
+          ],
+          "doorway_bbox": [
+            246,
+            134,
+            444,
+            568
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "전경 문짝은 옷과 가구에 일부 가려지며 아래가 잘림"
+        },
+        {
+          "id": "door_2",
+          "state": "closed",
+          "leaf_bbox": [
+            264,
+            176,
+            364,
+            477
+          ],
+          "doorway_bbox": [
+            258,
+            169,
+            372,
+            484
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "후경의 별도 유리 출입문. 전경 문짝과 다른 문틀"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1208",
+      "rgb_sha256": "9e271fc809a08cd71673df2d8fac5ef994be14ac598354d9db8c42474df3e921",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            234,
+            185,
+            278,
+            426
+          ],
+          "doorway_bbox": [
+            135,
+            141,
+            314,
+            451
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "돌 마감의 고정 문틀 외곽과 안쪽으로 열린 문짝"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1245",
+      "rgb_sha256": "c1cf91fcccd5910e957f29c465a6ae1c40ec1dde940d44c054d6bffdca9eb0e6",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            193,
+            204,
+            350,
+            567
+          ],
+          "doorway_bbox": [
+            342,
+            209,
+            480,
+            635
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "오른쪽 주방 출입구의 문짝이 왼쪽 벽 앞으로 열림"
+        },
+        {
+          "id": "door_2",
+          "state": "open",
+          "leaf_bbox": null,
+          "doorway_bbox": [
+            0,
+            173,
+            176,
+            581
+          ],
+          "leaf_visibility": "unknown",
+          "doorway_visibility": "visible",
+          "annotation_note": "왼쪽 별도 방 출입구. 문짝은 보이지 않음"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_dd2_open_Door1290",
+      "rgb_sha256": "8eaaa3a998c812494f7ceb869f986df41d20ed4d14a27507a35e02cf07fbbafb",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            307,
+            209,
+            379,
+            546
+          ],
+          "doorway_bbox": [
+            198,
+            162,
+            439,
+            594
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "문짝과 벽 사이 통과 공간이 보임. 문틀 상부 일부가 밝은 벽과 경계 모호"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1343",
+      "rgb_sha256": "5f1c7a2896f2d95c6db142278ef1c05a8f1255bdfdd32d0bf2cdd496d9f83905",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            143,
+            40,
+            435,
+            618
+          ],
+          "doorway_bbox": [
+            139,
+            32,
+            446,
+            633
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "같은 외곽 문틀의 양개문. 보이는 좌우 문짝 합집합 bbox이며 어두운 안쪽 경계는 불확실"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1372",
+      "rgb_sha256": "6dc7166be1b41d6457e5947aeeeed0f31d34942d700490013121ec8a85b51790",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            0,
+            50,
+            376,
+            520
+          ],
+          "doorway_bbox": [
+            0,
+            44,
+            380,
+            543
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "양개 금속문을 한 출입구로 묶음. 왼쪽 영상 잘림과 밝은 틈으로 세부 경계 불확실"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_open_Door1401",
+      "rgb_sha256": "09a6174b739b02f1b3316458e7cce9f8aa9782d77cda3df4b324dd439ecc9eb1",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            35,
+            169,
+            155,
+            467
+          ],
+          "doorway_bbox": [
+            116,
+            152,
+            251,
+            477
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "왼쪽으로 열린 방 출입문. 오른쪽 유리 장식장 문은 제외"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_semi_Door2016",
+      "rgb_sha256": "19b92ac933fb85f564e6ec431724633f7bc374be5a195ddd7c273049c1575a90",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            127,
+            103,
+            364,
+            640
+          ],
+          "doorway_bbox": [
+            105,
+            62,
+            480,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "전경 유리문과 문틀은 아래와 오른쪽 영상 끝에서 잘림"
+        },
+        {
+          "id": "door_2",
+          "state": "unknown",
+          "leaf_bbox": null,
+          "doorway_bbox": [
+            375,
+            129,
+            480,
+            640
+          ],
+          "leaf_visibility": "unknown",
+          "doorway_visibility": "visible",
+          "annotation_note": "오른쪽 후경 별도 문틀은 보이나 어두워 문짝과 상태는 확정하지 않음"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_dd2_semi_Door2081",
+      "rgb_sha256": "4f82dd4d180443d80cbe66c15458405205f36b12c14b86ff97e6f8b96baf93fd",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            145,
+            80,
+            298,
+            640
+          ],
+          "doorway_bbox": [
+            223,
+            111,
+            455,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "종이가 붙은 문짝과 문틀. 검은 옷으로 문짝 일부 가림, 아래 영상 잘림"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_semi_Door2115",
+      "rgb_sha256": "d962d51df202ddea6d4a09ca6b39cece99de6a1e3bac5cc10b31fdf177d8d3b0",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            222,
+            131,
+            373,
+            603
+          ],
+          "doorway_bbox": [
+            205,
+            119,
+            438,
+            625
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "흰 유리문은 열린 틈이 보임. 앞쪽 바구니에 일부 가린 보이는 문짝 범위"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_semi_Door2146",
+      "rgb_sha256": "5fe34926d79d64516ed924c9454381fd1b1c1b1c9e87296b2697396c7b2626e6",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            365,
+            187,
+            463,
+            566
+          ],
+          "doorway_bbox": [
+            321,
+            170,
+            471,
+            582
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "후경 갈색 문짝과 문틀"
+        },
+        {
+          "id": "door_2",
+          "state": "open",
+          "leaf_bbox": [
+            0,
+            0,
+            183,
+            640
+          ],
+          "doorway_bbox": null,
+          "leaf_visibility": "visible",
+          "doorway_visibility": "unknown",
+          "annotation_note": "전경 왼쪽 유리 패널은 열린 문짝으로 보이나 고정 문틀 전체와 연결은 불확실"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_dd2_semi_Door2208",
+      "rgb_sha256": "9b74a5a42efe12e6897d53bd1d3440b2c074177ff1184b57e6ffd921a2be0ac2",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            247,
+            92,
+            357,
+            640
+          ],
+          "doorway_bbox": [
+            270,
+            114,
+            460,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "전경 갈색 문짝이 열려 있으며 아래 영상 잘림"
+        },
+        {
+          "id": "door_2",
+          "state": "closed",
+          "leaf_bbox": [
+            338,
+            152,
+            400,
+            450
+          ],
+          "doorway_bbox": [
+            332,
+            146,
+            406,
+            456
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "후경 유리 출입문이 별도 문틀 안에 닫힌 것으로 보임. 전경으로 일부 가림"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_semi_Door2245",
+      "rgb_sha256": "8174b5de0697b4bb3c6cdf704bf2e743fbcca3c02891419ecc4b0bf6a844a7a2",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            174,
+            147,
+            268,
+            640
+          ],
+          "doorway_bbox": [
+            0,
+            56,
+            335,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "돌 마감 포함 고정 문틀. 열린 문짝은 아래 영상 끝에서 잘림"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_semi_Door2290",
+      "rgb_sha256": "b72036e648e0380262030b8b88dfe1c2c96d1e5a69900e1787398e26ce9273ff",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            61,
+            86,
+            221,
+            640
+          ],
+          "doorway_bbox": [
+            48,
+            82,
+            304,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "커튼이 달린 나무 문짝이 열려 있으며 아래 영상 잘림"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_semi_Door2343",
+      "rgb_sha256": "08cba16d9f0456f7c9a5d144b074d2ad710a9db7ddda2d55a3735686af2ce46b",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            330,
+            149,
+            480,
+            640
+          ],
+          "doorway_bbox": [
+            235,
+            173,
+            480,
+            640
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "수납 공간에 진입하는 방 문틀과 열린 실내문. 내부 서랍 가구는 제외, 오른쪽 영상 잘림"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료. 안쪽이 방 형태의 수납 공간으로 보이나 가구장과 방 출입문의 구분을 사람에게 확인받아야 함.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_dd2_semi_Door2372",
+      "rgb_sha256": "cd8e8ea132dafb4d840bafa0a5b1992fc12c7b8b22b1119362ce8554e8eb9e3e",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            162,
+            161,
+            327,
+            541
+          ],
+          "doorway_bbox": [
+            85,
+            73,
+            382,
+            571
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "돌 마감 포함 문틀. 문짝 왼쪽 검은 열린 틈이 보임"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_dd2_semi_Door2401",
+      "rgb_sha256": "5d644b2838fd2e57608ef3b5223aae8a129c2c8c05e33b87b18d4ab3e84b8521",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            150,
+            101,
+            186,
+            444
+          ],
+          "doorway_bbox": [
+            140,
+            88,
+            275,
+            449
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible",
+          "annotation_note": "사람에게 대부분 가려진 얇은 열린 문짝의 보이는 범위. 사람 영역을 전체 문짝으로 복원하지 않음"
+        }
+      ],
+      "annotation_note": "Codex가 원본 RGB를 직접 관찰해 작성한 AI 시각 라벨. 사람 검수 미완료.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_00173afdc7581c41",
+      "rgb_sha256": "63338cb4c83b0a3361536a64cacf04fad66f9d7f12a47b271dedc74d1fe0bdec",
+      "doors": [],
+      "annotation_note": "사람·테이블·뒤쪽 벽만 보이며 출입문은 확인되지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_28f45b12ee25ae19",
+      "rgb_sha256": "4ba9dd396c2e22dd2a45e4d70c1f2a73a919089faf713517c716084c854c55b1",
+      "doors": [],
+      "annotation_note": "책장과 사람만 관찰되며 책장 칸을 출입문으로 라벨링하지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_291f50e909f7872e",
+      "rgb_sha256": "685d7e735a1825154a5efc739b3722a0d082a8943772a1f11a1b50de17650445",
+      "doors": [],
+      "annotation_note": "사람·탁자·벽 배경이며 출입문은 확인되지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_29af2f1dd764c49f",
+      "rgb_sha256": "847fc3c3403bd30abfec1fb079db4af5d2122955be51644d32ec978c3d6d23af",
+      "doors": [],
+      "annotation_note": "사람들 뒤의 단색 벽에 출입문은 확인되지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_2d22708883788e8b",
+      "rgb_sha256": "4fd05d86b84c8de60acb992b50a295c94e7a4a689c31f64472321898b575c884",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "unknown",
+          "leaf_bbox": [
+            0,
+            0,
+            145,
+            682
+          ],
+          "doorway_bbox": null,
+          "leaf_visibility": "visible",
+          "doorway_visibility": "unknown"
+        }
+      ],
+      "annotation_note": "왼쪽 목재 문짝과 문틀 일부만 보임. 위·아래·왼쪽이 영상 경계로 잘리고 사람에게 크게 가림. 문짝은 보이는 영역만 기록함. 고정 문틀 외곽과 열림 각도는 확정할 수 없어 doorway bbox=null·visibility=unknown, state=unknown. 가려진 전체 출입구 폭·높이를 복원하지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_32255e4104d8f9b7",
+      "rgb_sha256": "43d2f6ad8c047bf4c02cc1f3b8ccedd4e65d91e05f832e9fd54ee850791d0d4b",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            551,
+            140,
+            737,
+            381
+          ],
+          "doorway_bbox": [
+            697,
+            156,
+            931,
+            385
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "annotation_note": "오른쪽 뒤 목재 문짝이 문틀에서 앞으로 회전해 열린 상태. 사람에게 가려진 하단을 복원하지 않고 관찰되는 문짝·문틀의 범위를 각각 기록함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_35f837b8efa90099",
+      "rgb_sha256": "e67f1a93f1f828a507c777c66ebc5faed42f5978d557cd5f025334358e569fd0",
+      "doors": [],
+      "annotation_note": "선반·벽·소파·사람을 관찰했으며 출입문은 확인되지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_3c58039507939426",
+      "rgb_sha256": "56982edb8d1c038ff2a08fdb58a574339bd13bd05f3ae20aa75445b4ac838f35",
+      "doors": [],
+      "annotation_note": "뒤쪽 밝은 개구부는 가로 창틀이 보이는 창문으로 판단하며 출입문에서 제외함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_44a1c33f790c5687",
+      "rgb_sha256": "0095a5c1d67485f9bac2957805fc8903ccf9f31c99da22f7e4a72934ece587cc",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            719,
+            79,
+            881,
+            790
+          ],
+          "doorway_bbox": [
+            701,
+            29,
+            881,
+            811
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "annotation_note": "오른쪽 뒤 유리 포함 흰 출입문. 문짝이 문틀 평면을 막고 있어 닫힘으로 판단. 사람에게 크게 가리고 오른쪽 영상 경계로 잘림. 하나의 연속 문틀 영역으로 라벨링했으며 가려진 왼쪽·하단을 상상 복원하지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_5ba4992a5dec8a7a",
+      "rgb_sha256": "397e402746328f85d359ba625265b0337959611f33442fb35539fdbf9b1f018e",
+      "doors": [],
+      "annotation_note": "좌상단 낙서가 있는 사각 패널은 문짝인지 벽 장식인지 확정할 수 없음. 가구·사람 가림으로 문틀·경첩·손잡이 확인 불가. 이 프레임은 확정 음성 정답으로 사용하지 않음.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_oi_294885a08c11dfa4",
+      "rgb_sha256": "4b90c6c222cb550b47289ee8a04d9d80c27913f400b89661df74de6a06e6fd35",
+      "doors": [],
+      "annotation_note": "뒤쪽 아치는 제단·벽감과 장식 철물로 보이며 통행 가능한 실제 출입문으로 확인되지 않음. 장식 아치를 문으로 라벨링하지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_370c5423dc672f07",
+      "rgb_sha256": "8fe7b76064f33f252117988579de27e0569a7c15b7e1cde36463d043bce2fc24",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": null,
+          "doorway_bbox": [
+            199,
+            10,
+            475,
+            768
+          ],
+          "leaf_visibility": "unknown",
+          "doorway_visibility": "visible",
+          "annotation_note": "왼쪽 명확한 문틀·경첩은 있으나 문짝 자체는 확인되지 않아 leaf unknown/null. 문짝 제거 여부도 확정하지 않음."
+        },
+        {
+          "id": "door_2",
+          "state": "open",
+          "leaf_bbox": null,
+          "doorway_bbox": [
+            486,
+            0,
+            919,
+            768
+          ],
+          "leaf_visibility": "unknown",
+          "doorway_visibility": "visible",
+          "annotation_note": "오른쪽 별도 문틀·경첩이 확인되는 열린 출입구. 문짝 자체는 관찰되지 않아 leaf unknown/null."
+        }
+      ],
+      "annotation_note": "각각 다른 문틀을 가진 열린 출입구 두 개. 문짝이 보이지 않으므로 검출용 문짝 정답을 임의 생성하지 않음. 상단·하단 일부가 영상 밖임.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_8caa5b06d30d1e75",
+      "rgb_sha256": "d516cdcaf01f9aecac504ec38fe3eed974d8d5ecb64b9cccedbf9e0134268779",
+      "doors": [],
+      "annotation_note": "왼쪽은 파티션 사이 열린 통로, 오른쪽은 벽의 직사각 개구부로 보임. 실제 출입문의 문짝·경첩을 확인할 수 없어 문 존재를 확정하지 않음. 확정 음성 정답으로도 사용하지 않음.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_oi_e6d27669b2efb650",
+      "rgb_sha256": "851bc45c8bfffa9f8890bd481bd326d5a3349b61971544916b267b569caf8ed1",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            680,
+            100,
+            718,
+            437
+          ],
+          "doorway_bbox": [
+            661,
+            78,
+            856,
+            447
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "annotation_note": "뒤쪽 검은 문틀의 출입구와 왼쪽으로 열린 어두운 문짝의 얇은 보이는 부분·손잡이를 확인함. 하단은 소파에 가려져 보이는 범위까지만 기록.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_ee248bd9c09cba0c",
+      "rgb_sha256": "17cae33ddcbbca4acd566575f305756bdd576ee63ac2dbc7ba1f778003cb614f",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            406,
+            0,
+            489,
+            231
+          ],
+          "doorway_bbox": [
+            395,
+            0,
+            500,
+            241
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "annotation_note": "중앙 뒤 흰 문은 닫힘. 상단이 영상 밖이고 하단은 가구에 일부 가림. 왼쪽 영상 가장자리에도 개방 통로가 있으나 실제 문짝·경첩 유무는 확인되지 않아 추가 문 개수를 확정할 수 없음. 프레임 전체 완전성 미확정으로 평가 전 추가 확인 필요.",
+      "annotation_uncertain": true,
+      "ai_review_status": "uncertain"
+    },
+    {
+      "id": "real_oi_05042cfa44abe4f6",
+      "rgb_sha256": "ed6c8bafcac452967f8caff4d08b47086736e0402c892a6ae1fb722a43bf8f31",
+      "doors": [],
+      "annotation_note": "싱크대·주방 수납장 문만 보이며 사람 출입문이 아니므로 제외함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_0d8e57d0804c2d1a",
+      "rgb_sha256": "7ccb883396b5ab20631b4dbddfb3508bebf2c7bfb9fdefc50fbe2c51c488ffe6",
+      "doors": [],
+      "annotation_note": "주방 수납장·진열장 문만 보이며 사람 출입문이 아니므로 제외함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_10f64dac50ca0f16",
+      "rgb_sha256": "0913418e103b36c02d45e2639d8431a86be76aef2eeaf95fa036392f23f0cb58",
+      "doors": [],
+      "annotation_note": "사무실 수납장·책상·창문만 관찰되며 출입문은 확인되지 않음. 수납장 문은 제외함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_1229d5e203956ac6",
+      "rgb_sha256": "4ea789b208247cdefcb27baf61ee8bd256d08691b0ade893516b96f1219e3163",
+      "doors": [],
+      "annotation_note": "이층침대와 창문이 보이며 출입문은 확인되지 않음. 창문을 문으로 라벨링하지 않음.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    },
+    {
+      "id": "real_oi_1b66ee083974f58e",
+      "rgb_sha256": "50cf21ac7071e9af685fe8033538f72a33b0b2e65002aba7b063f67f36797070",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            297,
+            301,
+            388,
+            520
+          ],
+          "doorway_bbox": [
+            285,
+            287,
+            397,
+            524
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "annotation_note": "왼쪽 뒤 목재 출입문 하나가 문틀을 막고 닫혀 있음. 오른쪽 목재 붙박이장은 수납장으로 제외함.",
+      "annotation_uncertain": false,
+      "ai_review_status": "ai_accepted"
+    }
+  ]
+}
