@@ -346,3 +346,15 @@ mapping_semantic 재빌드·colcon 273검사 오류/실패/건너뜀 0. 기존 R
 확인한 models 폴더에는 YOLOE checkpoint만 있으며, 기본 COCO 80클래스에 door가 없음을 로컬 설정으로 확인했다.
 공식 YOLO11n asset metadata 크기는 5,613,764bytes이며 가중치 다운로드·설치·학습·추론은 실행하지 않았다.
 [점검값·소스·환경·데이터 해시](data/door-training-readiness-summary.json)를 보존했다.
+
+## 실제 사진 50장의 기존 검출 박스 연결 — 2026-11-03
+
+기준 `ccbd1fc` 이후 `v0.2.0-door-real-predictions.1`에서
+[기존 실제 C 박스 연결](door-label-evaluation.md#실제-rgb-50장의-기존-박스-연결--2026-11-03)을 실행했다.
+과거 batch·manifest·비교 원문·사진·라벨 해시와 원본 크기·방향·전처리 PNG SHA를 확인했다.
+실제 RGB 50장 모두 예측 연결, C 실행 오류 0이며 B/C 공유 박스 일치도 확인했다.
+새 검수본은 아직 없어 실제 사진 reviewed 0·draft 50, awaiting_review이며 모든 성능 지표는 null이다.
+과거 개수 평가 제외 여부를 새 bbox 채점에 승계하지 않고 실내 41장·실외 보조 9장 출처를 보존했다.
+모델 재추론·학습·다운로드·Gazebo 실행·외부 원본 수정은 하지 않았다.
+[해시·분모·출처 요약](data/door-real-predictions-summary.json)을 보존했다.
+관련 47검사·전체 오프라인 788검사 통과, ROS 전용 5검사 건너뜀. 문서 62개 링크·앵커 오류 0이다.

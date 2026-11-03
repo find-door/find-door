@@ -82,3 +82,38 @@ Gazebo 39장과 실제 RGB 50장의 예측 미연결을 무검출로 바꾸지 �
 전체 오프라인 769개 통과·ROS 전용 5개 건너뜀이다. ROS 제품 소스는 바꾸지 않아 패키지 재빌드는 하지 않았다.
 이 표는 원문을 재사용한 초기 준비 상태 검사다. 이후 [9장 검수·채점](door-reviewed-nine.md)을 완료했다.
 독립 평가·학습 필요성의 최종 결론은 여전히 남아 있다.
+
+## 실제 RGB 50장의 기존 박스 연결 — 2026-11-03
+
+`v0.2.0-door-real-predictions.1`에서 [실제 원문 연결 도구](../scripts/door_probe/real_predictions.py)로
+2026-11-01 완료된 C 검출을 연결했다. 사진·기존 라벨·batch·비교 원문의 해시를 감사하고
+[기존 추적 요약](data/door-real-reference-summary.json)의 batch·manifest·코드·모델 식별값과 대조한다.
+원본 방향·크기를 검사하고 당시 RGB PNG 인코딩을 메모리에서 재현해 processed SHA까지 확인한다.
+JPEG 20장은 PNG 변환으로 파일 해시가 달라지지만 bbox 좌표계는 그대로다. 크기 변경·방향 보정이 필요한 입력은 거부한다.
+B에서 공유한 C 박스는 B 원문과 같은지도 확인하며 사람 박스도 보존한다. 추가 추론·새 점수 필터는 없다.
+
+```bash
+/usr/bin/python3 scripts/door_probe/real_predictions.py \
+  --dataset experiments/door_probe/reviewed-nine-01/dataset-reviewed.json \
+  --recon-root /home/blind/cv-middle/CV-VLM/recon-report \
+  --output experiments/door_probe/real-predictions-new/predictions.json
+/usr/bin/python3 scripts/door_probe/label_evaluate.py score \
+  --dataset experiments/door_probe/reviewed-nine-01/dataset-reviewed.json \
+  --predictions experiments/door_probe/real-predictions-new/predictions.json \
+  --environment real_rgb --split unassigned \
+  --output experiments/door_probe/real-predictions-new/readiness.json
+```
+
+실행 원문은 로컬 `experiments/door_probe/real-predictions-01/`에,
+[입력·원문·도구·결과 해시와 분모](data/door-real-predictions-summary.json)는 저장소에 보존했다.
+50장 모두 예측을 연결했고 C 실행 오류는 0이다. 원 검출은 door 46개·person 28개이며 정답 개수가 아니다.
+현재 실제 사진은 reviewed 0·draft 50으로 상태는 awaiting_review, 두 기준의 성능 지표는 모두 null이다.
+사용자가 46~95번 검수에 동의했지만 새 수정본은 아직 받지 않았다.
+기존 개수 평가의 제외 6장은 이 입력에서 버리지 않으며 새 이중 bbox 검수·가시성으로 채점 여부를 결정한다.
+기존 실내 41장·실외 보조 9장의 구분을 프레임별 출처에 보존했다. 추후 결과에서도 두 그룹은 구분한다.
+Gazebo 지표와 합산하지 않으며, 과거 사용 자료를 새 독립 시험셋으로 부르지 않는다.
+실제 RGB-D·문 상태·지도 위치·현재 ROS 시스템의 실물 성능 평가는 아니다.
+
+연결 도구 12검사·기존 감사 3검사·bbox 평가 32검사, 합계 47검사를 통과했다.
+전체 오프라인 788검사 통과·ROS 전용 5검사 건너뜀, 문서 62개 상대 링크·앵커 검사 오류 0이다.
+ROS 제품 소스는 변경하지 않아 패키지 재빌드·시뮬레이션을 추가 실행하지 않았다.

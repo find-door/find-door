@@ -1,0 +1,93 @@
+{
+  "stage": "v0.2.0-door-real-predictions.1",
+  "mode": "existing_real_rgb_C_boxes_no_new_inference",
+  "dataset_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/reviewed-nine-01/dataset-reviewed.json",
+  "dataset_sha256": "1ba7b7575744646e20baabf5058895c794f36e0c5d586338eebde7114d30943f",
+  "predictions_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-predictions-01/predictions.json",
+  "predictions_sha256": "e4a584e94e5b2332fc7c4e45da9f933910784a1b7d9ef953088942dcad1ba4d5",
+  "readiness_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-predictions-01/readiness.json",
+  "readiness_sha256": "e8a2397b183c4f99db0e834c2680c41d250b7731e77be192de388e36877cd9cb",
+  "importer_sha256": "897ef6f6e2bcee7bb0cfb851301696ee977ba30a52185e325c4d6b34644a291f",
+  "evaluator_sha256": "73644cc28a16c6c786ac55d8003a86969800a3c2040e30e00e6332bdfdede5ff",
+  "provenance": {
+    "mode": "existing_real_rgb_C_boxes_no_new_inference",
+    "importer_sha256": "897ef6f6e2bcee7bb0cfb851301696ee977ba30a52185e325c4d6b34644a291f",
+    "dataset_sha256_at_preparation": "1ba7b7575744646e20baabf5058895c794f36e0c5d586338eebde7114d30943f",
+    "reference_summary_sha256": "0362e660d052f98efc19095ec35f954af443096f23f8849f24e890d0e271d1ce",
+    "manifest_path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/validation-v1-reviewed.json",
+    "manifest_sha256": "13850cd68d8af9bc0602e151f3a91dea03fd51f2fa3393d121741dc2d5562979",
+    "batch_path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/results/validation-v1-runs/20261101-200920-900749/batch.json",
+    "batch_sha256": "0f0708941f1a0f171b52022ea91f2982c488fc0adef3feb5035ae3baefb94902",
+    "original_code_commit": "95fe4a679315680321e7b4eceaeae37cd5659ceb",
+    "detector_assets": {
+      "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+      "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+      "config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905"
+    },
+    "limitations": [
+      "과거 실제 사진 추론 재사용, 현재 ROS 시스템의 실물 평가 아님",
+      "기존 개수 평가의 제외 여부는 새 bbox 평가에 승계하지 않음",
+      "새 이중 bbox 검수·가시성으로 채점, 장면 독립성·분할은 별도 확인",
+      "깊이·문 상태·지도 위치·추론 시간 평가 아님"
+    ]
+  },
+  "selected_frames": 50,
+  "reviewed_selected_frames": 0,
+  "selected_prediction_frames": 50,
+  "runtime_errors": 0,
+  "source_groups": {
+    "indoor_primary": 41,
+    "exterior_auxiliary": 9
+  },
+  "detection_classes": {
+    "door": 46,
+    "person": 28
+  },
+  "status": "awaiting_review",
+  "targets": {
+    "leaf": {
+      "draft_frames": 50,
+      "excluded_visibility_frames": 0,
+      "eligible_frames": 0,
+      "eligible_gt_objects": 0,
+      "valid_inference_frames": 0,
+      "valid_inference_gt_objects": 0,
+      "missing_predictions": 0,
+      "runtime_errors": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn_valid_inference": 0,
+      "frame_exact_successes": 0,
+      "frame_exact_success_rate": null,
+      "valid_inference_precision": null,
+      "valid_inference_recall": null,
+      "valid_inference_f1": null,
+      "matched_mean_iou": null
+    },
+    "doorway": {
+      "draft_frames": 50,
+      "excluded_visibility_frames": 0,
+      "eligible_frames": 0,
+      "eligible_gt_objects": 0,
+      "valid_inference_frames": 0,
+      "valid_inference_gt_objects": 0,
+      "missing_predictions": 0,
+      "runtime_errors": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn_valid_inference": 0,
+      "frame_exact_successes": 0,
+      "frame_exact_success_rate": null,
+      "valid_inference_precision": null,
+      "valid_inference_recall": null,
+      "valid_inference_f1": null,
+      "matched_mean_iou": null
+    }
+  },
+  "limitations": [
+    "과거 실제 사진 추론 재사용, 현재 ROS 시스템의 실물 평가 아님",
+    "기존 개수 평가의 제외 여부는 새 bbox 평가에 승계하지 않음",
+    "새 이중 bbox 검수·가시성으로 채점, 장면 독립성·분할은 별도 확인",
+    "깊이·문 상태·지도 위치·추론 시간 평가 아님"
+  ]
+}
