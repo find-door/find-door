@@ -1,0 +1,499 @@
+{
+  "stage": "v0.2.0-door-yolo11-budget.1",
+  "purpose": "doorway_development_training_budget_comparison_not_independent_test",
+  "protocol_sha256": "d63d4f6a7971ddf8debe857a0b5bd3a443ad87d8fdd3c9415769792349642189",
+  "comparison_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/comparison/summary.json",
+  "comparison_sha256": "a1c5290ab107cb22ef1381fc8217c2adc83fff971abc9e187d8ed583c63ae474",
+  "comparison_harness_sha256": "262758df0c1ba89346b14ea5ddc6b09899e358cc2a35d1c05f7a630be1aba136",
+  "evaluator_sha256": "73644cc28a16c6c786ac55d8003a86969800a3c2040e30e00e6332bdfdede5ff",
+  "run_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/doorway-01",
+  "completion_sha256": "5cf441f33eb117c72e004da4e9d93123588fe31399922ff24e9a03df3ce4de4f",
+  "executed_harness_sha256": "39c6e7c7759f5c2bdad7c96828112f56be8ec940ed26ac694019ee4be3fcca54",
+  "checkpoint_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/doorway-01/runs/doorway/weights/best.pt",
+  "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+  "training": {
+    "training_seconds": 315.7291031819768,
+    "elapsed_seconds": 316.40300444100285,
+    "batch_events": 2400,
+    "training_peak_allocated_bytes": 592046080,
+    "training_peak_reserved_bytes": 666894336,
+    "best_fitness": 0.27033,
+    "inference_errors": 0,
+    "args_sha256": "4b08650ec1978e11275a4a1a218606bea35519273c614e92368f71617c17829b",
+    "results_csv_sha256": "3809bf4329ebc5919792a7e7f9239dc104a6f3d2504fc25e154c1087ccb322c1",
+    "pid": 2718401,
+    "pgid": 2718401,
+    "versions": {
+      "torch": "2.14.1+cu126",
+      "ultralytics": "8.4.191"
+    },
+    "gpu_name": "NVIDIA GeForce RTX 3050 4GB Laptop GPU"
+  },
+  "completed_epochs": 150,
+  "scores": {
+    "validation_baseline_C": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/comparison/validation-baseline_C.json",
+      "sha256": "98a574905367db8030cb7bf058a46e0495640f0cd8ce6e1009e8445c9b110f67",
+      "summary": {
+        "draft_frames": 0,
+        "excluded_visibility_frames": 0,
+        "eligible_frames": 7,
+        "eligible_gt_objects": 3,
+        "valid_inference_frames": 7,
+        "valid_inference_gt_objects": 3,
+        "missing_predictions": 0,
+        "runtime_errors": 0,
+        "tp": 1,
+        "fp": 0,
+        "fn_valid_inference": 2,
+        "frame_exact_successes": 5,
+        "frame_exact_success_rate": 0.7142857142857143,
+        "valid_inference_precision": 1.0,
+        "valid_inference_recall": 0.3333333333333333,
+        "valid_inference_f1": 0.5,
+        "matched_mean_iou": 0.9358923215778614
+      }
+    },
+    "validation_epoch_30": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/comparison/validation-epoch_30.json",
+      "sha256": "9cf7eb639ff622c70cd023d60556c1a49e555a275360fbca55b1945b2b8702d3",
+      "summary": {
+        "draft_frames": 0,
+        "excluded_visibility_frames": 0,
+        "eligible_frames": 7,
+        "eligible_gt_objects": 3,
+        "valid_inference_frames": 7,
+        "valid_inference_gt_objects": 3,
+        "missing_predictions": 0,
+        "runtime_errors": 0,
+        "tp": 2,
+        "fp": 2,
+        "fn_valid_inference": 1,
+        "frame_exact_successes": 4,
+        "frame_exact_success_rate": 0.5714285714285714,
+        "valid_inference_precision": 0.5,
+        "valid_inference_recall": 0.6666666666666666,
+        "valid_inference_f1": 0.5714285714285714,
+        "matched_mean_iou": 0.6500858607893777
+      }
+    },
+    "validation_epoch_150": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/comparison/validation-epoch_150.json",
+      "sha256": "58620c80ce50248b9e982f908b50cd51bd8c5160990c195d2633474a5db826ba",
+      "summary": {
+        "draft_frames": 0,
+        "excluded_visibility_frames": 0,
+        "eligible_frames": 7,
+        "eligible_gt_objects": 3,
+        "valid_inference_frames": 7,
+        "valid_inference_gt_objects": 3,
+        "missing_predictions": 0,
+        "runtime_errors": 0,
+        "tp": 1,
+        "fp": 4,
+        "fn_valid_inference": 2,
+        "frame_exact_successes": 3,
+        "frame_exact_success_rate": 0.42857142857142855,
+        "valid_inference_precision": 0.2,
+        "valid_inference_recall": 0.3333333333333333,
+        "valid_inference_f1": 0.25,
+        "matched_mean_iou": 0.8456515757104676
+      }
+    },
+    "gazebo_baseline_C": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/comparison/gazebo-baseline_C.json",
+      "sha256": "f2b2efe4ee41c379f9a19ea7cd86dc8374e1dfa59eea4ba108d7b0eedbb21102",
+      "summary": {
+        "draft_frames": 36,
+        "excluded_visibility_frames": 0,
+        "eligible_frames": 9,
+        "eligible_gt_objects": 9,
+        "valid_inference_frames": 9,
+        "valid_inference_gt_objects": 9,
+        "missing_predictions": 0,
+        "runtime_errors": 0,
+        "tp": 4,
+        "fp": 0,
+        "fn_valid_inference": 5,
+        "frame_exact_successes": 4,
+        "frame_exact_success_rate": 0.4444444444444444,
+        "valid_inference_precision": 1.0,
+        "valid_inference_recall": 0.4444444444444444,
+        "valid_inference_f1": 0.6153846153846154,
+        "matched_mean_iou": 0.5859025091691177
+      },
+      "open_frames": [
+        {
+          "id": "metal_open_2m",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [],
+          "status": "scored",
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        {
+          "id": "metal_open_3m_low",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [],
+          "status": "scored",
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        {
+          "id": "metal_open_3m_high",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [],
+          "status": "scored",
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        }
+      ]
+    },
+    "gazebo_epoch_30": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/comparison/gazebo-epoch_30.json",
+      "sha256": "e432f9b2a77cf5399c3b9330ee98780332dfbfd16a31fbae9c856a5144f5fc55",
+      "summary": {
+        "draft_frames": 36,
+        "excluded_visibility_frames": 0,
+        "eligible_frames": 9,
+        "eligible_gt_objects": 9,
+        "valid_inference_frames": 9,
+        "valid_inference_gt_objects": 9,
+        "missing_predictions": 0,
+        "runtime_errors": 0,
+        "tp": 4,
+        "fp": 7,
+        "fn_valid_inference": 5,
+        "frame_exact_successes": 0,
+        "frame_exact_success_rate": 0.0,
+        "valid_inference_precision": 0.36363636363636365,
+        "valid_inference_recall": 0.4444444444444444,
+        "valid_inference_f1": 0.4,
+        "matched_mean_iou": 0.714094390223198
+      },
+      "open_frames": [
+        {
+          "id": "metal_open_2m",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [],
+          "status": "scored",
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        {
+          "id": "metal_open_3m_low",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [],
+          "status": "scored",
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        {
+          "id": "metal_open_3m_high",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [
+            {
+              "door_id": "door_1",
+              "detection_index": 0,
+              "iou": 0.7353666490490716
+            }
+          ],
+          "status": "scored",
+          "tp": 1,
+          "fp": 1,
+          "fn": 0
+        }
+      ]
+    },
+    "gazebo_epoch_150": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/comparison/gazebo-epoch_150.json",
+      "sha256": "551e30a52008110e58eb6d59e0866c44923cb723c9aaed21af6f297f4713b048",
+      "summary": {
+        "draft_frames": 36,
+        "excluded_visibility_frames": 0,
+        "eligible_frames": 9,
+        "eligible_gt_objects": 9,
+        "valid_inference_frames": 9,
+        "valid_inference_gt_objects": 9,
+        "missing_predictions": 0,
+        "runtime_errors": 0,
+        "tp": 8,
+        "fp": 2,
+        "fn_valid_inference": 1,
+        "frame_exact_successes": 6,
+        "frame_exact_success_rate": 0.6666666666666666,
+        "valid_inference_precision": 0.8,
+        "valid_inference_recall": 0.8888888888888888,
+        "valid_inference_f1": 0.8421052631578947,
+        "matched_mean_iou": 0.6588421036009262
+      },
+      "open_frames": [
+        {
+          "id": "metal_open_2m",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [
+            {
+              "door_id": "door_1",
+              "detection_index": 0,
+              "iou": 0.7570888256233039
+            }
+          ],
+          "status": "scored",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        {
+          "id": "metal_open_3m_low",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [
+            {
+              "door_id": "door_1",
+              "detection_index": 0,
+              "iou": 0.8238850439767776
+            }
+          ],
+          "status": "scored",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        {
+          "id": "metal_open_3m_high",
+          "group_id": "gazebo_door_probe_v1_family",
+          "matches": [
+            {
+              "door_id": "door_1",
+              "detection_index": 0,
+              "iou": 0.5820402004214796
+            }
+          ],
+          "status": "scored",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      ]
+    }
+  },
+  "curves": {
+    "epoch_30": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-pilot-01/doorway-01/runs/doorway/results.csv",
+      "sha256": "79dce3038780f42c0a7975efe294945a5c0abcae879ed2ec7993fc372981d738",
+      "first": {
+        "epoch": "1",
+        "time": "8.33211",
+        "train/box_loss": "1.7397",
+        "train/cls_loss": "3.99729",
+        "train/dfl_loss": "2.14565",
+        "metrics/precision(B)": "0.01191",
+        "metrics/recall(B)": "0.33333",
+        "metrics/mAP50(B)": "0.02228",
+        "metrics/mAP50-95(B)": "0.013",
+        "val/box_loss": "1.60882",
+        "val/cls_loss": "5.43173",
+        "val/dfl_loss": "1.64662",
+        "lr/pg0": "0.00046875",
+        "lr/pg1": "0.00046875",
+        "lr/pg2": "0.00046875"
+      },
+      "last": {
+        "epoch": "30",
+        "time": "64.7604",
+        "train/box_loss": "1.81175",
+        "train/cls_loss": "1.94213",
+        "train/dfl_loss": "2.12785",
+        "metrics/precision(B)": "0.59069",
+        "metrics/recall(B)": "0.66667",
+        "metrics/mAP50(B)": "0.555",
+        "metrics/mAP50-95(B)": "0.14755",
+        "val/box_loss": "2.7567",
+        "val/cls_loss": "2.77628",
+        "val/dfl_loss": "2.15438",
+        "lr/pg0": "0.000102465",
+        "lr/pg1": "0.000102465",
+        "lr/pg2": "0.000102465"
+      },
+      "best_validation": {
+        "epoch": "29",
+        "time": "62.5667",
+        "train/box_loss": "1.57044",
+        "train/cls_loss": "2.04114",
+        "train/dfl_loss": "1.88252",
+        "metrics/precision(B)": "0.63251",
+        "metrics/recall(B)": "0.59834",
+        "metrics/mAP50(B)": "0.555",
+        "metrics/mAP50-95(B)": "0.22267",
+        "val/box_loss": "2.71599",
+        "val/cls_loss": "2.72481",
+        "val/dfl_loss": "2.25655",
+        "lr/pg0": "0.000109834",
+        "lr/pg1": "0.000109834",
+        "lr/pg2": "0.000109834"
+      },
+      "validation_cls_spike": {
+        "epoch": "9",
+        "time": "22.456",
+        "train/box_loss": "2.97146",
+        "train/cls_loss": "3.52224",
+        "train/dfl_loss": "2.99861",
+        "metrics/precision(B)": "0",
+        "metrics/recall(B)": "0",
+        "metrics/mAP50(B)": "0",
+        "metrics/mAP50-95(B)": "0",
+        "val/box_loss": "4.15168",
+        "val/cls_loss": "10407.7",
+        "val/dfl_loss": "931.664",
+        "lr/pg0": "0.000851109",
+        "lr/pg1": "0.000851109",
+        "lr/pg2": "0.000851109"
+      }
+    },
+    "epoch_150": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/doorway-01/runs/doorway/results.csv",
+      "sha256": "3809bf4329ebc5919792a7e7f9239dc104a6f3d2504fc25e154c1087ccb322c1",
+      "first": {
+        "epoch": "1",
+        "time": "7.42027",
+        "train/box_loss": "1.7397",
+        "train/cls_loss": "3.99729",
+        "train/dfl_loss": "2.14565",
+        "metrics/precision(B)": "0.01191",
+        "metrics/recall(B)": "0.33333",
+        "metrics/mAP50(B)": "0.02228",
+        "metrics/mAP50-95(B)": "0.013",
+        "val/box_loss": "1.60882",
+        "val/cls_loss": "5.43173",
+        "val/dfl_loss": "1.64662",
+        "lr/pg0": "0.00046875",
+        "lr/pg1": "0.00046875",
+        "lr/pg2": "0.00046875"
+      },
+      "last": {
+        "epoch": "150",
+        "time": "311.142",
+        "train/box_loss": "1.35215",
+        "train/cls_loss": "1.38143",
+        "train/dfl_loss": "1.76319",
+        "metrics/precision(B)": "0.43879",
+        "metrics/recall(B)": "0.29253",
+        "metrics/mAP50(B)": "0.17173",
+        "metrics/mAP50-95(B)": "0.08485",
+        "val/box_loss": "1.89098",
+        "val/cls_loss": "3.40563",
+        "val/dfl_loss": "2.02758",
+        "lr/pg0": "0.000100099",
+        "lr/pg1": "0.000100099",
+        "lr/pg2": "0.000100099"
+      },
+      "best_validation": {
+        "epoch": "117",
+        "time": "241.751",
+        "train/box_loss": "1.67853",
+        "train/cls_loss": "1.80639",
+        "train/dfl_loss": "2.03504",
+        "metrics/precision(B)": "0.63116",
+        "metrics/recall(B)": "0.33333",
+        "metrics/mAP50(B)": "0.34595",
+        "metrics/mAP50-95(B)": "0.27033",
+        "val/box_loss": "2.62779",
+        "val/cls_loss": "3.30012",
+        "val/dfl_loss": "2.42424",
+        "lr/pg0": "0.000209352",
+        "lr/pg1": "0.000209352",
+        "lr/pg2": "0.000209352"
+      },
+      "validation_cls_spike": {
+        "epoch": "11",
+        "time": "23.9664",
+        "train/box_loss": "3.04733",
+        "train/cls_loss": "3.32601",
+        "train/dfl_loss": "3.13717",
+        "metrics/precision(B)": "0",
+        "metrics/recall(B)": "0",
+        "metrics/mAP50(B)": "0",
+        "metrics/mAP50-95(B)": "0",
+        "val/box_loss": "5.24877",
+        "val/cls_loss": "10404",
+        "val/dfl_loss": "55.9388",
+        "lr/pg0": "0.000990166",
+        "lr/pg1": "0.000990166",
+        "lr/pg2": "0.000990166"
+      }
+    }
+  },
+  "score_diagnostic": {
+    "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-budget-01/score-diagnostic/summary.json",
+    "sha256": "3db2cc05187905c477a113faa82b4e6f1e45394628718a23eae8bf6cc3212e0e",
+    "harness_sha256": "db1658de0f154dd42d12b4185b5a97be40656214c50e87cd086d22d531f15861",
+    "plan_sha256": "3f5c72eb06f21c2ea0d2ea1ecffa29f51a09beb3672114f9ae78af0093e0fc56",
+    "counts": {
+      "epoch_30": {
+        "validation": {
+          "gt_objects": 3,
+          "matching_boxes_above_primary": 2,
+          "matching_boxes_below_primary": 0,
+          "no_matching_box_at_diagnostic_floor": 1
+        },
+        "gazebo": {
+          "gt_objects": 9,
+          "matching_boxes_above_primary": 4,
+          "matching_boxes_below_primary": 4,
+          "no_matching_box_at_diagnostic_floor": 1
+        }
+      },
+      "epoch_150": {
+        "validation": {
+          "gt_objects": 3,
+          "matching_boxes_above_primary": 1,
+          "matching_boxes_below_primary": 1,
+          "no_matching_box_at_diagnostic_floor": 1
+        },
+        "gazebo": {
+          "gt_objects": 9,
+          "matching_boxes_above_primary": 8,
+          "matching_boxes_below_primary": 1,
+          "no_matching_box_at_diagnostic_floor": 0
+        }
+      }
+    }
+  },
+  "figures": {
+    "script_sha256": "b3fc87b6385191c490a25b949c753c3f65b224ca7e3c95efe740ce2e7e3a3b54",
+    "curves_png_sha256": "5b22ab3c0ccd60a6e7477a23b3068b6621f1637de22d1a321bab24e1cbf5ce48",
+    "gazebo_png_sha256": "d7b7b3a2f7d3857a8f8953434ef7469959f6f58c014645de15d5402170da5d0b",
+    "rgb_evidence_sha256": "0863b2d0a73351b561a79a92ec263783730e9c33647c380b7de7c35d8c9defbf"
+  },
+  "default_model_unchanged": true,
+  "adopted_as_global_default": false,
+  "process_group_gone": true,
+  "limitations": [
+    "총epoch에종속된cosine LR와mosaic종료일정도함께변함",
+    "동일AI개발validation3양성으로checkpoint선택,독립시험아님",
+    "GZ개발RGB회복과실제AI개발고정문턱악화가함께발생",
+    "0.001별도진단으로운영confidence.1을변경하지않음",
+    "실시간ROS·RGB-D상태·지도효과는아직미검증"
+  ],
+  "verification": {
+    "cli_replays": 6,
+    "all_shared_fields_equal": true,
+    "source_image_and_label_preflight_passed": true,
+    "training_complete_epochs": 150,
+    "inference_errors": 0,
+    "diagnostic_image_calls": 32,
+    "diagnostic_errors": 0,
+    "current_harness_unchanged_from_previous_stage": true,
+    "product_code_changed": false,
+    "validation_and_gazebo_kept_separate": true,
+    "cli_evidence_sha256": "89fb40df092f680aece465e93a07103994469b2c15e6b8fb4c06a38f4c9b24bf",
+    "document_files_checked": 67,
+    "document_link_errors": 0,
+    "originals_unchanged_after_run": true,
+    "independent_readonly_review_passed": true
+  }
+}

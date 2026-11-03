@@ -14,7 +14,8 @@
 [평판 금속문 개발 변형](docs/door-scene-variation.md)은 반열림만 성공했고 닫힘·완전 열림은 검출 실패로 남았습니다.
 [3m 보조 시점 비교](docs/door-view-diagnostic.md)에서는 닫힘 검출이 회복됐지만 완전 열림은 검출되지 않았습니다.
 [이미 확인한 문의 RGB-D 재관측](docs/door-reobservation.md)으로 문짝 검출 누락 중 상태 갱신을 보완했습니다.
-처음 보는 완전 열림 문의 검출은 여전히 미해결입니다.
+[YOLO11 출입구 150 epoch 개발 비교](docs/door-yolo11-budget.md)에서는 낮은 로봇 시점까지 완전 열림 3조건의 bbox 대응을 회복했습니다.
+실제 AI 개발 검증은 악화돼 기본 YOLOE를 유지하며, 처음 열린 문의 실시간 상태·지도 등록은 아직 미검증입니다.
 실행 계약·조건별 결과·실제 카메라 비교 그림은 [문 실험](docs/door-experiment.md)을 따릅니다.
 Gazebo와 실제 촬영 영상의 평가는 별도로 기록합니다.
 [사용자 검수 9장 평가](docs/door-reviewed-nine.md)는 문짝·출입구 기준 모두 TP4/FP0/FN5이며, 동일 개발 장면의 결과입니다.
