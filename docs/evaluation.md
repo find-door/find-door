@@ -456,3 +456,17 @@ Gazebo·RViz·실제 RGB·문 지도의 통합 녹화는 100.4초·1004프레임
 새 world·제어·평가 31검사, 전체 오프라인 929검사 통과·ROS 5개 별도, 두 패키지 빌드·ROS/설정 검사 오류·실패0.
 외부 wf_gazebo는 읽기 전용 오버레이이고 recon venv·로컬 checkpoint만 사용했다. rosbag은 생성하지 않았다.
 사용자가 현재 제출의 실제 촬영 영상 평가를 Gazebo·RViz 시연으로 대체하도록 요청했으며 실물 성능으로 보고하지 않는다.
+
+
+## 마지막 문 확인 이력 보존·같은 순찰 재시험 — 2026-11-03
+
+기준 `2b6ac04` 이후 마지막 확정 상태·실제 시각을 현재 관측 신선도와 분리했다([ADR-0015](adr/0015-door-last-confirmed-state.md)).
+[동일 건물 재시험](door-last-observation.md)의 headless/GUI 두 실행 모두 약 9.24m·14단계를 완료했다.
+관측 시 네 문의 현재 상태를 확인하고, 종료 시 현재 unknown/stale와 마지막 closed/open/open/closed를 별도로 보존했다.
+schema2 저장 파일과 수신 지도에서 네 ID·위치·현재 상태·마지막 확인 상태·시각 대조가 통과했다.
+GUI 영상은 101.1초·1011프레임(실제996/반복15), 통합·분리3개 전체 디코딩 통과다.
+신선한 정답 known 관측은 ID순31/35/8/22회이며 과거 확인을 현재 채점에 사용하지 않았다.
+패키지 빌드·ROS363검사 및 전체 오프라인956검사 통과·ROS5개 별도. 새 모델 학습·독립/실물 평가가 아니다.
+[추적 요약](data/door-last-observation-summary.json)에 원문·실행snapshot·영상·그림·소스 해시를 보존한다.
+로컬 `experiments/door_probe/last-state-headless-01/`, `last-state-video-01/` 원문과 이전 순찰 결과를 분리했다.
+로컬 dev 통합·태그 `v0.2.0-door-last-observation.1`로 보존했다.

@@ -50,6 +50,32 @@ def correction_vector(transform):
                           math.atan2(r[1, 0], r[0, 0])], 3, 'map odom correction').tolist()
 
 
+def observation_view(record, now_ns, ttl_sec):
+    """현재 판단의 유효성과 마지막 확정 이력을 별도로 표시한다."""
+    result = deepcopy(record)
+    age = (now_ns-record['last_stamp_ns'])/1e9
+    if age > ttl_sec or age < 0:
+        result['state'] = 'unknown'
+    result['observation_status'] = ('stale' if age > ttl_sec else
+                                    'confirmed' if age >= 0 and result['state'] != 'unknown' else 'uncertain')
+    result['observation_age_sec'] = max(0., age)
+    stamp = record['last_confirmed_stamp_ns']
+    result['last_confirmed_age_sec'] = max(0., (now_ns-stamp)/1e9) if stamp is not None else None
+    return result
+
+
+def marker_appearance(record):
+    """색은 마지막 확인, 밝기는 현재 관측 유효성을 나타낸다."""
+    state = record['last_confirmed_state']
+    color = {'open': (0., 1., 0.), 'closed': (1., 0., 0.), 'unknown': (1., 1., 0.)}[state]
+    status = record['observation_status']
+    alpha = {'confirmed': 1., 'uncertain': .65, 'stale': .4}[status]
+    age = record['last_confirmed_age_sec']
+    text = (f"{record['id']}\nlast:{state}\n{status} ({age:.1f}s ago)" if age is not None else
+            f"{record['id']}\nunconfirmed\n{status}")
+    return color, alpha, text
+
+
 def main(args=None):
     import message_filters
     import rclpy
@@ -275,16 +301,13 @@ def main(args=None):
         def visible(self, now):
             if self.last_source <= 0:
                 return []
-            records = deepcopy(self.memory.snapshot(self.last_source))
-            for record in records:
-                if now-record['last_stamp_ns'] > self.p['state_ttl_sec']*1e9:
-                    record['state'] = 'unknown'
-            return records
+            return [observation_view(record, now, self.p['state_ttl_sec'])
+                    for record in self.memory.snapshot(self.last_source)]
 
         def publish(self, now):
             records = self.visible(now)
             message = String()
-            message.data = json.dumps(dict(map_id=self.p['map_id'], frame=self.p['map_frame'],
+            message.data = json.dumps(dict(door_map_schema_version=2, map_id=self.p['map_id'], frame=self.p['map_frame'],
                 stamp_ns=now, observation_stamp_ns=self.last_source, epoch=self.epoch, objects=records,
                 counters=dict(self.counters), last_error=self.last_error), ensure_ascii=False, allow_nan=False)
             self.map_pub.publish(message)
@@ -294,6 +317,7 @@ def main(args=None):
             markers.markers.append(clear)
             for record in records:
                 number = int(record['id'][5:])
+                color, alpha, text = marker_appearance(record)
                 for label in (False, True):
                     marker = Marker()
                     marker.header.frame_id = self.p['map_frame']
@@ -306,11 +330,10 @@ def main(args=None):
                     marker.pose.position.z += .3 if label else .1
                     marker.pose.orientation.w = 1.
                     marker.scale.x = marker.scale.y = .18
-                    marker.scale.z = .16 if label else .18
-                    marker.color.a = 1.
-                    color = {'open': (0., 1., 0.), 'closed': (1., 0., 0.), 'unknown': (1., 1., 0.)}[record['state']]
+                    marker.scale.z = .20 if label else .18
+                    marker.color.a = 1. if label else alpha
                     marker.color.r, marker.color.g, marker.color.b = color
-                    marker.text = f"{record['id']} {record['state']}"
+                    marker.text = text
                     markers.markers.append(marker)
             self.marker_pub.publish(markers)
 
@@ -321,10 +344,13 @@ def main(args=None):
                 if self.last_source <= 0 or self.current_correction is None:
                     raise ValueError('관측과 현재 지도 보정 TF가 필요합니다')
                 document = self.memory.dump(self.last_source)
-                document['objects'] = self.visible(now)
+                views = {record['id']: record for record in self.visible(now)}
+                # age/status는 현재 시각에서 파생한다. 저장은 schema2 canonical 필드만 보존한다.
+                for record in document['objects']:
+                    record['state'] = views[record['id']]['state']
                 if not document['objects']:
                     raise ValueError('저장할 문이 없습니다')
-                save_exclusive(self.p['output_path'], dict(door_session_schema_version=1,
+                save_exclusive(self.p['output_path'], dict(door_session_schema_version=2,
                     correction_reference=self.reference, memory=document))
                 response.success, response.message = True, '문 지도 저장 완료'
             except Exception as exc:
@@ -339,7 +365,9 @@ def main(args=None):
                     self.p['map_frame'], self.p['odom_frame'], Time()).transform)
                 document = load_json(self.p['input_path'])
                 if (not isinstance(document, dict) or set(document) != {'door_session_schema_version', 'correction_reference', 'memory'}
-                        or type(document['door_session_schema_version']) is not int or document['door_session_schema_version'] != 1):
+                        or type(document['door_session_schema_version']) is not int or document['door_session_schema_version'] not in (1, 2)
+                        or not isinstance(document['memory'], dict)
+                        or document['memory'].get('door_map_schema_version') != document['door_session_schema_version']):
                     raise ValueError('문 세션 schema 오류')
                 reference = finite_vector(document['correction_reference'], 3, 'saved correction').tolist()
                 distance, angle = correction_delta(reference, correction)

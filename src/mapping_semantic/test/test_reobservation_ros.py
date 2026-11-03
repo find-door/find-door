@@ -1,5 +1,6 @@
 """실제 ROS Node에서 무검출 RGB-D 재관측·원본 검출 필요·캐시 초기화를 검사한다."""
 import os
+import json
 import pytest
 
 
@@ -66,11 +67,37 @@ def test_fresh_rgbd_without_detection(monkeypatch,tmp_path,enabled,fail_quad):
         else:
             assert current['state']=='closed' and current['last_stamp_ns']==initial['last_stamp_ns']
             assert not node.counters['reobserved']
-        assert node.visible(node.last_source+3_000_000_000)[0]['state']=='unknown'
+        expired_at=node.last_source+3_000_000_000
+        stale=node.visible(expired_at)[0]
+        assert stale['state']=='unknown' and stale['last_confirmed_state']==current['state']
+        assert stale['observation_status']=='stale'
+        assert stale['last_confirmed_stamp_ns']==current['last_confirmed_stamp_ns']
+        markers=[]
+        monkeypatch.setattr(node.marker_pub,'publish',markers.append)
+        node.publish(expired_at)
+        labels=[m for m in markers[-1].markers if m.ns=='door_text']
+        spheres=[m for m in markers[-1].markers if m.ns=='doors']
+        assert 'last:'+current['state'] in labels[0].text and 'stale' in labels[0].text
+        assert spheres[0].color.a<1
+        monkeypatch.setattr(node,'clock_now',lambda:expired_at)
         response=node.save(None,N())
         assert response.success
+        document=json.loads(path.read_text())
+        assert document['door_session_schema_version']==2 and document['memory']['door_map_schema_version']==2
+        saved=document['memory']['objects'][0]
+        assert saved['state']=='unknown' and saved['last_confirmed_state']==current['state']
+        assert 'observation_status' not in saved
         response=node.load(None,N())
         assert response.success and not node.cached_doors
+        loaded=node.visible(expired_at)[0]
+        assert loaded['observation_status']=='stale' and loaded['last_confirmed_stamp_ns']==saved['last_confirmed_stamp_ns']
+        # 이전 schema1의 unknown에는 유실된 확인 이력을 만들어 넣지 않는다.
+        document['door_session_schema_version']=document['memory']['door_map_schema_version']=1
+        for item in document['memory']['objects']:
+            del item['last_confirmed_state'];del item['last_confirmed_stamp_ns']
+        path.write_text(json.dumps(document))
+        assert node.load(None,N()).success
+        assert node.visible(expired_at)[0]['last_confirmed_state']=='unknown'
         node.cached_doors['test']={'quad':[]}
         node.reset(node.get_clock().now().nanoseconds,'correction_resets')
         assert not node.cached_doors

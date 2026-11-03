@@ -104,7 +104,8 @@ def evaluate_observations(history, truth, alignment, maximum_distance=.45):
 
 def validate_saved_snapshot(document, map_id, current_objects):
     """저장 대기 뒤 수신 지도와 실제 파일의 ID·위치·상태를 함께 확인한다."""
-    if document.get('door_session_schema_version')!=1 or document.get('memory',{}).get('map_id')!=map_id:
+    version=document.get('door_session_schema_version')
+    if type(version)is not int or version not in (1,2) or document.get('memory',{}).get('map_id')!=map_id:
         raise RuntimeError('저장 문 지도의 schema/map_id 불일치')
     saved=document['memory']['objects']
     for records in [saved,current_objects]:
@@ -115,7 +116,29 @@ def validate_saved_snapshot(document, map_id, current_objects):
         stored=saved_by_id[current['id']]
         if stored['position']!=current['position'] or stored['state']!=current['state']:
             raise RuntimeError('저장/현재 문 위치·상태 불일치')
+        for key in ('last_confirmed_state','last_confirmed_stamp_ns'):
+            if version==2 and (key not in stored or key not in current or stored[key]!=current[key]):
+                raise RuntimeError('저장/현재 마지막 확인 이력 불일치')
     return dict(objects=len(saved),ids=sorted(saved_by_id),matched=True)
+
+
+def validate_historical_states(mapping, evaluation):
+    """이전 상태가 현재 판단처럼 채점되지 않고 마지막 확인으로 보존됐는지 검사한다."""
+    objects={record['id']:record for record in mapping['objects']}
+    checks=[]
+    for door in evaluation['doors']:
+        if len(door['observed_ids'])!=1:raise RuntimeError('마지막 확인 이력과 대응할 문 ID 부족')
+        record=objects[door['observed_ids'][0]]
+        if (record.get('last_confirmed_state')!=door['expected_state']
+                or type(record.get('last_confirmed_stamp_ns'))is not int
+                or record['last_confirmed_stamp_ns']>record['last_stamp_ns']):
+            raise RuntimeError('마지막 확인 상태·관측 시각 보존 실패')
+        if record.get('observation_status')!='stale' or record['state']!='unknown':
+            raise RuntimeError('종료 주차 후 현재 미관측 표시 실패')
+        checks.append(dict(id=record['id'],last_confirmed_state=record['last_confirmed_state'],
+                           last_confirmed_stamp_ns=record['last_confirmed_stamp_ns'],
+                           current_state=record['state'],observation_status=record['observation_status']))
+    return dict(passed=True,doors=checks)
 
 
 def main():
@@ -291,6 +314,7 @@ def main():
         report['final_detector']=data['detector']
         report['evaluation']=evaluate_observations(observation_history,truth['doors'],initial_alignment)
         report['saved_snapshot_check']=validate_saved_snapshot(json.loads((args.output/'doors.json').read_text()),map_id,data['doors']['objects'])
+        report['historical_state_check']=validate_historical_states(data['doors'],report['evaluation'])
         grid=data['grid']
         import numpy as np
         np.save(args.output/'occupancy.npy',np.asarray(grid.data,dtype=np.int8).reshape(grid.info.height,grid.info.width),allow_pickle=False)
@@ -329,6 +353,10 @@ def main():
         if report.get('cleanup_errors') or (args.record and report.get('recorder_returncode')!=0):report['status']='failed'
         report['elapsed_wall_sec']=time.monotonic()-started
         report['harness_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        report['source_sha256']={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in [
+            'src/mapping_semantic/mapping_semantic/door_map.py',
+            'src/mapping_semantic/mapping_semantic/door_node.py',
+            'scripts/demo/door_patrol_record.py']}
         (args.output/'check.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
         (args.output/'history.json').write_text(json.dumps(history,ensure_ascii=False,indent=2)+'\n')
         (args.output/'observation-history.json').write_text(json.dumps(observation_history,ensure_ascii=False,indent=2)+'\n')

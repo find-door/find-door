@@ -26,4 +26,6 @@
 | [0013](0013-dual-box-evaluation.md) | 검수 bbox 진단 | 문틀 단일 / 두 기준별 / 합산 | 문짝·출입구 기준별 대응, 검수·환경·오류 분모 분리 | ✅ 평가 도구 계약 |
 | [0014](0014-yolo11-live-candidate.md) | 학습 후보 실시간 연결 | 기본 교체 / ROS 적재 / worker 설정 분기 | 로컬 YOLO11 출입구 후보의 선택 실행, YOLOE 기본 유지 | ✅ 개발 연결 결정 |
 
+| [0015](0015-door-last-confirmed-state.md) | 마지막 문 확인 이력 | TTL 연장 / state 대체 / 이력 분리 | 현재 판단과 마지막 확정 상태·시각 분리, schema2·과거 표시 | ✅ 사용자 요청 수정 |
+
 > 번호는 예정값입니다. 실제로 작성하는 순서대로 번호를 붙이고, 이 표와 [architecture.md](../architecture.md#7-미결정-사항)를 함께 갱신합니다.
