@@ -1,0 +1,224 @@
+{
+  "stage": "v0.2.0-door-real-ai-eval.1",
+  "date": "2026-11-03",
+  "mode": "existing_C_boxes_AI_reference_diagnostic_no_new_inference",
+  "reference_kind": "ai_visual_labels_not_human_ground_truth",
+  "reports_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-ai-eval-02/reports.json",
+  "reports_sha256": "c5cac7782a056384ec2c38111df2038079bd66f8634b86bb9fbdd51d9b5dddb5",
+  "failure_analysis_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-ai-eval-02/failure-analysis.json",
+  "failure_analysis_sha256": "5594f4b38b82d7372fce942bd375ba8b72761f5ebc6b1d5806f2f09f7b322435",
+  "provenance": {
+    "harness_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-ai-eval-02/run.py",
+    "harness_sha256": "f6ede2e6c94ec26248490c4bce6708597a5fad1938fb2f1b53cad9883a9c08b5",
+    "label_summary_sha256": "f23d92ca903b3da7fe4253ac83dd8367d20e019ba9fb0ad162e47bc218cc24fd",
+    "prediction_summary_sha256": "405f286ca9abc50be2f2a4cb256940cce33dfb5438835b14bdb5abb62056e859",
+    "source_dataset_sha256": "85f8030aa852079fda85b71a9657fedd26d4751724c3db67336b230ddeee9d4f",
+    "source_predictions_sha256": "e4a584e94e5b2332fc7c4e45da9f933910784a1b7d9ef953088942dcad1ba4d5",
+    "evaluator_sha256": "73644cc28a16c6c786ac55d8003a86969800a3c2040e30e00e6332bdfdede5ff",
+    "report_sha256": {
+      "indoor_primary": "4b87fccc8770b60911aee6cc58481ebc6975582ea1ab6c3ff39816d74165fe71",
+      "exterior_auxiliary": "6fbdaed38a872cb244b0fc53b6eb144ac2f7965605d50efe5083b5e9e0badea3"
+    }
+  },
+  "groups": {
+    "indoor_primary": {
+      "selected_frames": 41,
+      "reviewed_selected_frames": 32,
+      "reference_kind": "ai_visual_labels_not_human_ground_truth",
+      "status": "evaluated",
+      "dataset_sha256": "9ccac7140636d2fc7671841da724fb768f5fc6c155de67aa27d827851c4f34c0",
+      "predictions_sha256": "91bb9d5362d5414fd279009d4fb8dd86a2ec9ac3a612f73752eca83ca6e19214",
+      "source_dataset_sha256": "85f8030aa852079fda85b71a9657fedd26d4751724c3db67336b230ddeee9d4f",
+      "source_predictions_sha256": "e4a584e94e5b2332fc7c4e45da9f933910784a1b7d9ef953088942dcad1ba4d5",
+      "report_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-ai-eval-02/indoor_primary-report.json",
+      "report_sha256": "4b87fccc8770b60911aee6cc58481ebc6975582ea1ab6c3ff39816d74165fe71",
+      "targets": {
+        "leaf": {
+          "summary": {
+            "draft_frames": 9,
+            "excluded_visibility_frames": 1,
+            "eligible_frames": 31,
+            "eligible_gt_objects": 22,
+            "valid_inference_frames": 31,
+            "valid_inference_gt_objects": 22,
+            "missing_predictions": 0,
+            "runtime_errors": 0,
+            "tp": 14,
+            "fp": 10,
+            "fn_valid_inference": 8,
+            "frame_exact_successes": 16,
+            "frame_exact_success_rate": 0.5161290322580645,
+            "valid_inference_precision": 0.5833333333333334,
+            "valid_inference_recall": 0.6363636363636364,
+            "valid_inference_f1": 0.6086956521739131,
+            "matched_mean_iou": 0.8213858068974125
+          },
+          "state_objects": {
+            "closed": {
+              "gt": 9,
+              "tp": 7
+            },
+            "unknown": {
+              "gt": 2,
+              "tp": 2
+            },
+            "open": {
+              "gt": 11,
+              "tp": 5
+            }
+          },
+          "negative_frames": {
+            "frames": 11,
+            "false_positive_boxes": 1,
+            "frames_with_false_positives": 1
+          }
+        },
+        "doorway": {
+          "summary": {
+            "draft_frames": 9,
+            "excluded_visibility_frames": 2,
+            "eligible_frames": 30,
+            "eligible_gt_objects": 22,
+            "valid_inference_frames": 30,
+            "valid_inference_gt_objects": 22,
+            "missing_predictions": 0,
+            "runtime_errors": 0,
+            "tp": 9,
+            "fp": 13,
+            "fn_valid_inference": 13,
+            "frame_exact_successes": 15,
+            "frame_exact_success_rate": 0.5,
+            "valid_inference_precision": 0.4090909090909091,
+            "valid_inference_recall": 0.4090909090909091,
+            "valid_inference_f1": 0.4090909090909091,
+            "matched_mean_iou": 0.8230188500138328
+          },
+          "state_objects": {
+            "closed": {
+              "gt": 8,
+              "tp": 5
+            },
+            "unknown": {
+              "gt": 1,
+              "tp": 1
+            },
+            "open": {
+              "gt": 13,
+              "tp": 3
+            }
+          },
+          "negative_frames": {
+            "frames": 11,
+            "false_positive_boxes": 1,
+            "frames_with_false_positives": 1
+          }
+        }
+      }
+    },
+    "exterior_auxiliary": {
+      "selected_frames": 9,
+      "reviewed_selected_frames": 9,
+      "reference_kind": "ai_visual_labels_not_human_ground_truth",
+      "status": "evaluated",
+      "dataset_sha256": "a4639c1ca2d0f4bc3a71917eb31b3ecff30525aed6325f8bd3875d01af9ac488",
+      "predictions_sha256": "18e8788ca086f8c2ffc71fdd1e7044f2e2f656f2682b711c50e792aa15efdf48",
+      "source_dataset_sha256": "85f8030aa852079fda85b71a9657fedd26d4751724c3db67336b230ddeee9d4f",
+      "source_predictions_sha256": "e4a584e94e5b2332fc7c4e45da9f933910784a1b7d9ef953088942dcad1ba4d5",
+      "report_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-ai-eval-02/exterior_auxiliary-report.json",
+      "report_sha256": "6fbdaed38a872cb244b0fc53b6eb144ac2f7965605d50efe5083b5e9e0badea3",
+      "targets": {
+        "leaf": {
+          "summary": {
+            "draft_frames": 0,
+            "excluded_visibility_frames": 1,
+            "eligible_frames": 8,
+            "eligible_gt_objects": 8,
+            "valid_inference_frames": 8,
+            "valid_inference_gt_objects": 8,
+            "missing_predictions": 0,
+            "runtime_errors": 0,
+            "tp": 6,
+            "fp": 2,
+            "fn_valid_inference": 2,
+            "frame_exact_successes": 5,
+            "frame_exact_success_rate": 0.625,
+            "valid_inference_precision": 0.75,
+            "valid_inference_recall": 0.75,
+            "valid_inference_f1": 0.75,
+            "matched_mean_iou": 0.9027855974214628
+          },
+          "state_objects": {
+            "closed": {
+              "gt": 3,
+              "tp": 3
+            },
+            "open": {
+              "gt": 5,
+              "tp": 3
+            }
+          },
+          "negative_frames": {}
+        },
+        "doorway": {
+          "summary": {
+            "draft_frames": 0,
+            "excluded_visibility_frames": 0,
+            "eligible_frames": 9,
+            "eligible_gt_objects": 9,
+            "valid_inference_frames": 9,
+            "valid_inference_gt_objects": 9,
+            "missing_predictions": 0,
+            "runtime_errors": 0,
+            "tp": 6,
+            "fp": 2,
+            "fn_valid_inference": 3,
+            "frame_exact_successes": 5,
+            "frame_exact_success_rate": 0.5555555555555556,
+            "valid_inference_precision": 0.75,
+            "valid_inference_recall": 0.6666666666666666,
+            "valid_inference_f1": 0.7058823529411765,
+            "matched_mean_iou": 0.6639743744369282
+          },
+          "state_objects": {
+            "closed": {
+              "gt": 3,
+              "tp": 3
+            },
+            "open": {
+              "gt": 6,
+              "tp": 3
+            }
+          },
+          "negative_frames": {}
+        }
+      }
+    }
+  },
+  "limitations": [
+    "AI 시각 라벨 기준 진단이며 사람 정답 기준 성능이 아님",
+    "기존 개발·감사에 사용한 자료로 독립 시험셋 아님",
+    "실내/실외 보조 및 문짝/출입구 결과 합산 금지",
+    "보류9장·가시성 불명은 target별 채점 제외, 제외 분모 공개",
+    "상태별 검출 대응률이며 상태 분류 정확도가 아님",
+    "깊이·시맨틱 지도·현재 ROS 시스템의 실물 평가 아님"
+  ],
+  "figure": {
+    "script_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-ai-eval-02/figure.py",
+    "script_sha256": "25b1df51c5614d9007972d09f460eee06c4fd99d5d6acb8269f9ac7952c0a500",
+    "png_sha256": "8ec6abc7be70cc358de20aac9767dfb3ceb5c7b675cce3a095759f2cb345b263",
+    "svg_sha256": "1f9b801994f005d8ba7e5f85ff3e55fcab0c4f3677ec9fc0b2e8d35dcd346804",
+    "svg_raw_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-ai-eval-02/matplotlib-raw.svg",
+    "svg_raw_sha256": "913f3c7c3fd8cc2135adabcf4b1e624ae2c4b10a5595860f892c8f9682de2ad5",
+    "svg_postprocessing": "각 행 끝 공백만 제거, XML 요소·속성 토큰 동일 확인"
+  },
+  "provenance_correction": "real-ai-eval-01에는 부모 해시를 실제 입력 해시 필드에 넣은 기록 오류가 있어 보존하고, 최종02에서 실제 subset 해시와 source 부모 해시를 분리했다. 채점 수치는 동일하다.",
+  "verification": {
+    "cli_replays": 2,
+    "all_cli_fields_equal": true,
+    "parent_subset_hashes_verified": true,
+    "failure_counts_reconciled": true,
+    "document_count": 64,
+    "document_link_errors": 0,
+    "product_code_changed": false
+  }
+}

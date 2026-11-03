@@ -14,6 +14,7 @@
   - [같은 3m 위치의 낮은/높은 시점 비교](door-view-diagnostic.md)에서 닫힘 검출은 회복됐고 완전 열림 무검출은 유지됨.
   - [YOLO11 학습 후보 준비 상태](door-training-readiness.md): 학습 구현 파일은 있으나 검수 데이터는 단일 개발 그룹 9장·음성 0장이다. 독립 분할과 실제 bbox 검수가 필요하며 학습은 미실행.
   - 사용자 요청으로 [실제 사진 50장 AI 라벨](door-ai-labels.md) 작성: 41장 AI 검토 완료·9장 보류. 사람 검수 정답·독립 평가·학습 완료와 구분한다.
+  - [AI 라벨 기준 실제 RGB 진단](door-real-ai-evaluation.md): 실내 문짝 TP14/FP10/FN8, 출입구 TP9/FP13/FN13. 실외 보조는 따로 계산했으며 사람 정답·독립·지도 성능이 아니다.
 - [ ] 깊이·주변 벽과 여러 프레임을 이용한 열림/닫힘/불명 판단
   - 깊이 단일 관측 후보와 [정답 ROI 개발 진단](door-state-evaluation.md), [시간 종합 메모리](door-memory.md) 구현. [실시간 검출·ROS 연결](door-live.md)과 [상태 전이](door-transition.md)까지 개발 검증. 독립 장면·실물 검증은 미완료.
 - [ ] 고정 문 위치·ID와 상태를 연결한 지도 저장·표시
