@@ -4,6 +4,8 @@
 LiDAR `/scan` 기반 slam_toolbox를 함께 실행하는 경로를 구현했다.
 관측 시각 TF와 문 메모리·마커·저장 서비스는 기존 문 mapper를 사용한다.
 설계는 [ADR-0010](adr/0010-live-door-detector.md)을 따른다.
+이후 [학습한 YOLO11 출입구 후보](door-yolo11-live.md)를 detector_config로 선택할 수 있게 확장했다.
+이 문서의 기존 YOLOE 결과와 새 후보의 결과는 별도 기록한다.
 
 ## 실행 경계
 

@@ -5,6 +5,7 @@
 [문 ROS 계약·재생 진단](../../docs/door-ros.md)을 확인하세요.
 `live_doors.launch.py recon_root:=... map_id:=...`는 기존 로컬 YOLOE 검출 발행기도 함께 시작합니다.
 [실시간 연결·LiDAR SLAM 검증](../../docs/door-live.md)을 확인하세요.
+학습한 출입구 모델은 [YOLO11 선택 실행 안내](../../docs/door-yolo11-live.md)를 따릅니다. 기본값은 YOLOE입니다.
 `reobserve_known_doors:=true`가 기본이며 이미 확인한 출입구의 현재 RGB-D 재관측을 지원합니다.
 false는 매 프레임 검출이 필요한 기존 경로입니다. [계약·ON/OFF 결과](../../docs/door-reobservation.md)를 따릅니다.
 

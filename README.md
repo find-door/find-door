@@ -10,12 +10,14 @@
 [실시간 YOLOE·출입구 추정·시간 종합·LiDAR SLAM 연결](docs/door-live.md)을 단일 문 정지 관측에서 확인했습니다.
 [순간 문 각도 전이](docs/door-transition.md), [짧은 직선 주행](docs/door-motion.md),
 [작은 제자리 회전](docs/door-rotation.md)에서도 ID·상태를 확인했습니다.
-문 검출 추가 학습 필요성 평가, 큰 회전·장거리·독립 장소·실제 촬영 자료 검증은 남아 있습니다.
+큰 회전·장거리·독립 장소·실제 촬영 자료 검증은 남아 있습니다.
 [평판 금속문 개발 변형](docs/door-scene-variation.md)은 반열림만 성공했고 닫힘·완전 열림은 검출 실패로 남았습니다.
 [3m 보조 시점 비교](docs/door-view-diagnostic.md)에서는 닫힘 검출이 회복됐지만 완전 열림은 검출되지 않았습니다.
 [이미 확인한 문의 RGB-D 재관측](docs/door-reobservation.md)으로 문짝 검출 누락 중 상태 갱신을 보완했습니다.
 [YOLO11 출입구 150 epoch 개발 비교](docs/door-yolo11-budget.md)에서는 낮은 로봇 시점까지 완전 열림 3조건의 bbox 대응을 회복했습니다.
-실제 AI 개발 검증은 악화돼 기본 YOLOE를 유지하며, 처음 열린 문의 실시간 상태·지도 등록은 아직 미검증입니다.
+실제 AI 개발 검증은 악화돼 기본 YOLOE를 유지합니다.
+[학습 후보의 실시간 연결](docs/door-yolo11-live.md)에서는 금속문 세 각도의 최초 지도 등록과 닫힘→열림→닫힘 전이를 확인했습니다.
+이는 보조 재관측을 끈 같은 개발 장면의 검증이며 독립·실물 성능은 아닙니다.
 실행 계약·조건별 결과·실제 카메라 비교 그림은 [문 실험](docs/door-experiment.md)을 따릅니다.
 Gazebo와 실제 촬영 영상의 평가는 별도로 기록합니다.
 [사용자 검수 9장 평가](docs/door-reviewed-nine.md)는 문짝·출입구 기준 모두 TP4/FP0/FN5이며, 동일 개발 장면의 결과입니다.

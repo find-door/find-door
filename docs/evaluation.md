@@ -421,3 +421,20 @@ Gazebo 완전 열림 3조건이 낮은 시점까지 TP1/FP0으로 대응됐다. 
 [프로토콜](data/door-yolo11-budget-protocol.json)·[하네스/가중치/CSV/결과/진단/그림 해시](data/door-yolo11-budget-summary.json)를 보존했다.
 6조건 CLI 재현과 모든 공통 계산 필드·대응·입력 해시 일치를 확인했다.
 제품·하네스 변경 없이 모델 실험만 추가해 전체 단위 검사는 반복하지 않았다.
+
+
+## 학습한 출입구 후보의 실시간 통합 — 2026-11-03
+
+기준 `17f6425` 이후 `v0.2.0-door-yolo11-live.1`에서 [YOLO11 선택 실행](door-yolo11-live.md)을 추가했다.
+기본 YOLOE·원본 RGB-D 시간·TF 계약은 유지하고 기존 worker에서 명시한 로컬 설정만 분기한다.
+동일 금속문 개발 장면·2m 정면에서 0°/45°/90°가 빈 지도부터 closed/open/open으로 등록·저장됐다.
+알려진 문 재관측은 비활성화했고 실제 LiDAR SLAM 지도와 신선한 관측을 사용했다.
+같은 문을 0°→90°→0°로 순간 변경해 ID·anchor 유지와 상태 전이를 확인했다.
+문 없는 벽은 등록 0개·빈 지도 저장 거부가 정상이며 기존 YOLOE 금속문 완전 열림은 timeout 실패로 남았다.
+이는 개발 통합 실행이며 절대 위치 오차·독립 장소·실제 영상 성능이 아니다.
+초기 TF 대기 초과 1회, 도메인 혼입 무효 실행과 음성 저장 판정 오류를 숨기지 않고 별도 기록했다.
+교차 검토에서 저장 응답 뒤 최종 관측을 재검사하도록 보완하고 음성 장면을 다시 실행했다.
+[원문·소스·그림 추적 요약](data/door-yolo11-live-summary.json), 로컬 `experiments/door_probe/yolo11-live-01/`에
+실행 당시 하네스·상태 이력·RGB·OccupancyGrid·저장 JSON·로그를 보존했다. rosbag은 생성하지 않았다.
+기존 recon venv·로컬 checkpoint를 사용했고 wf_gazebo는 읽기 전용 오버레이로 유지했다.
+mapping_semantic 빌드 성공, ROS 패키지 340검사 통과·오류/실패 0, 전체 오프라인 898검사 통과·ROS 전용 5개 제외.
