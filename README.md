@@ -1,146 +1,190 @@
-# Find Door — 문 위치·상태 시맨틱 지도
+# Find Door — 문 위치와 상태를 기억하는 실내 지도
 
-> **실내 지도 위에 문의 위치와 열림·닫힘 상태를 표시한다.**
+**로봇이 건물 안을 이동하며 문을 찾고, 지도에 위치와 열림·닫힘 상태를 기록하는 컴퓨터비전 과목 프로젝트입니다.**
 
-기존 **Prometheus Mapping**의 2D LiDAR SLAM·RGB-D 투영 구조를 바탕으로,
-문의 고정 위치와 열림·닫힘·판단 불가 상태를 지도에 표시하는 컴퓨터비전 과목 프로젝트입니다.
-첫 단계로 Gazebo에서 문짝 각도·카메라 거리·관측각별 36조건·108프레임의 검출 실험을 완료했습니다.
-문짝 검출과 고정 문틀 위치의 차이, 낮은 카메라 시점의 잘림 한계를 확인했습니다.
-깊이 기반 단일 관측 후보와 [정답 ROI 개발 진단](docs/door-state-evaluation.md)을 구현했습니다.
-[실시간 YOLOE·출입구 추정·시간 종합·LiDAR SLAM 연결](docs/door-live.md)을 단일 문 정지 관측에서 확인했습니다.
-[순간 문 각도 전이](docs/door-transition.md), [짧은 직선 주행](docs/door-motion.md),
-[작은 제자리 회전](docs/door-rotation.md)에서도 ID·상태를 확인했습니다.
-큰 회전·장거리·독립 장소·실제 촬영 자료 검증은 남아 있습니다.
-[평판 금속문 개발 변형](docs/door-scene-variation.md)은 반열림만 성공했고 닫힘·완전 열림은 검출 실패로 남았습니다.
-[3m 보조 시점 비교](docs/door-view-diagnostic.md)에서는 닫힘 검출이 회복됐지만 완전 열림은 검출되지 않았습니다.
-[이미 확인한 문의 RGB-D 재관측](docs/door-reobservation.md)으로 문짝 검출 누락 중 상태 갱신을 보완했습니다.
-[YOLO11 출입구 150 epoch 개발 비교](docs/door-yolo11-budget.md)에서는 낮은 로봇 시점까지 완전 열림 3조건의 bbox 대응을 회복했습니다.
-실제 AI 개발 검증은 악화돼 기본 YOLOE를 유지합니다.
-[학습 후보의 실시간 연결](docs/door-yolo11-live.md)에서는 금속문 세 각도의 최초 지도 등록과 닫힘→열림→닫힘 전이를 확인했습니다.
-이는 보조 재관측을 끈 같은 개발 장면의 검증이며 독립·실물 성능은 아닙니다.
-[새 건물 내부 순찰](docs/door-patrol.md)에서 약 9.24m 주행하며 네 문 위치를 누적하고 100.4초 Gazebo·RViz 통합 영상을 저장했습니다.
-첫 순찰은 종료 시 TTL에 따라 모두 unknown이 됐으며, 이후 [마지막 확인 상태 보존](docs/door-last-observation.md)으로
-과거 열림/닫힘과 현재 관측 유효성을 분리하고 같은 경로의 시뮬레이션을 다시 실행했습니다.
-[재방문 상태 갱신](docs/door-revisit.md)에서는 약 28.4m 왕복 후 같은 문의 닫힘→열림→닫힘과 네 문 ID·위치 유지를 확인했습니다.
-로봇이 없는 현재 제출의 실제 촬영 영상 평가는 사용자 요청에 따라 Gazebo·RViz 시연으로 대체합니다.
-실행 계약·조건별 결과·실제 카메라 비교 그림은 [문 실험](docs/door-experiment.md)을 따릅니다.
-Gazebo와 실제 촬영 영상의 평가는 별도로 기록합니다.
-[사용자 검수 9장 평가](docs/door-reviewed-nine.md)는 문짝·출입구 기준 모두 TP4/FP0/FN5이며, 동일 개발 장면의 결과입니다.
-[95장 라벨 검수 안내](docs/door-label-review.md#실패보조-시점을-포함한-95장-검수-묶음)에 따라 나머지 자료 검수·독립 평가를 이어갑니다.
+2D LiDAR로 공간의 지도를 만들고, RGB-D 카메라로 문을 찾아 상태를 판단합니다.
+문이 시야에서 사라져도 마지막으로 확인한 상태를 남기며, 다시 방문하면 새 관측으로 갱신합니다.
+현재는 **Gazebo에서 네 문을 순차적으로 관측하는 주행과 두 차례 재방문까지 검증**했습니다.
+실물 로봇을 이용한 주행·깊이·지도 평가는 아직 수행하지 않았습니다.
 
-아래 `v0.1.0` 및 SLAM·시맨틱 검증 기록은 **분기 전 기반 프로젝트의 이력**입니다.
-문 위치·상태 기능의 완료를 의미하지 않습니다. 드론 확장은 기존 장기 구상이며 이번 과목 범위에 포함하지 않습니다.
+[보고서와 시연 GIF](https://www.notion.so/40df0ccb1ddb81a99149fc89ed8c96ab) ·
+[재방문 검증 결과](docs/door-revisit.md) ·
+[기능 검증 버전 v0.2.0-door-revisit.1](https://github.com/find-door/find-door/tree/v0.2.0-door-revisit.1)
 
-> **상태: 첫 릴리스 `v0.1.0` (2026-10-27) — 시뮬레이션 기준선·실물 배포 준비 완료, 로봇 도착 대기.** 자동 주행·지도 평가·루프 비교와 실물 전용 프로파일·점검·실행 경로를 구현했습니다. 루프 ON에서 관측한 지도 실패는 원인(스캔 무게중심 기반 루프 후보가 벽 너머 방을 연결)을 확정하고 기본 설정을 고쳤습니다([원인 분석](docs/loop-closure-investigation.md#2026-10-26-원인-분석-스캔-무게중심-기반-루프-후보-선택)). 이 수정은 `indoor_v1` 기준이며, 반복 구조의 `indoor_v2`에서는 현재 `slam.yaml`도 5회 모두 실패해 [조사 중](docs/loop-closure-investigation.md#2026-11-01-indoor_v2-실패-후보와-설정-검증)입니다. `slam.yaml`은 비교 기준이며 권장 설정이 아니고, 실물 기본값은 미선정입니다. 실물 MVP는 미완료입니다. [준비 범위](docs/prehardware-plan.md)와 검증 결과를 구분합니다.
+![건물 순찰과 두 차례 재방문으로 같은 문의 상태를 갱신하는 Gazebo·RViz 시연](docs/media/door-revisit.gif)
 
-![로봇이 시뮬레이션 실내를 주행하며 지도를 그리는 데모](docs/media/mapping_demo.gif)
+*실제 실행을 녹화한 Gazebo·RViz 통합 영상입니다. 원본 232.9초를 약 8배속, 29.11초 GIF로 줄였습니다.
+왼쪽은 Gazebo, 오른쪽은 RViz 지도이며 하단에 로봇 RGB와 문 상태를 표시합니다.
+미리 정한 경로를 주행하고, 문은 시야 밖에서 `set_pose`로 순간 변경합니다. 연속 경첩 회전 시연은 아닙니다.*
 
-*왼쪽: 로봇 카메라 / 오른쪽: RViz2의 slam_toolbox 지도와 SLAM 추정 경로(파란 선). Gazebo 시뮬레이션 `indoor_demo`, 3배속. 실물 주행이 아니며 평가 수치는 [evaluation.md](docs/evaluation.md)의 `indoor_v1` 결과를 기준으로 합니다.*
+## 어떤 문제를 해결하나요?
 
-## 개요
+일반적인 실내 지도만으로는 벽 사이의 공간이 출입구인지, 문이 열려 있는지 알기 어렵습니다.
+Find Door는 공간 지도에 다음 정보를 더합니다.
 
-| 항목 | 내용 |
+- **문 위치:** 움직이는 문짝 대신 출입구의 고정 위치를 추정하고 문마다 ID를 부여합니다.
+- **문 상태:** 문 주변의 벽 깊이와 문 안쪽 깊이를 비교하고, 여러 관측을 종합해 판단합니다.
+- **관측 이력:** 지금 확인한 상태와 과거에 마지막으로 확인한 상태를 나누어 기록합니다.
+
+LiDAR는 공간 구조와 로봇 위치 추정에, 카메라는 문 검출과 상태 판단에 사용합니다.
+LiDAR만으로 문을 구분하는 방식은 아닙니다.
+
+## 구현한 기능
+
+| 기능 | 현재 구현과 확인 범위 |
 |---|---|
-| 기간 | 2026.10 ~ 진행 중 |
-| 구분 | 컴퓨터비전 과목 프로젝트 (기존 매핑 프로젝트에서 분기) |
-| 개발 플랫폼 | JetAuto Ultimate Kit (Jetson Orin NX 16GB, 4륜 메카넘) |
-| 개발 환경 | Ubuntu 22.04, ROS 2 Humble, Gazebo Harmonic ([ADR-0002](docs/adr/0002-dev-environment.md)) |
-| 기술 | Python, SLAM, RViz2 |
-| 응용 목표 | 실내 지도에 문 위치·열림/닫힘 상태 표시 |
+| 실내 지도 생성 | 2D LiDAR와 `slam_toolbox`로 지도·로봇 위치 생성 |
+| 문·출입구 검출 | 기존 YOLOE와 학습한 YOLO11 후보를 설정으로 선택 |
+| 문 상태 판단 | RGB-D 깊이와 주변 벽 평면을 이용한 `open` / `closed` / `unknown` 판단, 시간 종합 |
+| 문 위치·ID 관리 | RGB-D와 관측 시각 TF로 지도에 투영하고 고정 위치·ID 유지 |
+| 마지막 확인 보존 | 현재 관측 유효성과 마지막 확정 상태·시각을 분리해 표시·저장 |
+| 이동 순찰 | 네 방과 복도가 있는 별도 world에서 네 문을 차례로 관측 |
+| 재방문 갱신 | 시야 밖에서 바뀐 문을 다시 보고 같은 ID의 닫힘→열림→닫힘 갱신 |
+| 결과 확인·저장 | RViz 마커, 문 지도 JSON 저장·복원, Gazebo·RViz 통합 녹화 |
 
-## 기반 프로젝트의 장기 과제
+반열림 45°와 완전 열림 90°는 모두 `open`으로 묶습니다.
+`open`은 로봇이나 사람이 통과할 만큼 공간이 확보됐다는 뜻은 아닙니다.
 
-- **GPS 없음** — 실내에서는 센서만으로 위치를 추정해야 함 (SLAM)
-- **드론의 기울기** — 2D LiDAR는 한 평면만 보므로, 기체가 기울면 바닥·천장을 벽으로 착각함
-- **현장 환경** — 연기·어둠에서는 카메라가 거의 무용지물, 짙은 연기에서는 LiDAR도 노이즈 증가
-- **통신 단절** — 건물 내부는 전파가 약해 지도를 실시간으로 밖에 전송하기 어려움
-- **연산 제약** — 소형 기체에 실을 수 있는 Jetson급 컴퓨터에서 실시간 동작해야 함
+### 문을 보고 있지 않을 때
 
-## Find Door 목표 구조 (Gazebo 개발 검증, 독립·실물 평가는 예정)
+관측 유효 시간이 지나면 **현재 상태는 `unknown`, 관측 상태는 `stale`**로 바뀝니다.
+이때 마지막으로 확인한 열림·닫힘과 확인 시각은 남습니다.
+RViz에서는 오래된 관측을 옅은색으로 표시하고, 재방문 후 새 관측이 충분히 쌓이면 상태를 갱신합니다.
+
+![재방문 종료 후 저장한 네 문 위치와 마지막 확인 상태](docs/images/door-revisit/final-map.png)
+
+*저장된 지도와 문 위치로 만든 결과 그림입니다. 종료 시 마지막 확인은 `closed/open/open/closed`이며,
+현재 관측은 네 문 모두 `unknown/stale`입니다. 옅은 색은 과거 확인 상태를 뜻합니다.
+이 그림은 독립적인 지도 정확도 평가 결과가 아닙니다.*
+
+## 처리 흐름
 
 ```mermaid
 flowchart LR
-  L["2D LiDAR"] --> S["SLAM<br>2D 지도 + 위치"]
-  O["휠 오도메트리 / IMU"] --> S
-  C["RGB-D 카메라"] --> D["문 검출<br>깊이 기반 상태 판단"]
-  S --> M["시맨틱 지도"]
-  D --> M
-  M --> R["RViz2 / 지휘소 화면"]
+    L["2D LiDAR + odom TF"] --> S["slam_toolbox<br/>2D 지도·로봇 위치"]
+    C["RGB 영상"] --> D["문·출입구 검출<br/>YOLOE / YOLO11"]
+    D --> P["RGB-D 투영<br/>벽 깊이 비교"]
+    R["정렬 Depth + CameraInfo"] --> P
+    S -->|관측 시각 TF| P
+    P --> M["문 위치·ID<br/>상태 종합·확인 이력"]
+    S -->|지도| V["RViz2"]
+    M --> V
+    M --> J["JSON 저장·복원"]
 ```
 
-자세한 내용은 [docs/architecture.md](docs/architecture.md)를 참고하세요.
+RGB·depth·CameraInfo를 동기화하고, 검출에 사용한 영상의 시각으로 TF를 조회합니다.
+이번 Gazebo 시험의 odom은 시뮬레이터 pose 기반이며, 실물 휠 오도메트리나 IMU 융합 성능을 검증한 것은 아닙니다.
+센서·토픽·좌표계의 상세 계약은 [아키텍처](docs/architecture.md)와 [문 ROS 연결](docs/door-ros.md)에 정리했습니다.
 
-## 기반 프로젝트 로드맵 이력
+## 실험에서 확인한 결과
 
-현재 과목의 완료 조건은 [Find Door 로드맵](docs/roadmap.md#find-door-과목-프로젝트)을 따릅니다.
-아래 표와 MVP 정의는 기존 프로젝트의 실물·드론 확장 계획입니다.
+아래는 개발 중 사용한 장면과 자료의 결과입니다. Gazebo와 실제 RGB 사진의 결과를 따로 기록했습니다.
 
-| 단계 | 완료 조건 | 상태 |
+| 실험 | 확인한 결과 | 근거 |
 |---|---|---|
-| Phase 0 개발 환경 | 실내 world에서 JetAuto 시뮬레이션 주행 | ✅ `v0.1.0` (RViz2 수동 확인·공개 범위 확인 남음) |
-| Phase 1 2D SLAM | 실물로 만든 지도의 도면 대비 오차 측정 | 🚧 시뮬 기준선 완료, 실물 대기 |
-| Phase 2 카메라 융합 | 지도 위 객체 표시 + 위치 정확도 측정, 데모 영상 | 🚧 시뮬 투영 검증 완료, 실물 대기 |
-| Phase 3 3D (확장) | 3D 또는 층 구분 지도 생성 | ⏳ |
-| Phase 4 드론 (확장) | 기울기 보정 매핑 검증 | ⏳ |
+| 첫 문 검출 실험 | 문 상태·거리·관측각을 조합한 36조건, 108프레임 수집. 같은 RGB 중복을 제외하면 36장 | [조건별 결과](docs/door-experiment.md) |
+| 마지막 상태 보존 후 순찰 | 14/14단계, odom 기준 9.246m 이동. 네 문 ID와 마지막 확인 상태를 저장 | [순찰 재시험](docs/door-last-observation.md) |
+| 재방문 갱신 | 28/28단계, odom 기준 28.404m 이동. 같은 문에서 닫힘→열림→닫힘 갱신, 네 문 ID·고정 위치 유지 | [재방문 시험](docs/door-revisit.md) |
 
-**MVP = Phase 1 + Phase 2.** 상세는 [docs/roadmap.md](docs/roadmap.md).
+순찰·재방문 수치는 각각 GUI 녹화 실행 기준입니다. 사전 정의한 경로의 동작 검증이며 자율 탐색 결과가 아닙니다.
 
-## 저장소 구조
+### 검출 모델 비교
 
-```text
-prometheus-mapping/
-├── README.md
-├── CONTRIBUTING.md        # 브랜치·커밋 규칙
-├── .gitmessage            # 커밋 메시지 템플릿
-├── .github/               # PR 템플릿·오프라인 CI
-├── docs/
-│   ├── architecture.md    # 시스템 구조, TF·토픽 설계
-│   ├── interfaces.md      # 초기 센서·TF·실행 계약
-│   ├── roadmap.md         # 단계별 목표·체크리스트
-│   ├── hardware.md        # 로봇·센서 사양
-│   ├── setup.md           # 개발 환경·실행 방법
-│   ├── evaluation.md      # 평가 지표·실험 기록
-│   └── adr/               # 설계 결정 기록 (ADR)
-└── src/                   # ROS 2 패키지
-    ├── mapping_gazebo/    # 매핑용 실내 world·launch ✅
-    ├── mapping_slam/      # SLAM 기준선 설정·단독/통합 launch
-    ├── mapping_semantic/  # 색상 표적·NanoDet 2D 검출, RGB-D 투영·객체 지도
-    ├── mapping_eval/      # 입력 검사·자동 시뮬 주행·지도 기하 평가
-    ├── mapping_robot/     # 실물 프로파일·읽기 전용 센서 점검·SLAM/선택 검출
-    └── mapping_slam_debug/ # 시뮬 분석용 루프 수락 기록 솔버 플러그인
-```
+출입구 기준, confidence 0.1·대응 IoU 0.5 조건으로 비교했습니다.
+TP는 기준 라벨에 대응한 검출, FP는 추가 검출, FN은 놓친 기준 라벨입니다.
 
-## 빠른 시작
+| 평가 자료 | 기존 YOLOE TP / FP / FN | YOLO11 30 epoch | YOLO11 150 epoch |
+|---|---|---|---|
+| Gazebo 개발 사진 9장 — 사람 검수 라벨 | 4 / 0 / 5 | 4 / 7 / 5 | 8 / 2 / 1 |
+| 실제 RGB 개발 검증 7장 — AI 라벨 | 1 / 0 / 2 | 2 / 2 / 1 | 1 / 4 / 2 |
+
+YOLO11은 실제 RGB의 AI 라벨을 이용해 학습 32장·개발 검증 7장으로 실험했습니다.
+독립 시험 세트는 확보하지 못했습니다. Gazebo에서는 검출이 개선됐지만 실제 사진에서는 오검출이 늘었습니다.
+따라서 기본 검출기는 YOLOE로 유지하고, 위 순찰·재방문 시연에는 **YOLO11 150 epoch 출입구 후보를 선택**했습니다.
+학습과 비교 조건은 [학습 자료 구성](docs/door-training-data.md), [학습 예산 비교](docs/door-yolo11-budget.md),
+[실시간 후보 연결](docs/door-yolo11-live.md)을 참고하세요.
+
+## 실행 환경과 재현
+
+| 항목 | 사용 환경 |
+|---|---|
+| 운영체제·미들웨어 | Ubuntu 22.04, ROS 2 Humble |
+| 시뮬레이터 | Gazebo Harmonic (`gz-sim 8`), `ros-humble-ros-gzharmonic` |
+| 지도·표시 | `slam_toolbox`, RViz2 |
+| 영상 처리·검출 | Python, OpenCV, PyTorch·Ultralytics 기반 YOLOE / YOLO11 |
+| 시뮬레이션 로봇 | 외부 `wf_gazebo` 오버레이의 JetAuto 모델·LiDAR·RGB-D 센서 |
+
+**저장소를 clone하는 것만으로 전체 시연이 실행되지는 않습니다.**
+외부 `wf_gazebo` 워크스페이스와 `recon-report` 가상환경, 검출 설정 및 학습 가중치가 필요합니다.
+이 자산들은 저장소에 포함하지 않았습니다. 준비 방법은 [환경 설정](docs/setup.md),
+모델 경로와 설정은 [YOLO11 실행 문서](docs/door-yolo11-live.md)에 정리했습니다.
+
+### 빌드
+
+외부 오버레이와 의존성을 준비한 뒤 저장소 루트에서 실행합니다.
 
 ```bash
 source /opt/ros/humble/setup.bash
-source ~/worker_following_ws/install/setup.bash   # wf_gazebo (연구과제, 오버레이)
-colcon build --symlink-install && source install/setup.bash
-ros2 launch mapping_slam simulation.launch.py
+source ~/worker_following_ws/install/setup.bash
+colcon build --symlink-install
+source install/setup.bash
 ```
 
-실물 설치·도착 당일 시험은 [로봇 배포 안내](docs/robot-deployment.md)를 따릅니다. 로봇에는 Gazebo 없는 두 런타임 패키지만 빌드합니다.
+### 순찰·재방문 시험
 
-slam_toolbox 설치가 필요합니다. 초기 인터페이스는 [docs/interfaces.md](docs/interfaces.md)를 따릅니다.
+아래 `/path/to/`는 준비한 외부 저장소와 검출 설정의 실제 절대 경로로 바꿉니다.
+검출 설정은 학습한 출입구 가중치를 가리켜야 하며, 출력 폴더는 매번 새 경로를 사용합니다.
+시험 도구가 Gazebo 서버·SLAM·문 검출·상태 노드를 함께 시작합니다.
 
-자세한 내용은 [docs/setup.md](docs/setup.md), world 도면은 [mapping_gazebo README](src/mapping_gazebo/README.md).
+```bash
+export ROS_DOMAIN_ID=12 GZ_PARTITION=codex OPENBLAS_NUM_THREADS=1
+export FASTRTPS_DEFAULT_PROFILES_FILE=~/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml
 
-## 검증 결과
+/usr/bin/python3 scripts/door_probe/patrol_check.py \
+  --revisit --timeout 420 \
+  --recon-root /path/to/recon-report \
+  --detector-config /path/to/detector.json \
+  --output experiments/door_probe/revisit-new-headless
+```
 
-기준선 3회 벽 P95 오차는 6.28 / 3.46 / 3.14 cm였습니다. 동일 bag에서 slam_toolbox·Cartographer 각 3회 재생과 합성 표적의 실제 RGB-D 투영·이동·저장·복원 검증을 수행했습니다. 이후 기록한 실패 bag으로 지도 급변 원인을 확정해 `use_scan_barycenter: false`로 고쳤고(온라인 5회 통과), 최초 예비 실행의 급변이 같은 원인인지는 미확정입니다. 실물 성능 결과가 아닙니다. [평가 기록](docs/evaluation.md)을 참고하세요.
+위 명령은 화면 없이 실행합니다. `--revisit`을 빼면 최초 순찰만 수행합니다.
+GUI와 통합 녹화는 별도 실행에 `--record`를 추가하며, Xephyr 등 [녹화 준비 조건](docs/door-patrol.md#재현)이 필요합니다.
+같은 ROS 도메인에서 다른 시뮬레이션이나 ROS 테스트를 동시에 실행하지 않습니다.
+실행 결과는 출력 폴더의 검사 요약·문 지도·관측 이력으로 확인합니다.
+
+## 저장소 안내
+
+| 경로 | 역할 |
+|---|---|
+| [src/mapping_gazebo](src/mapping_gazebo/) | 문 실험·건물 순찰 world와 시뮬레이션 연결 |
+| [src/mapping_slam](src/mapping_slam/) | LiDAR SLAM 설정과 통합 launch |
+| [src/mapping_semantic](src/mapping_semantic/) | 검출기 연결, RGB-D 투영, 문 상태·위치·ID·저장 |
+| [scripts/door_probe](scripts/door_probe/) | 조건별 수집·라벨 검수·학습·평가·순찰·재방문 시험 |
+| [scripts/demo](scripts/demo/) | Gazebo·RViz 화면 녹화와 통합 영상 구성 |
+| [docs/data](docs/data/) · [docs/images](docs/images/) | 실험 요약 JSON과 검증 그림 |
+| [docs/adr](docs/adr/README.md) | 인터페이스와 설계 결정 기록 |
+
+기반 프로젝트의 매핑 평가·실물 준비·SLAM 분석 패키지도 함께 보존되어 있습니다.
+문 기능의 상세 진행 기록은 [로드맵](docs/roadmap.md#find-door-과목-프로젝트)을 참고하세요.
+
+## 남은 과제
+
+- 다른 건물·문 재질·조명에서 사람 검수 라벨을 확보하고 독립 시험 세트로 평가하기
+- 실제 로봇의 RGB-D·CameraInfo·TF를 수집해 문 위치와 상태 정확도 측정하기
+- 한 화면의 여러 문 처리와 검출 누락·깊이 부족 상황의 안정성 개선하기
+- 사전 정의한 경로에서 자율 탐색으로 확장하고, 열린 폭을 이용한 통과 가능성 판단하기
+
+현재 개발 범위는 재방문 상태 갱신까지입니다. 위 항목은 후속 계획이며 완료된 기능이 아닙니다.
 
 ## 연구과제와의 경계
 
-| 구분 | 내용 |
-|---|---|
-| 연구과제에서 가져온 것 | JetAuto 로봇(하드웨어), Gazebo 시뮬레이션 모델·센서 설정(`wf_gazebo`) |
-| 이 프로젝트에서 새로 만드는 것 | 매핑용 실내 world, SLAM 구성·평가, 카메라 융합(시맨틱 지도), 3D 확장 |
-| 공개 범위 | 🔍 미정 — 교수님 확인 후 기록 (GitHub 공개 가능한 코드·자료 범위) |
+기존 **Prometheus Mapping**의 LiDAR SLAM·ROS 센서 연결·RGB-D 투영 구조를 재사용했습니다.
+이번 Find Door에서는 문 전용 실험 환경, 검출 모델 비교·학습, 깊이 기반 상태 판단,
+문 위치·ID·마지막 확인 이력, 순찰·재방문 검증을 추가했습니다.
 
-## 기여 규칙
+외부 `wf_gazebo`의 로봇 모델과 센서 설정은 읽기 전용 오버레이로 사용합니다.
+외부 모델·연구과제 비공개 자료·학습 가중치·대용량 원본은 이 저장소에서 배포하지 않습니다.
+기존 `v0.1.0`은 기반 프로젝트의 이력이며, 문 기능의 단계별 결과는 `v0.2.0-door-*` 태그로 구분합니다.
 
-브랜치 전략(`main` / `dev` + 작업 브랜치)과 커밋 메시지 규칙은 [CONTRIBUTING.md](CONTRIBUTING.md)를 따릅니다.
-
-## 라이선스
-
-🔍 미정 — 공개 범위 확인 후 결정.
+브랜치·커밋·병합 규칙은 [CONTRIBUTING.md](CONTRIBUTING.md)를 따릅니다.
+라이선스와 외부 자원의 재배포 범위는 🔍 미정입니다.
