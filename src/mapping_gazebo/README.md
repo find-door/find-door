@@ -19,6 +19,17 @@ y=−0.5..0.5, z=0..2m이고 문짝은 +x 방 안으로 열립니다.
 
 매핑용 실내 Gazebo Harmonic world와 launch입니다. 로봇 모델·센서·브리지는 연구과제 `wf_gazebo`를 **오버레이로** 사용합니다 ([ADR-0003](../../docs/adr/0003-wf-gazebo-reuse.md)). 이 저장소에는 `wf_gazebo` 파일을 복사하지 않습니다.
 
+## door_patrol_v1 (건물 내부 문 순찰)
+
+[door_patrol_v1.sdf](worlds/door_patrol_v1.sdf)는 중앙 복도와 방 네 개, 실제 문짝 네 개가 있는 별도 world입니다.
+복도는 x=[−2,2], y=[−6,6]m이고 문은 (±2,±3)에 있습니다. 닫힘 두 개·반열림 한 개·완전 열림 한 개입니다.
+스폰은 (0,−4.8), yaw=π/2이며 벽 위 지붕을 생략해 GUI에서 내부를 볼 수 있습니다.
+[기하 manifest](config/door_patrol_v1.json)는 정답 평가용이며 인식 입력이 아닙니다.
+
+생성 일치 확인은 저장소 루트에서 `/usr/bin/python3 scripts/door_probe/patrol_world.py --check`를 실행합니다.
+기존 금속문 기하를 재사용한 합성 개발 배치이며 독립 장소 성능 시험과 구분합니다.
+실제 cmd_vel 주행·문 순차 관측·통합 영상은 [순찰 결과](../../docs/door-patrol.md)를 따릅니다.
+
 ## 빌드
 
 ```bash

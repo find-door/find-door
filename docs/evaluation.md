@@ -438,3 +438,21 @@ Gazebo 완전 열림 3조건이 낮은 시점까지 TP1/FP0으로 대응됐다. 
 실행 당시 하네스·상태 이력·RGB·OccupancyGrid·저장 JSON·로그를 보존했다. rosbag은 생성하지 않았다.
 기존 recon venv·로컬 checkpoint를 사용했고 wf_gazebo는 읽기 전용 오버레이로 유지했다.
 mapping_semantic 빌드 성공, ROS 패키지 340검사 통과·오류/실패 0, 전체 오프라인 898검사 통과·ROS 전용 5개 제외.
+
+
+## 새 건물 내부 주행·문 순찰·실제 GUI 녹화 — 2026-11-03
+
+기준 `3911341` 이후 `v0.2.0-door-patrol.1`에서 [네 방·복도 world와 실제 주행](door-patrol.md)을 추가했다.
+기존 금속문 기하의 합성 개발 배치이며 독립 장소·실물·동시 다중 문·자율 탐색 시험이 아니다.
+기존 모델·문턱·RGB-D/TF 경로를 유지하고 보조 재관측은 끈 채 고정 14단계를 실제 cmd_vel로 수행했다.
+headless 사전 시험과 GUI 시험 모두 약 9.24m 이동하며 네 문을 서로 다른 ID로 등록했다.
+GUI 시험 이동 방향 최소 LiDAR 거리 1.480m, 문별 신선한 정답 known 관측 29/13/24/41회,
+반대 known 상태·미대응·중복 ID 0이다. 모든 프레임의 안정적 상태 정확도를 뜻하지 않는다.
+**최종 저장된 네 문은 모두 TTL 초과 unknown**이며 위치·ID 4개와 수신 지도의 대조는 통과했다.
+저장 응답 뒤 모든 수신 이력을 재검사하고 실제 저장 파일을 확인하는 판정을 포함한다.
+Gazebo·RViz·실제 RGB·문 지도의 통합 녹화는 100.4초·1004프레임(실제 캡처990/반복14)이다.
+통합·Gazebo·RViz 세 MP4 모두 끝까지 디코딩했다. [원문·소스·영상·그림 해시](data/door-patrol-summary.json),
+로컬 `experiments/door_probe/patrol-headless-02/`, `patrol-video-01/`과 다운로드 전달 폴더에 보존했다.
+새 world·제어·평가 31검사, 전체 오프라인 929검사 통과·ROS 5개 별도, 두 패키지 빌드·ROS/설정 검사 오류·실패0.
+외부 wf_gazebo는 읽기 전용 오버레이이고 recon venv·로컬 checkpoint만 사용했다. rosbag은 생성하지 않았다.
+사용자가 현재 제출의 실제 촬영 영상 평가를 Gazebo·RViz 시연으로 대체하도록 요청했으며 실물 성능으로 보고하지 않는다.
