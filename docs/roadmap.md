@@ -16,6 +16,7 @@
   - 사용자 요청으로 [실제 사진 50장 AI 라벨](door-ai-labels.md) 작성: 41장 AI 검토 완료·9장 보류. 사람 검수 정답·독립 평가·학습 완료와 구분한다.
   - [AI 라벨 기준 실제 RGB 진단](door-real-ai-evaluation.md): 실내 문짝 TP14/FP10/FN8, 출입구 TP9/FP13/FN13. 실외 보조는 따로 계산했으며 사람 정답·독립·지도 성능이 아니다.
   - [출처 그룹별 개발 학습 입력](door-training-data.md): 문짝/출입구 각각 train 32장·validation 7장, DeepDoors2 전체를 한 그룹으로 보존. AI 자료 기반이며 모델 학습·독립 test는 미실행/미준비.
+  - [YOLO11 첫 학습](door-yolo11-pilot.md): 두 target의 30 epoch CUDA 학습 완료. 문짝은 무검출, 출입구는 일부 회복과 오검출·회귀가 함께 있어 기본 YOLOE를 유지한다. 독립 test·실시간 후보 연결은 미완료.
 - [ ] 깊이·주변 벽과 여러 프레임을 이용한 열림/닫힘/불명 판단
   - 깊이 단일 관측 후보와 [정답 ROI 개발 진단](door-state-evaluation.md), [시간 종합 메모리](door-memory.md) 구현. [실시간 검출·ROS 연결](door-live.md)과 [상태 전이](door-transition.md)까지 개발 검증. 독립 장면·실물 검증은 미완료.
 - [ ] 고정 문 위치·ID와 상태를 연결한 지도 저장·표시
