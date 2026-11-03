@@ -41,6 +41,11 @@ try{
  await waitReady();
  const initial=await evaluate('({frames:data.frames.length,width:canvas.width,height:canvas.height})');
  assert(initial.frames>1);checks.push('image_loaded');
+ const hasContext=await evaluate('Object.keys(current().review_context || {}).length>0');
+ if(hasContext){
+  assert.equal(await evaluate(`$('context').textContent===JSON.stringify(current().review_context,null,2) && $('context').tagName==='PRE' && !$('context').isContentEditable`),true);
+  checks.push('readonly_context');
+ }
  const result=await evaluate(`(()=>{
   $('add').click();$('door').value=String(current().doors.length-1);
   const rect=canvas.getBoundingClientRect();

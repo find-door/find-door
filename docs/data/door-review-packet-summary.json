@@ -1,0 +1,69 @@
+{
+  "total_frames": 95,
+  "added_frames": 9,
+  "omitted_duplicate_rgb": 0,
+  "reviewed_dual_target_frames": 0,
+  "environments": {
+    "gazebo": 45,
+    "real_rgb": 50
+  },
+  "base_frames": 86,
+  "provenance": {
+    "base_sha256": "0eef254c814be2449e6839383423c386a5624cbb296942a8bac8b102359d3f5f",
+    "scene_summary_sha256": "f39e1e71997d9776555d63ee8a23e812b755d875a9cf93e9d38f82d577992744",
+    "view_summary_sha256": "28157dffa3a298444da63416e00104dad8e85451803fe8207c7b96bab6e9f254",
+    "original_group": "gazebo_door_probe_v1_single_geometry",
+    "family_group": "gazebo_door_probe_v1_family",
+    "added_frames": 9,
+    "omitted_duplicate_rgb": 0
+  },
+  "dataset_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/review-packet-02/dataset.json",
+  "dataset_sha256": "566f2b905a849abe4da5d02b40b68430037ed8044d0e2b793bc9eb1cd20c0dae",
+  "html_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/review-packet-02/review.html",
+  "html_sha256": "a4071ee53be60e035cc4729e5a750e2d38e7fff7107ac9956dc539fb2f6dfd17",
+  "packet_tool_sha256": "380959dc7f0eda500f652bd58dc2851636d92297ac88c093222235ce002f31b6",
+  "stage": "v0.2.0-door-review.1",
+  "date": "2026-11-03",
+  "browser_check": {
+    "status": "passed",
+    "browser": "158.0",
+    "frames": 95,
+    "checks": [
+      "image_loaded",
+      "readonly_context",
+      "pointer_bbox",
+      "explicit_review",
+      "uncheck_with_invalid_json",
+      "loading_guard",
+      "restore_patch",
+      "restore_edit_guard",
+      "patch_export"
+    ],
+    "limitations": [
+      "headless UI 동작 검사이며 사람 라벨 검수·정답 평가가 아님"
+    ]
+  },
+  "browser_check_sha256": "ba389b8ce79c9a4ba835093198ce8d215ad31020a37eeaf769f2ca993299ee52",
+  "tools_sha256": {
+    "scripts/door_probe/review_packet.py": "380959dc7f0eda500f652bd58dc2851636d92297ac88c093222235ce002f31b6",
+    "scripts/door_probe/label_review.py": "5630b5b8aee5147fca3f62822102ae73eea1bc2f6fa34dc75c7b2b5858449dc1",
+    "scripts/door_probe/label_review.html": "ca4a8d0415b2d943ccccbb65431a8fa59806dea80c6b3f7d38e16431c3b42a88",
+    "scripts/door_probe/review_browser_check.mjs": "22497f7efe138b07921f84d509518b0971ab4c6f304bde38d566bc6fc4ed4cee"
+  },
+  "tests": {
+    "offline_passed": 737,
+    "ros_specific_skipped": 5,
+    "packet_and_patch_tests": 20
+  },
+  "real_rgbd_availability": {
+    "status": "not_available",
+    "source": "2026-11-03 사용자 확인"
+  },
+  "review_status": "검수 화면에서 직접 검수 가능 의사 확인, 수정본은 아직 받지 않음",
+  "limitations": [
+    "이중 bbox 검수 완료 0프레임",
+    "독립 시험셋 또는 학습 준비 완료 자료가 아님",
+    "새 9장은 RGB만 보존해 depth=false",
+    "UI 검증에서 편집한 박스는 사람 검수 결과로 저장하지 않음"
+  ]
+}

@@ -37,7 +37,7 @@ CameraInfo·TF는 별도로 실제 제공 여부를 선언한다. RGB-D에 보�
 실제 장소가 서로 같은지와 그룹이 정확한지는 사람이 확인해야 한다.
 reviewed 상태만으로 학습 가능하다고 판단하지 말고, 학습 대상의 bbox·가시성·정답 완전성을 확인해야 한다.
 
-## 현재 인벤토리
+## 기본 인벤토리 — 86프레임
 
 [intake 도구](../scripts/door_probe/dataset_intake.py)는 기존 사진과 라벨을 읽기만 하며 원본을 복사하지 않는다.
 RGB/depth/기존 라벨의 해시와 크기·방향을 확인한 뒤 로컬 초안을 만든다.
@@ -66,6 +66,24 @@ legacy_labels로 보존하고 **새 두 bbox는 null, 새 검수 상태는 draft
 장소·촬영 세션을 확인하기 전에는 collection 그룹을 잘게 나누거나 학습/시험으로 배정하지 않는다.
 실제 자료에는 depth·CameraInfo·TF가 없어 깊이 상태·미터 단위 지도 위치를 평가할 수 없다.
 능력 표시는 기록이 존재한다는 뜻이며 보정 정확도를 검증했다는 뜻은 아니다.
+
+## 확장 검수 묶음 — 95프레임
+
+[실패·시점 비교 검수 묶음](door-label-review.md#실패보조-시점을-포함한-95장-검수-묶음)에
+기존 86장과 실제 Gazebo RGB 9장을 함께 준비했다.
+로컬 `experiments/door_probe/review-packet-02/dataset.json`·`review.html`을 사용하며
+[추적 요약](data/door-review-packet-summary.json)에 원문·도구·결과 해시를 보존했다.
+
+| 종류 | 프레임 수 | depth 기록 | 분할 |
+|---|---:|---|---|
+| 기존 Gazebo RGB-D | 36 | 있음 | 파생 장면 전체와 같은 development 그룹 |
+| 새 Gazebo RGB | 9 | 없음 | 같은 development 그룹, 실패 사례 포함 |
+| 기존 실제 RGB | 50 | 없음 | 기존 collection별 unassigned |
+| 실제 RGB-D | 0 | 없음 | 2026-11-03 사용자 현재 자료 없음 확인 |
+
+새 예측 박스는 읽기 전용 참고이며 두 정답 bbox는 null/draft다. 현재 이중 bbox 검수 완료는 0장이다.
+이미 개발에 사용한 장면과 파생 장면을 한 그룹으로 묶어 독립 시험셋으로 재명명하지 않는다.
+검수 후에도 실제 장소·세션 그룹 확인과 학습/검증/시험 분할은 별도로 필요하다.
 
 ## 기존 실제 사진 C 결과의 참고 감사
 
