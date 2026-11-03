@@ -21,3 +21,6 @@ Codex의 ROS_DOMAIN_ID=12/GZ_PARTITION=codex를 사용합니다.
 `patrol_check.py --record`가 시뮬레이션·검출·실제 cmd_vel 경로·Xephyr·Gazebo GUI·RViz·
 [door_patrol_record.py](door_patrol_record.py)를 함께 실행하고 직접 만든 그룹만 정리합니다.
 문 정답은 영상 자막의 인식 결과에 사용하지 않습니다.
+
+동일 하네스에 `--revisit --record --timeout 420`을 주면 [재방문 시연](../../docs/door-revisit.md)을 녹화합니다.
+문을 카메라 뒤에서 열고 닫은 뒤 돌아와, 실제 새 관측으로 같은 문 상태를 갱신합니다.
