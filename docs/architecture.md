@@ -163,6 +163,7 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 | 문 ROS 개발 연결 | 문 위치·상태 분리, 관측 시각 TF·JSON·마커 | [ADR-0009](adr/0009-door-ros-pipeline.md) |
 | 문 실시간 검출 연결 | 별도 가상환경의 상주 YOLOE와 원본 RGB-D 묶음 발행 | [ADR-0010](adr/0010-live-door-detector.md) |
 | 알려진 문 재관측 | 검출로 확인한 출입구의 현재 RGB-D 재관측, 새 ID 생성 금지 | [ADR-0012](adr/0012-known-door-reobservation.md) |
+| 문 bbox 진단 | 검수·가시성·환경별 원 검출 기준 비교, 조건부 P/R와 전체 프레임 분모 구분 | [ADR-0013](adr/0013-dual-box-evaluation.md) |
 | 문 자료 계약 | 문짝·출입구 이중 bbox, 장면 그룹 분할·해시 중복 검증 | [ADR-0011](adr/0011-door-dataset-contract.md) |
 | 결정됨: 개발 플랫폼 | JetAuto (지상 로봇) | [ADR-0001](adr/0001-dev-platform-jetauto.md) |
 | 결정됨: 개발 환경 | Ubuntu 22.04 + ROS 2 Humble + Gazebo Harmonic | [ADR-0002](adr/0002-dev-environment.md) |

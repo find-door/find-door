@@ -311,3 +311,14 @@ mapping_semantic 재빌드·colcon 273검사 오류/실패/건너뜀 0. 기존 R
 95장 headless 브라우저 검증·묶음/수정본 20검사 통과. 전체 오프라인 737검사 통과·ROS 전용 5검사 건너뜀.
 제품·모델·외부 원본은 변경하지 않았고 새 추론·학습·Gazebo 실행은 하지 않았다.
 [데이터·도구·HTML·브라우저 원문 해시](data/door-review-packet-summary.json)를 보존했다.
+
+
+## 검수 bbox 기준별 원 검출 진단 경로 — 2026-11-03
+
+기준 `dbf8612` 이후 `v0.2.0-door-label-eval.1`에서 [ADR-0013](adr/0013-dual-box-evaluation.md)을 구현했다.
+[평가 안내](door-label-evaluation.md)는 원 검출 박스를 문짝·출입구 정답에 각각 일대일 대응하며 환경·분할을 하나씩 지정한다.
+검수·가시성 제외와 오류·예측 누락을 구분하고, 전체 프레임 exact 성공 분모와 유효 추론 조건부 P/R/F1을 분리했다.
+기존 3m 6장 검출 원문을 재사용해 준비 상태만 확인했다. Gazebo 45장·실제 RGB 50장 모두 reviewed 0으로 awaiting_review,
+실제 RGB-D는 0장으로 no_selected_frames다. 모든 성능 지표는 null이며 모델 성능 평가·새 추론·학습 완료가 아니다.
+[원문·예측 manifest·평가 도구·보고서 해시](data/door-label-evaluation-summary.json)를 보존했다.
+관련 32검사·전체 오프라인 769검사 통과, ROS 전용 5검사 건너뜀. 검수본을 받은 뒤 실제 지표를 별도로 계산해야 한다.

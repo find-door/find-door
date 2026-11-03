@@ -1,0 +1,182 @@
+{
+  "stage": "v0.2.0-door-label-eval.1",
+  "date": "2026-11-03",
+  "evaluator_path": "scripts/door_probe/label_evaluate.py",
+  "evaluator_sha256": "73644cc28a16c6c786ac55d8003a86969800a3c2040e30e00e6332bdfdede5ff",
+  "prediction_manifest": {
+    "path": "experiments/door_probe/label-eval-03/predictions.json",
+    "sha256": "6920e1c56345d28de5d2dc19a2f6e5e167edc3aefcfd30ad63fd0e737296fba7",
+    "frames": 6
+  },
+  "reports": [
+    {
+      "path": "experiments/door_probe/label-eval-03/gazebo-readiness.json",
+      "sha256": "836c9ac94a1cf8ad57bb82df2f0a5a060d19a21aeefa179769091238f0eed907",
+      "status": "awaiting_review",
+      "environment": "gazebo",
+      "declared_split": "development",
+      "dataset_sha256": "566f2b905a849abe4da5d02b40b68430037ed8044d0e2b793bc9eb1cd20c0dae",
+      "selected_frames": 45,
+      "reviewed_selected_frames": 0,
+      "selected_prediction_frames": 6,
+      "selected_frames_without_prediction": 39,
+      "targets": {
+        "leaf": {
+          "draft_frames": 45,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 0,
+          "eligible_gt_objects": 0,
+          "valid_inference_frames": 0,
+          "valid_inference_gt_objects": 0,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn_valid_inference": 0,
+          "frame_exact_successes": 0,
+          "frame_exact_success_rate": null,
+          "valid_inference_precision": null,
+          "valid_inference_recall": null,
+          "valid_inference_f1": null,
+          "matched_mean_iou": null
+        },
+        "doorway": {
+          "draft_frames": 45,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 0,
+          "eligible_gt_objects": 0,
+          "valid_inference_frames": 0,
+          "valid_inference_gt_objects": 0,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn_valid_inference": 0,
+          "frame_exact_successes": 0,
+          "frame_exact_success_rate": null,
+          "valid_inference_precision": null,
+          "valid_inference_recall": null,
+          "valid_inference_f1": null,
+          "matched_mean_iou": null
+        }
+      }
+    },
+    {
+      "path": "experiments/door_probe/label-eval-03/real-rgb-readiness.json",
+      "sha256": "d176850b3d8f3e3aebc22ee7fe1717675769b79632fc297adc460063c888686d",
+      "status": "awaiting_review",
+      "environment": "real_rgb",
+      "declared_split": "unassigned",
+      "dataset_sha256": "566f2b905a849abe4da5d02b40b68430037ed8044d0e2b793bc9eb1cd20c0dae",
+      "selected_frames": 50,
+      "reviewed_selected_frames": 0,
+      "selected_prediction_frames": 0,
+      "selected_frames_without_prediction": 50,
+      "targets": {
+        "leaf": {
+          "draft_frames": 50,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 0,
+          "eligible_gt_objects": 0,
+          "valid_inference_frames": 0,
+          "valid_inference_gt_objects": 0,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn_valid_inference": 0,
+          "frame_exact_successes": 0,
+          "frame_exact_success_rate": null,
+          "valid_inference_precision": null,
+          "valid_inference_recall": null,
+          "valid_inference_f1": null,
+          "matched_mean_iou": null
+        },
+        "doorway": {
+          "draft_frames": 50,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 0,
+          "eligible_gt_objects": 0,
+          "valid_inference_frames": 0,
+          "valid_inference_gt_objects": 0,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn_valid_inference": 0,
+          "frame_exact_successes": 0,
+          "frame_exact_success_rate": null,
+          "valid_inference_precision": null,
+          "valid_inference_recall": null,
+          "valid_inference_f1": null,
+          "matched_mean_iou": null
+        }
+      }
+    },
+    {
+      "path": "experiments/door_probe/label-eval-03/real-rgbd-readiness.json",
+      "sha256": "d0ae3f08d41d0e963cae8c44f84cab36f48a5f30e4b65a8fe49b1884b1b5371f",
+      "status": "no_selected_frames",
+      "environment": "real_rgbd",
+      "declared_split": "unassigned",
+      "dataset_sha256": "566f2b905a849abe4da5d02b40b68430037ed8044d0e2b793bc9eb1cd20c0dae",
+      "selected_frames": 0,
+      "reviewed_selected_frames": 0,
+      "selected_prediction_frames": 0,
+      "selected_frames_without_prediction": 0,
+      "targets": {
+        "leaf": {
+          "draft_frames": 0,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 0,
+          "eligible_gt_objects": 0,
+          "valid_inference_frames": 0,
+          "valid_inference_gt_objects": 0,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn_valid_inference": 0,
+          "frame_exact_successes": 0,
+          "frame_exact_success_rate": null,
+          "valid_inference_precision": null,
+          "valid_inference_recall": null,
+          "valid_inference_f1": null,
+          "matched_mean_iou": null
+        },
+        "doorway": {
+          "draft_frames": 0,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 0,
+          "eligible_gt_objects": 0,
+          "valid_inference_frames": 0,
+          "valid_inference_gt_objects": 0,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn_valid_inference": 0,
+          "frame_exact_successes": 0,
+          "frame_exact_success_rate": null,
+          "valid_inference_precision": null,
+          "valid_inference_recall": null,
+          "valid_inference_f1": null,
+          "matched_mean_iou": null
+        }
+      }
+    }
+  ],
+  "tests": {
+    "label_evaluation_tests": 32,
+    "offline_passed": 769,
+    "ros_specific_skipped": 5,
+    "markdown_files": 60,
+    "markdown_errors": 0
+  },
+  "limitations": [
+    "검수본이 없어 실제 성능 채점을 하지 않음",
+    "이번 예측 파일은 기존 Gazebo 3m 시점 6장만 포함",
+    "실제 RGB 과거 C 결과 참고 감사와 별개이며 실제 RGB-D 자료는 없음",
+    "독립 장면·학습·새 추론·AP·출입구 추정·깊이 상태·지도 평가 아님"
+  ]
+}
