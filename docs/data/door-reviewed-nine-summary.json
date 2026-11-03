@@ -1,0 +1,581 @@
+{
+  "stage": "v0.2.0-door-reviewed-nine.1",
+  "date": "2026-11-03",
+  "labels": {
+    "source_patch_path": "/home/blind/다운로드/door-label-patch.json",
+    "source_patch_snapshot": "experiments/door_probe/reviewed-nine-01/submitted-patch.json",
+    "patch_sha256": "ea06e5f5f339892f373ddd6938f15c28ab4d1d2f0d57ff78cea6f348f766457f",
+    "base_manifest_path": "experiments/door_probe/review-packet-02/dataset.json",
+    "base_manifest_sha256": "566f2b905a849abe4da5d02b40b68430037ed8044d0e2b793bc9eb1cd20c0dae",
+    "applied_manifest_path": "experiments/door_probe/reviewed-nine-01/dataset-reviewed.json",
+    "applied_manifest_sha256": "1ba7b7575744646e20baabf5058895c794f36e0c5d586338eebde7114d30943f",
+    "tracked_compact_path": "docs/data/door-nine-reviewed-labels.json",
+    "tracked_compact_sha256": "156dfc559bc82305ac668af86357a9f2c73ebe462e41b46397f67508bbc5e22a",
+    "reviewed_frames": 9,
+    "draft_frames": 86,
+    "annotation_history": [
+      {
+        "base_sha256": "566f2b905a849abe4da5d02b40b68430037ed8044d0e2b793bc9eb1cd20c0dae",
+        "patch_sha256": "ea06e5f5f339892f373ddd6938f15c28ab4d1d2f0d57ff78cea6f348f766457f",
+        "applied_at": "2026-11-03T01:26:04.919977+00:00",
+        "tool_sha256": "5630b5b8aee5147fca3f62822102ae73eea1bc2f6fa34dc75c7b2b5858449dc1",
+        "reviewer": "blind0228",
+        "reviewed_frames": 9
+      }
+    ]
+  },
+  "inference": {
+    "reused_frames": 6,
+    "new_frames": 3,
+    "completion_path": "experiments/door_probe/reviewed-nine-01/completed/completion.json",
+    "completion_sha256": "833f2ec89f577eb12b5ae30f38c3bb374bf48f926b44e33b153de95fbf8c43af",
+    "executed_harness_path": "experiments/door_probe/reviewed-nine-01/completed/executed-harness.py",
+    "executed_harness_sha256": "cc60d92ea06c39b4bf239dc6fec163fc2203b4b6354abb6e36ac4e42d1cc21ab",
+    "current_harness_path": "scripts/door_probe/complete_reviewed_nine.py",
+    "current_harness_sha256": "2790b6d31867273a98be82e96694eecd9f63ac4128be3819cf7873c647c75b98",
+    "harness_difference": "실행 후 정리 구간의 중복 SIGINT 보호만 추가, 같은3장을 재추론하지 않음",
+    "worker_group_gone": true,
+    "new_frame_records": [
+      {
+        "id": "metal_closed_2m",
+        "rgb_sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+        "raw_path": "experiments/door_probe/reviewed-nine-01/completed/raw-00.json",
+        "raw_sha256": "876f2f41713a7fc150f27c3d900a5003d516dc0a83174ad5c7efa70350c509f3",
+        "inference_wall_sec": 3.5278347019921057,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "experiments/door_probe/reviewed-nine-01/completed/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 0,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 83735040,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54096384,
+            "processing_time_seconds": 3.527596967993304
+          }
+        }
+      },
+      {
+        "id": "metal_half_2m",
+        "rgb_sha256": "f23d9c7248b2454c9c555393c544b040a2970df7c36de0269bb89c24f22684e5",
+        "raw_path": "experiments/door_probe/reviewed-nine-01/completed/raw-01.json",
+        "raw_sha256": "8a86108bbc5a65bbeb2646b19813e30bb67fe4b0e83859cac242e6d26a24f1a6",
+        "inference_wall_sec": 0.11180872999830171,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "experiments/door_probe/reviewed-nine-01/completed/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54096384,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 83735040,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54404096,
+            "processing_time_seconds": 0.11162869702093303
+          }
+        }
+      },
+      {
+        "id": "metal_open_2m",
+        "rgb_sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+        "raw_path": "experiments/door_probe/reviewed-nine-01/completed/raw-02.json",
+        "raw_sha256": "e784b6908225ecb4774acc92bded141f374181aad42882df6c70c3eac592b340",
+        "inference_wall_sec": 0.10667374898912385,
+        "metadata": {
+          "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+          "release_policy_override": "keep",
+          "cache_override": "experiments/door_probe/reviewed-nine-01/completed/worker/ultralytics-config",
+          "last_run": {
+            "device": "0",
+            "release_policy": "keep",
+            "settings": {
+              "version": "0.1.0",
+              "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+              "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+              "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+              "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+              "device": "0",
+              "imgsz": 640,
+              "max_det": 300,
+              "iou": 0.45,
+              "agnostic_nms": false,
+              "release_policy": "keep",
+              "include_mask_area": false,
+              "classes": [
+                {
+                  "prompt": "door",
+                  "class": "door",
+                  "report_class": "door",
+                  "candidate_for": null,
+                  "confidence": 0.1
+                },
+                {
+                  "prompt": "person",
+                  "class": "person",
+                  "report_class": "person",
+                  "candidate_for": null,
+                  "confidence": 0.25
+                }
+              ]
+            },
+            "success": true,
+            "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+            "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+            "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+            "cuda_allocated_before_predict": 54404096,
+            "ultralytics": "8.4.191",
+            "input_size": [
+              640,
+              480
+            ],
+            "model_end2end_before_predict": false,
+            "backend_end2end": false,
+            "candidate_limit_reached": false,
+            "cuda_peak_allocated_predict": 84042752,
+            "release_completed": true,
+            "cuda_allocated_after_cleanup": 54096384,
+            "processing_time_seconds": 0.10652643704088405
+          }
+        }
+      }
+    ],
+    "recon": {
+      "root": "/home/blind/cv-middle/CV-VLM/recon-report",
+      "revision": "fca8bb9c1c7c546c025e2a15f8811f5c1cd79e24",
+      "git_status_short": "",
+      "config_path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person.json",
+      "config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+      "config": {
+        "version": "0.1.0",
+        "prompts_config": "yoloe-door-person-prompts.json",
+        "checkpoint": "../../models/yoloe/yoloe-26n-seg.pt",
+        "embeddings": "../../models/yoloe/recon-door-person.npz",
+        "manifest": "../../models/yoloe/preparation-door-person.json",
+        "device": "0",
+        "imgsz": 640,
+        "max_det": 300,
+        "iou": 0.45,
+        "agnostic_nms": false,
+        "release_policy": "unload",
+        "include_mask_area": false,
+        "classes": [
+          {
+            "prompt": "door",
+            "class": "door",
+            "report_class": "door",
+            "confidence": 0.1
+          },
+          {
+            "prompt": "person",
+            "class": "person",
+            "report_class": "person",
+            "confidence": 0.25
+          }
+        ]
+      },
+      "assets": {
+        "checkpoint": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+          "sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b"
+        },
+        "embeddings": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+          "sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872"
+        },
+        "manifest": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+          "sha256": "8c9d29dd45d0b38cfd4fdf54f88d0cc4dc2f6f67d0e2645f47b543b0e45c401d"
+        },
+        "prompts_config": {
+          "path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+          "sha256": "ca3630eddb6426ce7d08977eaa4440901a0e441a883700b14abfa7e0b8806c81"
+        }
+      },
+      "sources_sha256": {
+        "src/recon_report/run.py": "df3abbc14a7be7ee923351525f34e9c2e05db495cfff515803b0fe7883c52a6a",
+        "src/recon_report/focused.py": "fb828d523627436f19642e2210e9670ee97c3b449600167c41a669af177153bd",
+        "src/recon_report/tasks/door_person.py": "3337107927f5995652052096a98951b4bfd26b04fa14005ce41a5684066a9150",
+        "src/recon_report/grounding/yoloe.py": "332116ebf849ade53a3aae8d10d79ff72d457560d4a1e5d68da51c8a4ccfd936"
+      }
+    },
+    "prediction_path": "experiments/door_probe/reviewed-nine-01/completed/predictions.json",
+    "prediction_sha256": "446b406dabb9cd43bf65e3b3bbf9098028fcb34a5f8e6df26c8b685cdc702ee2",
+    "reused_prediction_path": "experiments/door_probe/reviewed-nine-01/predictions-six.json",
+    "reused_prediction_sha256": "8efe74b88ac802adcf0964d24e658658093983deca442c8eddd9202de7d5b291"
+  },
+  "evaluation": {
+    "path": "experiments/door_probe/reviewed-nine-01/evaluation.json",
+    "sha256": "2af35d3b7214237c87ceaddf24875a8da2d62b9c9b916a0b768850a28d51f2e5",
+    "evaluator_sha256": "73644cc28a16c6c786ac55d8003a86969800a3c2040e30e00e6332bdfdede5ff",
+    "status": "evaluated",
+    "environment": "gazebo",
+    "split": "development",
+    "selected_frames": 45,
+    "reviewed_selected_frames": 9,
+    "targets": {
+      "leaf": {
+        "summary": {
+          "draft_frames": 36,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 9,
+          "eligible_gt_objects": 9,
+          "valid_inference_frames": 9,
+          "valid_inference_gt_objects": 9,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 4,
+          "fp": 0,
+          "fn_valid_inference": 5,
+          "frame_exact_successes": 4,
+          "frame_exact_success_rate": 0.4444444444444444,
+          "valid_inference_precision": 1.0,
+          "valid_inference_recall": 0.4444444444444444,
+          "valid_inference_f1": 0.6153846153846154,
+          "matched_mean_iou": 0.9557460919877238
+        },
+        "scored_frames": [
+          {
+            "id": "metal_closed_2m",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_half_2m",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.9464972210713793
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_open_2m",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_closed_3m_low",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_closed_3m_high",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.946528330156349
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_half_3m_low",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.951667399152858
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_half_3m_high",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.9782914175703086
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_open_3m_low",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_open_3m_high",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          }
+        ]
+      },
+      "doorway": {
+        "summary": {
+          "draft_frames": 36,
+          "excluded_visibility_frames": 0,
+          "eligible_frames": 9,
+          "eligible_gt_objects": 9,
+          "valid_inference_frames": 9,
+          "valid_inference_gt_objects": 9,
+          "missing_predictions": 0,
+          "runtime_errors": 0,
+          "tp": 4,
+          "fp": 0,
+          "fn_valid_inference": 5,
+          "frame_exact_successes": 4,
+          "frame_exact_success_rate": 0.4444444444444444,
+          "valid_inference_precision": 1.0,
+          "valid_inference_recall": 0.4444444444444444,
+          "valid_inference_f1": 0.6153846153846154,
+          "matched_mean_iou": 0.5859025091691177
+        },
+        "scored_frames": [
+          {
+            "id": "metal_closed_2m",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_half_2m",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.5223508466247148
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_open_2m",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_closed_3m_low",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_closed_3m_high",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.7551903676933545
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_half_3m_low",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.5406222586806764
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_half_3m_high",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [
+              {
+                "door_id": "door_1",
+                "detection_index": 0,
+                "iou": 0.5254465636777251
+              }
+            ],
+            "status": "scored",
+            "tp": 1,
+            "fp": 0,
+            "fn": 0
+          },
+          {
+            "id": "metal_open_3m_low",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          },
+          {
+            "id": "metal_open_3m_high",
+            "group_id": "gazebo_door_probe_v1_family",
+            "matches": [],
+            "status": "scored",
+            "tp": 0,
+            "fp": 0,
+            "fn": 1
+          }
+        ]
+      }
+    }
+  },
+  "figure": {
+    "path": "docs/images/door-nine-reviewed.png",
+    "sha256": "1c1117b11b1c730378edce85e913ae56aac7a1702679cd470e4d8ad43bca392b",
+    "generator_sha256": "80ed86e134e290cf928f7404436b48a927310030611457107c314e1185f95430"
+  },
+  "tests": {
+    "related_tests": 52,
+    "offline_passed": 776,
+    "ros_specific_skipped": 5,
+    "markdown_files": 61,
+    "markdown_errors": 0
+  },
+  "limitations": [
+    "동일 개발 장면·하나의 문 모델의 양성 9프레임, 독립 시험셋이 아님",
+    "문 없는 음성이 없어 FP0을 일반 오검출 성능으로 해석하지 않음",
+    "기존 raw door 박스를 두 bbox 정답과 비교한 결과이며 출입구 추정·깊이 상태·지도 정확도가 아님",
+    "평균 IoU는 검출에 성공한4개에만 해당하고 미검출5개는 recall분모에 포함",
+    "실제 RGB50장은 미검수, 실제 RGB-D는 현재 없음",
+    "새 학습·모델 교체·임계값 조정 없음"
+  ]
+}

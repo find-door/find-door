@@ -1,0 +1,637 @@
+{
+  "schema_version": 1,
+  "dataset_id": "door-metal-nine-reviewed-v1",
+  "frames": [
+    {
+      "id": "metal_closed_2m",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-closed-01/failure-rgb.png",
+        "sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": false,
+        "tf": false
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            172.46105919003116,
+            5.539419087136929,
+            466.5420560747664,
+            263.46473029045643
+          ],
+          "doorway_bbox": [
+            134.57943925233644,
+            3.5477178423236513,
+            505.42056074766356,
+            271.43153526970957
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "closed",
+        "distance_m": 2,
+        "trial_status": "failed",
+        "source_path": "experiments/door_probe/metal-closed-01/check.json",
+        "source_sha256": "769fa1a09bc7255ee2b15be71fbc08915fa875326c4133980be20f273cb66007",
+        "note": "실행 실패 여부는 문 상태 정답이 아닙니다. 실제 depth/CameraInfo/TF는 이 RGB 항목에 보존되지 않았습니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_half_2m",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-half-01/rgb.png",
+        "sha256": "f23d9c7248b2454c9c555393c544b040a2970df7c36de0269bb89c24f22684e5",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": false,
+        "tf": false
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            274.14330218068534,
+            6.535269709543568,
+            472.5233644859813,
+            261.47302904564316
+          ],
+          "doorway_bbox": [
+            136.57320872274144,
+            5.539419087136929,
+            504.42367601246104,
+            267.448132780083
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "half",
+        "distance_m": 2,
+        "trial_status": "complete",
+        "source_path": "experiments/door_probe/metal-half-01/check.json",
+        "source_sha256": "5450e88ba3df3d4720c6246e0119172166fa4c3bae4f3af9382cdabc4a5a8228",
+        "note": "실행 실패 여부는 문 상태 정답이 아닙니다. 실제 depth/CameraInfo/TF는 이 RGB 항목에 보존되지 않았습니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_open_2m",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-open-01/failure-rgb.png",
+        "sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": false,
+        "tf": false
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            410.7165109034268,
+            4.54356846473029,
+            474.5171339563863,
+            270.4356846473029
+          ],
+          "doorway_bbox": [
+            135.57632398753893,
+            3.5477178423236513,
+            503.4267912772586,
+            270.4356846473029
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "open",
+        "distance_m": 2,
+        "trial_status": "failed",
+        "source_path": "experiments/door_probe/metal-open-01/check.json",
+        "source_sha256": "8dd5b335d9c4d7d809d9d53b113eaefdd026cd8a8a73dd44325443aac53a2f21",
+        "note": "실행 실패 여부는 문 상태 정답이 아닙니다. 실제 depth/CameraInfo/TF는 이 RGB 항목에 보존되지 않았습니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_closed_3m_low",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/low.png",
+        "sha256": "38a13952e31a9752f45db15f4a31ed756ed4c3ea06e0dbdcdf5c8610517d6499",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": true,
+        "tf": true
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            221.30841121495328,
+            9.522821576763485,
+            421.68224299065423,
+            257.4896265560166
+          ],
+          "doorway_bbox": [
+            197.38317757009347,
+            5.539419087136929,
+            443.613707165109,
+            261.47302904564316
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "closed",
+        "view": "low",
+        "distance_m": 3,
+        "camera_height_m": 0.11986400052876744,
+        "k": [
+          499.4093345717091,
+          0.0,
+          320.0,
+          0.0,
+          499.4093345717091,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "predictions": [],
+        "source_path": "experiments/door_probe/view-detection-01/results.json",
+        "source_sha256": "6eb1d989079c6281a5e3b1c3c0576fb0dc8dba9e91b21a76dd62b6217455f4af",
+        "pose_source": "관측 시각 TF 기록",
+        "note": "예측 bbox는 검수 정답이 아닙니다. 새 문짝·출입구 bbox는 직접 작성합니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_closed_3m_high",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-closed-01/high.png",
+        "sha256": "400867994ab699096cbc9b6914f1ee75806789dfd0031626884591d9895805cf",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": true,
+        "tf": false
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "closed",
+          "leaf_bbox": [
+            221.30841121495328,
+            68.27800829875518,
+            420.6853582554517,
+            435.746887966805
+          ],
+          "doorway_bbox": [
+            201.37071651090343,
+            43.38174273858921,
+            442.61682242990656,
+            439.73029045643153
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "closed",
+        "view": "high",
+        "distance_m": 3,
+        "camera_height_m": 1.16,
+        "k": [
+          499.40929412841797,
+          0.0,
+          320.0,
+          0.0,
+          499.40935134887695,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "predictions": [
+          {
+            "class": "door",
+            "source_label": "door",
+            "report_class": "door",
+            "candidate_for": null,
+            "confidence": 0.45082470774650574,
+            "bbox": [
+              218.64727783203125,
+              65.74276733398438,
+              414.70489501953125,
+              434.050048828125
+            ],
+            "mask_area": null
+          }
+        ],
+        "source_path": "experiments/door_probe/view-detection-01/results.json",
+        "source_sha256": "6eb1d989079c6281a5e3b1c3c0576fb0dc8dba9e91b21a76dd62b6217455f4af",
+        "pose_source": "보조 정적 SDF 설정",
+        "note": "예측 bbox는 검수 정답이 아닙니다. 새 문짝·출입구 bbox는 직접 작성합니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_half_3m_low",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/low.png",
+        "sha256": "52534cd888a27cdff82f826c3106d180265e8f9cc1e5b733ea15dc5b6afa2cee",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": true,
+        "tf": true
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            289.09657320872276,
+            5.539419087136929,
+            420.6853582554517,
+            255.49792531120332
+          ],
+          "doorway_bbox": [
+            201.37071651090343,
+            2.5518672199170123,
+            442.61682242990656,
+            262.4688796680498
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "half",
+        "view": "low",
+        "distance_m": 3,
+        "camera_height_m": 0.11986400052876744,
+        "k": [
+          499.4093345717091,
+          0.0,
+          320.0,
+          0.0,
+          499.4093345717091,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "predictions": [
+          {
+            "class": "door",
+            "source_label": "door",
+            "report_class": "door",
+            "candidate_for": null,
+            "confidence": 0.11596639454364777,
+            "bbox": [
+              286.71478271484375,
+              0.0,
+              420.41729736328125,
+              257.47314453125
+            ],
+            "mask_area": null
+          }
+        ],
+        "source_path": "experiments/door_probe/view-detection-01/results.json",
+        "source_sha256": "6eb1d989079c6281a5e3b1c3c0576fb0dc8dba9e91b21a76dd62b6217455f4af",
+        "pose_source": "관측 시각 TF 기록",
+        "note": "예측 bbox는 검수 정답이 아닙니다. 새 문짝·출입구 bbox는 직접 작성합니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_half_3m_high",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-half-01/high.png",
+        "sha256": "31dc9a8ddea0252562a086cbe201b77832bfb009f8312d06ff5b124433ae95a6",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": true,
+        "tf": false
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            285.10903426791276,
+            70.26970954356847,
+            420.6853582554517,
+            433.7551867219917
+          ],
+          "doorway_bbox": [
+            202.36760124610592,
+            44.37759336099585,
+            442.61682242990656,
+            438.7344398340249
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "half",
+        "view": "high",
+        "distance_m": 3,
+        "camera_height_m": 1.16,
+        "k": [
+          499.40929412841797,
+          0.0,
+          320.0,
+          0.0,
+          499.40935134887695,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "predictions": [
+          {
+            "class": "door",
+            "source_label": "door",
+            "report_class": "door",
+            "candidate_for": null,
+            "confidence": 0.11520547419786453,
+            "bbox": [
+              285.91265869140625,
+              66.52752685546875,
+              420.75628662109375,
+              435.7171630859375
+            ],
+            "mask_area": null
+          }
+        ],
+        "source_path": "experiments/door_probe/view-detection-01/results.json",
+        "source_sha256": "6eb1d989079c6281a5e3b1c3c0576fb0dc8dba9e91b21a76dd62b6217455f4af",
+        "pose_source": "보조 정적 SDF 설정",
+        "note": "예측 bbox는 검수 정답이 아닙니다. 새 문짝·출입구 bbox는 직접 작성합니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_open_3m_low",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/low.png",
+        "sha256": "f151f958e8d4f81dff363ad7d77d9645adc33200dd27be90258c5b0c3b52ca35",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": true,
+        "tf": true
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            379.8130841121495,
+            3.5477178423236513,
+            424.67289719626166,
+            255.49792531120332
+          ],
+          "doorway_bbox": [
+            200.37383177570092,
+            4.54356846473029,
+            444.61059190031153,
+            261.47302904564316
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "open",
+        "view": "low",
+        "distance_m": 3,
+        "camera_height_m": 0.11986400052876744,
+        "k": [
+          499.4093345717091,
+          0.0,
+          320.0,
+          0.0,
+          499.4093345717091,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "predictions": [],
+        "source_path": "experiments/door_probe/view-detection-01/results.json",
+        "source_sha256": "6eb1d989079c6281a5e3b1c3c0576fb0dc8dba9e91b21a76dd62b6217455f4af",
+        "pose_source": "관측 시각 TF 기록",
+        "note": "예측 bbox는 검수 정답이 아닙니다. 새 문짝·출입구 bbox는 직접 작성합니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    },
+    {
+      "id": "metal_open_3m_high",
+      "environment": "gazebo",
+      "group_id": "gazebo_door_probe_v1_family",
+      "split": "development",
+      "rgb": {
+        "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/view-open-01/high.png",
+        "sha256": "e70aa2d70dcbe4e409fe476eddabf5fe4e8fa8fe41ede55ff7d85263c5437cf2",
+        "width": 640,
+        "height": 480
+      },
+      "capabilities": {
+        "depth": false,
+        "camera_info": true,
+        "tf": false
+      },
+      "review_status": "reviewed",
+      "doors": [
+        {
+          "id": "door_1",
+          "state": "open",
+          "leaf_bbox": [
+            377.81931464174454,
+            74.25311203319502,
+            421.68224299065423,
+            432.7593360995851
+          ],
+          "doorway_bbox": [
+            200.37383177570092,
+            45.37344398340249,
+            437.6323987538941,
+            436.7427385892116
+          ],
+          "leaf_visibility": "visible",
+          "doorway_visibility": "visible"
+        }
+      ],
+      "review_context": {
+        "condition": "open",
+        "view": "high",
+        "distance_m": 3,
+        "camera_height_m": 1.16,
+        "k": [
+          499.40929412841797,
+          0.0,
+          320.0,
+          0.0,
+          499.40935134887695,
+          240.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "predictions": [],
+        "source_path": "experiments/door_probe/view-detection-01/results.json",
+        "source_sha256": "6eb1d989079c6281a5e3b1c3c0576fb0dc8dba9e91b21a76dd62b6217455f4af",
+        "pose_source": "보조 정적 SDF 설정",
+        "note": "예측 bbox는 검수 정답이 아닙니다. 새 문짝·출입구 bbox는 직접 작성합니다."
+      },
+      "annotation_review": {
+        "reviewer": "blind0228",
+        "reviewed_at": "2026-11-03T01:26:04.919977+00:00"
+      }
+    }
+  ],
+  "annotation_history": [
+    {
+      "base_sha256": "566f2b905a849abe4da5d02b40b68430037ed8044d0e2b793bc9eb1cd20c0dae",
+      "patch_sha256": "ea06e5f5f339892f373ddd6938f15c28ab4d1d2f0d57ff78cea6f348f766457f",
+      "applied_at": "2026-11-03T01:26:04.919977+00:00",
+      "tool_sha256": "5630b5b8aee5147fca3f62822102ae73eea1bc2f6fa34dc75c7b2b5858449dc1",
+      "reviewer": "blind0228",
+      "reviewed_frames": 9
+    }
+  ]
+}
