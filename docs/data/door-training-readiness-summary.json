@@ -1,0 +1,73 @@
+{
+  "stage": "v0.2.0-door-training-plan.1",
+  "date": "2026-11-03",
+  "status": "data_not_ready",
+  "dataset": {
+    "path": "experiments/door_probe/reviewed-nine-01/dataset-reviewed.json",
+    "sha256": "1ba7b7575744646e20baabf5058895c794f36e0c5d586338eebde7114d30943f",
+    "total_frames": 95,
+    "reviewed_frames": 9,
+    "reviewed_groups": {
+      "gazebo_door_probe_v1_family": 9
+    },
+    "reviewed_splits": {
+      "development": 9
+    },
+    "reviewed_negative_frames": 0,
+    "reviewed_real_frames": 0
+  },
+  "environment": {
+    "python": "/home/blind/cv-middle/CV-VLM/recon-report/.venv/bin/python",
+    "packages": {
+      "ultralytics": "8.4.191",
+      "torch": "2.14.1+cu126",
+      "torchvision": "0.29.1+cu126"
+    },
+    "yolo11_config_present": true,
+    "detection_trainer_present": true,
+    "training_executed": false,
+    "training_memory_verified": false,
+    "gpu_snapshot": "NVIDIA GeForce RTX 3050 4GB Laptop GPU, 4096 MiB, 3683 MiB"
+  },
+  "local_checkpoints": [
+    {
+      "path": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+      "bytes": 11710443
+    }
+  ],
+  "pretrained_coco": {
+    "source_path": "/home/blind/cv-middle/CV-VLM/recon-report/.venv/lib/python3.10/site-packages/ultralytics/cfg/datasets/coco.yaml",
+    "source_sha256": "38ed1eb122fad6eed8e18dcf8da56a4b26db9c2064be41530485e2644fae9f7f",
+    "class_count": 80,
+    "contains_door": false
+  },
+  "candidate_download": {
+    "browser_download_url": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11n.pt",
+    "name": "yolo11n.pt",
+    "size": 5613764,
+    "metadata_source": "https://api.github.com/repos/ultralytics/assets/releases/tags/v8.4.0",
+    "downloaded": false,
+    "checkpoint_sha256": null
+  },
+  "official_sources": [
+    "https://docs.ultralytics.com/models/yolo11/",
+    "https://docs.ultralytics.com/modes/train/"
+  ],
+  "blockers": [
+    "검수 자료가 하나의 development 그룹에만 있음",
+    "문 없는 reviewed 음성이 없음",
+    "실제 RGB 이중 bbox 검수 0장",
+    "학습 target leaf/doorway 미선정",
+    "확인한 models 폴더에 YOLO11 pretrained checkpoint 없음"
+  ],
+  "limitations": [
+    "코드 파일 존재와 실제 학습 성공은 다름",
+    "GPU free 메모리는 점검 순간 값이며 학습 최대 메모리 측정 아님",
+    "모델·패키지 설치·다운로드·학습을 실행하지 않음"
+  ],
+  "next_review": {
+    "scope": "기존 화면 46~95번 실제 RGB 50장",
+    "user_available": true,
+    "submitted": false
+  }
+}

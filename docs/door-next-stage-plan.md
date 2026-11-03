@@ -17,6 +17,8 @@
 [알려진 출입구의 현재 RGB-D 재관측](door-reobservation.md)으로 문짝 무검출 중 상태 갱신을 보완했다.
 처음 보는 완전 열림 문의 검출과 독립 자료 검증은 남아 있다.
 [검수 bbox 평가 경로](door-label-evaluation.md)를 준비했으며 검수 전 자료에는 지표를 생성하지 않는다.
+[YOLO11 학습 준비 점검](door-training-readiness.md)에서는 기존 학습 구현 파일을 확인했으나 독립 분할·음성·실제 bbox 검수가 부족하다.
+학습·모델 다운로드는 아직 실행하지 않았다.
 [첫 실험](door-experiment.md)의 결과와 지표는 유지한다.
 
 ## 첫 실험에서 확인한 문제

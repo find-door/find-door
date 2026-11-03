@@ -12,6 +12,7 @@
   - [자료 계약·인벤토리](door-dataset.md)와 [문짝·출입구 라벨 검수 도구](door-label-review.md) 구현. [95장 검수 묶음](door-label-review.md#실패보조-시점을-포함한-95장-검수-묶음)을 준비했으며, [앞 9장 검수·평가](door-reviewed-nine.md)에서 두 기준 TP4/FP0/FN5를 확인했다. 나머지 검수·독립 장면 분할·추가 학습 판단은 미완료.
   - [평판 금속문 개발 변형](door-scene-variation.md)은 3조건 중 1조건 성공, 닫힘·완전 열림의 검출 실패 확인. 독립 시험셋 평가는 아님.
   - [같은 3m 위치의 낮은/높은 시점 비교](door-view-diagnostic.md)에서 닫힘 검출은 회복됐고 완전 열림 무검출은 유지됨.
+  - [YOLO11 학습 후보 준비 상태](door-training-readiness.md): 학습 구현 파일은 있으나 검수 데이터는 단일 개발 그룹 9장·음성 0장이다. 독립 분할과 실제 bbox 검수가 필요하며 학습은 미실행.
 - [ ] 깊이·주변 벽과 여러 프레임을 이용한 열림/닫힘/불명 판단
   - 깊이 단일 관측 후보와 [정답 ROI 개발 진단](door-state-evaluation.md), [시간 종합 메모리](door-memory.md) 구현. [실시간 검출·ROS 연결](door-live.md)과 [상태 전이](door-transition.md)까지 개발 검증. 독립 장면·실물 검증은 미완료.
 - [ ] 고정 문 위치·ID와 상태를 연결한 지도 저장·표시

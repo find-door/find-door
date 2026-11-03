@@ -336,3 +336,13 @@ mapping_semantic 재빌드·colcon 273검사 오류/실패/건너뜀 0. 기존 R
 [해시·검수이력·전체분모·실행소스스냅샷](data/door-reviewed-nine-summary.json)과 [검수라벨](data/door-nine-reviewed-labels.json)을 기록했다.
 추론 후 중복 SIGINT 정리 보호를 보완하고 회귀 검사했다. 소스 해시를 맞추기 위해 성공한 추론을 다시 실행하지 않았다.
 관련 52검사·전체 오프라인 776검사 통과, ROS 전용 5검사 건너뜀. 제품 패키지·임계값·가중치·센서 설정은 변경하지 않았다.
+
+
+## YOLO11 학습 후보의 자료·환경 점검 — 2026-11-03
+
+기준 `33d1259` 이후 `v0.2.0-door-training-plan.1`에서 [학습 준비 상태](door-training-readiness.md)를 점검했다.
+검수 자료는 development 단일 그룹의 양성 9장·음성 0장·실제 bbox 검수 0장으로 독립 학습/검증/시험 분할이 준비되지 않았다.
+기존 venv의 YOLO11 설정·detection trainer와 GPU 4GB를 확인했지만 실제 학습·최대 메모리 검증은 하지 않았다.
+확인한 models 폴더에는 YOLOE checkpoint만 있으며, 기본 COCO 80클래스에 door가 없음을 로컬 설정으로 확인했다.
+공식 YOLO11n asset metadata 크기는 5,613,764bytes이며 가중치 다운로드·설치·학습·추론은 실행하지 않았다.
+[점검값·소스·환경·데이터 해시](data/door-training-readiness-summary.json)를 보존했다.
