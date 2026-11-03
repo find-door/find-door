@@ -162,6 +162,7 @@ map ──(SLAM)──▶ odom ──(오도메트리)──▶ base_footprint �
 | 객체 지도 정책 | 정적 객체만 누적, 큰 보정에 epoch 초기화·고정 지도 우선 | [ADR-0008](adr/0008-semantic-map-policy.md) |
 | 문 ROS 개발 연결 | 문 위치·상태 분리, 관측 시각 TF·JSON·마커 | [ADR-0009](adr/0009-door-ros-pipeline.md) |
 | 문 실시간 검출 연결 | 별도 가상환경의 상주 YOLOE와 원본 RGB-D 묶음 발행 | [ADR-0010](adr/0010-live-door-detector.md) |
+| 학습 출입구 후보 연결 | worker 설정별 YOLO11 선택 실행, 기존 YOLOE 기본 유지 | [ADR-0014](adr/0014-yolo11-live-candidate.md) |
 | 알려진 문 재관측 | 검출로 확인한 출입구의 현재 RGB-D 재관측, 새 ID 생성 금지 | [ADR-0012](adr/0012-known-door-reobservation.md) |
 | 문 bbox 진단 | 검수·가시성·환경별 원 검출 기준 비교, 조건부 P/R와 전체 프레임 분모 구분 | [ADR-0013](adr/0013-dual-box-evaluation.md) |
 | 문 자료 계약 | 문짝·출입구 이중 bbox, 장면 그룹 분할·해시 중복 검증 | [ADR-0011](adr/0011-door-dataset-contract.md) |

@@ -8,7 +8,7 @@ import subprocess
 import sys
 import pytest
 
-from mapping_semantic.detector_worker import runtime_config
+from mapping_semantic.detector_worker import runtime_config, backend_name, serialize_detection
 from mapping_semantic.live_detector import validate_reply
 from mapping_semantic.live_detector import Worker
 
@@ -31,6 +31,39 @@ def test_runtime_assets_are_absolute_and_external_config_unchanged(tmp_path):
     (source / 'checkpoint').unlink()
     with pytest.raises(ValueError, match='자산 없음'):
         runtime_config(path, runtime)
+
+
+@pytest.mark.parametrize('value,expected',[({},'yoloe'),({'backend':'yoloe'},'yoloe'),({'backend':'yolo11'},'yolo11')])
+def test_backend_selection_keeps_existing_default(tmp_path,value,expected):
+    path=tmp_path/'config.json';path.write_text(json.dumps(value))
+    assert backend_name(path)==expected
+
+
+@pytest.mark.parametrize('value',[[],None,{'backend':'unknown'},{'backend':None}])
+def test_unknown_backend_is_rejected(tmp_path,value):
+    path=tmp_path/'config.json';path.write_text(json.dumps(value))
+    with pytest.raises(ValueError,match='backend'):
+        backend_name(path)
+
+
+def test_backend_selector_is_not_forwarded_to_foreign_yoloe_config(tmp_path):
+    source=tmp_path/'source';source.mkdir();runtime=tmp_path/'runtime';runtime.mkdir()
+    config=dict(backend='yoloe')
+    for name in ['checkpoint','embeddings','manifest','prompts_config']:
+        (source/name).write_text('asset');config[name]=name
+    path=source/'config.json';path.write_text(json.dumps(config));original=path.read_bytes()
+    generated,_=runtime_config(path,runtime)
+    assert 'backend'not in json.loads(generated.read_text())
+    assert path.read_bytes()==original
+
+
+def test_plain_and_existing_model_records_share_the_worker_contract():
+    record={'class':'door','report_class':'door','confidence':.2,'bbox':[1,2,30,40]}
+    class Existing:
+        def model_dump(self,by_alias):
+            assert by_alias
+            return record
+    assert serialize_detection(record)==serialize_detection(Existing())==record
 
 
 def good():

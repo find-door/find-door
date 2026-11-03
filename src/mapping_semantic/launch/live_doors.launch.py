@@ -1,4 +1,4 @@
-"""로컬 상주 YOLOE와 문 mapper를 묶고 Gazebo·SLAM에는 외부로 연결한다."""
+"""설정으로 선택한 로컬 상주 검출기와 문 mapper를 묶는다. 기본은 YOLOE다."""
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
