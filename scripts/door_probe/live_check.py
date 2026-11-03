@@ -1,4 +1,4 @@
-"""실제 Gazebo RGB-D→YOLOE→문 상태와 LiDAR SLAM을 함께 실행하는 정지 관측 진단."""
+"""실제 Gazebo RGB-D→선택 검출기→문 상태와 LiDAR SLAM을 함께 실행하는 진단."""
 
 import argparse
 import hashlib
@@ -57,6 +57,85 @@ def rotation_observation(snapshot, initial, expected_state):
     return observed
 
 
+def stationary_ready(data, state):
+    """단일 문 정지 관측과 문 없는 벽 대조군의 종료 조건을 구분한다."""
+    if not (data['maps'] and data['doors'] and data['detector'] and data['scan_count'] > 5):
+        return False
+    if state != 'negative':
+        return any(obj['state']==state for obj in data['doors'][-1]['objects'])
+    if any(snapshot['objects'] for snapshot in data['doors']):
+        raise RuntimeError('문 없는 벽 대조군에 문 객체 생성')
+    span=data['doors'][-1]['stamp_ns']-data['doors'][0]['stamp_ns']
+    return data['detector'][-1]['counters'].get('completed',0)>=10 and span>=3_000_000_000
+
+
+def validate_map_identity(history, expected_map_id):
+    if any(snapshot.get('map_id')!=expected_map_id for snapshot in history):
+        raise RuntimeError('다른 map_id 수신: ROS 도메인에 다른 검사가 섞였습니다')
+
+
+def validate_save_result(state, success, output_exists):
+    if state=='negative':
+        if success or output_exists:
+            raise RuntimeError('음성 대조군에서 저장할 문 또는 파일이 생성됐습니다')
+    elif not success or not output_exists:
+        raise RuntimeError('문 저장 실패')
+
+
+def transition_control(world):
+    """시험 world의 실제 이름·닫힌 문 경첩 pose를 제어 명령에만 사용한다."""
+    import xml.etree.ElementTree as ET
+    model_world=ET.parse(world).getroot().find('world')
+    if model_world is None or not model_world.get('name'):
+        raise ValueError('이름이 있는 시험 world가 필요합니다')
+    leaf=model_world.find("model[@name='door_leaf']")
+    if leaf is None:
+        raise ValueError('door_leaf 시험 모델이 필요합니다')
+    pose=leaf.find('pose')
+    if pose is None or pose.get('relative_to'):
+        raise ValueError('world 기준 경첩 pose가 필요합니다')
+    values=list(map(float,pose.text.split()))
+    if len(values)!=6 or not all(math.isfinite(v)for v in values) or any(abs(v)>1e-8 for v in values[3:]):
+        raise ValueError('시험 문은 roll/pitch/yaw=0인 닫힘 배치여야 합니다')
+    return model_world.get('name'),values[:3]
+
+
+def cold_start_evidence(history, expected_state):
+    """과거 문·재관측을 이용하지 않은 최초 등록과 시각 근거를 확인한다."""
+    if not history or history[0]['objects']:
+        raise RuntimeError('빈 문 지도에서 시작한 근거가 없습니다')
+    if any(snapshot['counters'].get('reobserved',0) for snapshot in history):
+        raise RuntimeError('cold-start 검사에서 알려진 문 재관측 사용')
+    current=history[-1]
+    if expected_state=='negative':
+        if any(snapshot['objects'] for snapshot in history):
+            raise RuntimeError('음성 cold-start에 문 객체 생성')
+        return dict(initial_objects=0,final_objects=0,reobserved=0)
+    if len(current['objects'])!=1:
+        raise RuntimeError('cold-start에서 단일 문 위치를 확인할 수 없습니다')
+    observed=current['objects'][0]
+    age=(current['stamp_ns']-observed['last_stamp_ns'])/1e9
+    if observed['state']!=expected_state or observed['observations']<3 or not 0<=age<=2:
+        raise RuntimeError('cold-start의 신선한 시간 종합 상태를 확인할 수 없습니다')
+    return dict(initial_objects=0,final_objects=1,reobserved=0,observations=observed['observations'],
+                source_age_sec=age,door_id=observed['id'],position=observed['position'])
+
+
+def final_observation_evidence(data, state, require_cold_start):
+    """저장 서비스 대기 중 들어온 관측까지 최종 판정에 포함한다."""
+    evidence = {}
+    if require_cold_start:
+        evidence['cold_start'] = cold_start_evidence(data['doors'], state)
+    if state == 'negative':
+        if not stationary_ready(data, state):
+            raise RuntimeError('음성 대조군의 최종 관측 조건 미충족')
+        evidence['negative_observation'] = dict(
+            completed=data['detector'][-1]['counters'].get('completed', 0),
+            duration_sim_sec=(data['doors'][-1]['stamp_ns']-data['doors'][0]['stamp_ns'])/1e9,
+            final_objects=len(data['doors'][-1]['objects']))
+    return evidence
+
+
 def main():
     import rclpy
     from rclpy.node import Node
@@ -70,16 +149,18 @@ def main():
     from capture import stop_group, spawn_pose
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--state', choices=['closed', 'open'], required=True)
+    parser.add_argument('--state', choices=['closed', 'open', 'negative'], required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--recon-root', type=Path, required=True)
     parser.add_argument('--timeout', type=float, default=120.)
     parser.add_argument('--transition', action='store_true', help='닫힘 시작 후 같은 문을 열고 닫는 실제 센서 전이 검사')
     parser.add_argument('--motion', action='store_true', help='격리된 Gazebo 로봇을 후진·복귀시키는 관측 검사')
     parser.add_argument('--rotate', action='store_true', help='격리된 Gazebo 로봇의 제자리 회전·복귀 관측 검사')
-    parser.add_argument('--world', type=Path, help='정지 관측용 별도 world. 기대 상태는 --state로 지정')
+    parser.add_argument('--world', type=Path, help='정지·문 전이용 별도 world. 기대 상태는 --state로 지정')
     parser.add_argument('--known-door-cycle', action='store_true', help='별도 반열림 world에서 알려진 문의 무검출 재관측 비교')
     parser.add_argument('--reobserve-known-doors', choices=['true', 'false'], default='true')
+    parser.add_argument('--detector-config',type=Path,help='기본 YOLOE 대신 명시적으로 선택할 로컬 worker 설정')
+    parser.add_argument('--require-cold-start',action='store_true',help='빈 문 지도·재관측 비활성·처음 생성한 상태를 검사')
     args = parser.parse_args()
     if (os.environ.get('ROS_DOMAIN_ID'), os.environ.get('GZ_PARTITION')) != ('12', 'codex'):
         parser.error('ROS_DOMAIN_ID=12 GZ_PARTITION=codex 필요')
@@ -89,13 +170,28 @@ def main():
         parser.error('전이 검사는 --state closed로 시작합니다')
     if sum([args.motion, args.transition, args.rotate, args.known_door_cycle]) > 1:
         parser.error('주행·전이·회전·기존 문 재관측은 별도 실행으로 검사합니다')
-    if args.world and (not args.world.is_file() or any([args.motion, args.transition, args.rotate])):
+    if args.world and (not args.world.is_file() or any([args.motion, args.rotate])):
         parser.error('--world는 존재하는 파일로 정지 관측에서만 사용합니다')
     if args.known_door_cycle and (args.world is None or args.state != 'open'):
         parser.error('--known-door-cycle은 별도 half world와 --state open이 필요합니다')
+    if args.detector_config and not args.detector_config.is_file():
+        parser.error('--detector-config 파일이 없습니다')
+    if args.state=='negative' and any([args.motion,args.transition,args.rotate,args.known_door_cycle]):
+        parser.error('음성 대조군은 별도 정지 관측만 지원합니다')
+    if args.require_cold_start and (args.reobserve_known_doors!='false' or any([args.motion,args.rotate,args.known_door_cycle])):
+        parser.error('cold-start는 --reobserve-known-doors false인 로봇 정지 관측이 필요합니다')
+    selected_config=args.detector_config.resolve()if args.detector_config else args.recon_root.resolve()/'experiments/configs/yoloe-door-person.json'
+    try:
+        config_data=json.loads(selected_config.read_text())
+        if not isinstance(config_data,dict) or config_data.get('backend','yoloe')not in ('yoloe','yolo11'):
+            raise ValueError('알 수 없는 검출 backend')
+        selected_backend=config_data.get('backend','yoloe')
+    except (OSError,ValueError)as exc:
+        parser.error('검출 설정을 읽을 수 없습니다: '+str(exc))
     args.output = args.output.resolve()
     args.output.mkdir(parents=True)
     root = Path(__file__).resolve().parents[2]
+    expected_map_id=f'live-door-probe-{args.state}-{args.output.name}'
     rclpy.init()
     node = Node('live_door_check')
     bridge = CvBridge()
@@ -117,14 +213,20 @@ def main():
 
     node.create_subscription(LaserScan, '/scan', scan, qos_profile_sensor_data)
     children, logs = [], []
-    report = {'state': args.state, 'mode': 'live_gazebo_yoloe_lidar_slam_stationary', 'status': 'running',
+    report = {'state': args.state, 'mode': f'live_gazebo_{selected_backend}_lidar_slam_stationary', 'status': 'running',
+              'detector_config_path':str(selected_config),'detector_config_sha256':hashlib.sha256(selected_config.read_bytes()).hexdigest(),
+              'detector_backend':selected_backend,'cold_start_requested':args.require_cold_start,
               'limitations': ['단일 문 모델·2m 정면 정지 관측', '지도 정확도·실물·독립 장소 성능 시험 아님',
                               '상태별 별도 시뮬레이션이며 실제 문 상태 전이 시험 아님']}
+    if args.state=='negative':
+        report['limitations']=['문 없는 벽의 2m 정면 정지 관측', '최소 3sim초·완료 묶음 10개 확인',
+                               '다양한 음성 장면·실물·독립 장소 성능 시험 아님']
 
     def pump(seconds):
         end = time.monotonic() + seconds
         while time.monotonic() < end:
             rclpy.spin_once(node, timeout_sec=.05)
+            validate_map_identity(data['doors'],expected_map_id)
             if any(child.poll() is not None for child in children):
                 raise RuntimeError('실행 프로세스 조기 종료: 로그 확인')
 
@@ -144,26 +246,31 @@ def main():
         world = args.world.resolve() if args.world else root / f'src/mapping_gazebo/worlds/door_probe_{args.state}.sdf'
         report['world_path'] = str(world)
         report['world_sha256'] = hashlib.sha256(world.read_bytes()).hexdigest()
+        if args.transition:
+            transition_world,transition_hinge=transition_control(world)
+            report['transition_control']=dict(world=transition_world,hinge_position=transition_hinge)
         x, y, yaw = spawn_pose(2, 0)
         start('simulation', ['ros2', 'launch', 'mapping_slam', 'simulation.launch.py', 'gui:=false',
                              f'world:={world}', f'x:={x}', f'y:={y}', f'yaw:={yaw}'])
         start('doors', ['ros2', 'launch', 'mapping_semantic', 'live_doors.launch.py',
-                        f'recon_root:={args.recon_root.resolve()}', f'reobserve_known_doors:={args.reobserve_known_doors}', f'map_id:=live-door-probe-{args.state}-{args.output.name}',
+                        f'recon_root:={args.recon_root.resolve()}', f'reobserve_known_doors:={args.reobserve_known_doors}', f'map_id:={expected_map_id}',
+                        f'detector_config:={selected_config}',
                         f'output_path:={args.output / "doors.json"}'])
         deadline = time.monotonic() + args.timeout
         while time.monotonic() < deadline:
             pump(.2)
-            if (data['maps'] and data['doors'] and data['detector'] and data['scan_count'] > 5
-                    and any(obj['state'] == args.state for obj in data['doors'][-1]['objects'])):
+            if stationary_ready(data,args.state):
                 break
         else:
             raise TimeoutError('LiDAR 지도·실시간 문 상태 확인 시간 초과')
+        if args.require_cold_start:
+            report['cold_start_initial']=cold_start_evidence(data['doors'],args.state)
         if args.motion:
             if odom[0] is None:
                 raise RuntimeError('주행 odom 입력 없음')
             initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == args.state)
             origin_x, origin_y = motion_odom(odom[0], data['doors'][-1]['stamp_ns'])
-            report.update(mode='live_gazebo_yoloe_lidar_slam_motion', motion=[],
+            report.update(mode=f'live_gazebo_{selected_backend}_lidar_slam_motion', motion=[],
                           limitations=['단일 문 모델·정면 후진과 복귀', 'Gazebo pose odom, 휠 오차·실물·독립 장소 시험 아님'])
             for label, velocity in [('retreat', -.1), ('return', .1)]:
                 begin_ns = data['doors'][-1]['stamp_ns']
@@ -215,7 +322,7 @@ def main():
             now_ns = data['doors'][-1]['stamp_ns']
             origin_x, origin_y = motion_odom(odom[0], now_ns)
             origin_yaw = motion_yaw(odom[0], now_ns)
-            report.update(mode='live_gazebo_yoloe_lidar_slam_rotate', rotation=[],
+            report.update(mode=f'live_gazebo_{selected_backend}_lidar_slam_rotate', rotation=[],
                           limitations=['단일 문 모델·2m 정면 시작·제자리 약 14도 회전과 복귀',
                                        'Gazebo pose odom, 휠 오차·독립 장소·실물 시험 아님'])
             for label, velocity in [('turn_left', .1), ('return', -.1)]:
@@ -335,15 +442,16 @@ def main():
             initial = next(obj for obj in data['doors'][-1]['objects'] if obj['state'] == 'closed')
             if image[0] is not None:
                 PILImage.fromarray(bridge.imgmsg_to_cv2(image[0], desired_encoding='rgb8')).save(args.output / 'initial-rgb.png')
-            report['mode'] = 'live_gazebo_yoloe_lidar_slam_door_transition'
-            report['limitations'] = ['단일 문 모델·2m 정면·로봇 정지', '지도 정확도·실물·독립 장소 시험 아님']
+            report['mode'] = f'live_gazebo_{selected_backend}_lidar_slam_door_transition'
+            report['limitations'] = ['단일 문 모델·2m 정면·로봇 정지', '순간 pose 변경이며 연속 경첩 회전 시험 아님',
+                                     '지도 정확도·실물·독립 장소 시험 아님']
             report['transitions'] = []
             for expected, angle in [('open', -math.pi/2), ('closed', 0.)]:
                 begin_ns = data['doors'][-1]['stamp_ns']
                 begin_wall = time.monotonic()
-                request = (f'name: "door_leaf", position: {{x: 0, y: -0.5, z: 0}}, '
+                request = (f'name: "door_leaf", position: {{x: {transition_hinge[0]}, y: {transition_hinge[1]}, z: {transition_hinge[2]}}}, '
                            f'orientation: {{z: {math.sin(angle/2)}, w: {math.cos(angle/2)}}}')
-                command = ['gz', 'service', '-s', '/world/door_probe_v1/set_pose', '--reqtype', 'gz.msgs.Pose',
+                command = ['gz', 'service', '-s', f'/world/{transition_world}/set_pose', '--reqtype', 'gz.msgs.Pose',
                            '--reptype', 'gz.msgs.Boolean', '--timeout', '5000', '--req', request]
                 action = subprocess.run(command, capture_output=True, text=True, timeout=10)
                 event = {'expected_state': expected, 'command': command, 'stdout': action.stdout,
@@ -395,8 +503,12 @@ def main():
         end = time.monotonic() + 5
         while not future.done() and time.monotonic() < end:
             pump(.1)
-        if not future.done() or not future.result().success:
-            raise RuntimeError('문 저장 실패')
+        if not future.done():
+            raise RuntimeError('문 저장 응답 시간 초과')
+        saved=future.result()
+        report['save_response']=dict(success=saved.success,message=saved.message)
+        validate_save_result(args.state,saved.success,(args.output/'doors.json').is_file())
+        report.update(final_observation_evidence(data, args.state, args.require_cold_start))
         report.update(status='complete', door_map=data['doors'][-1], detector_status=data['detector'][-1],
                       scan_count=data['scan_count'], map_publishers=[p.node_name for p in endpoints],
                       map_updates=len(data['maps']), clock_publishers=node.count_publishers('/clock'))
@@ -467,6 +579,12 @@ def main():
                 report.setdefault('cleanup_errors', []).append(f'실패 영상 보존 오류: {exc}')
         report['source_sha256'] = {name: hashlib.sha256((root / 'src/mapping_semantic/mapping_semantic' / name).read_bytes()).hexdigest()
                                   for name in ['live_detector.py', 'detector_worker.py', 'door_node.py', 'doorway.py', 'door_state.py', 'door_map.py', 'door_position.py', 'door_reobservation.py']}
+        if selected_backend=='yolo11':
+            report['source_sha256']['yolo11_doorway.py']=hashlib.sha256((root/'src/mapping_semantic/mapping_semantic/yolo11_doorway.py').read_bytes()).hexdigest()
+        if args.require_cold_start:
+            history_path=args.output/'cold-start-history.json'
+            history_path.write_text(json.dumps(dict(door_maps=data['doors'],detector_status=data['detector']),ensure_ascii=False,indent=2)+'\n')
+            report['cold_start_history']=dict(path=history_path.name,sha256=hashlib.sha256(history_path.read_bytes()).hexdigest())
         report['harness_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
         report['dds_profile'] = os.environ.get('FASTRTPS_DEFAULT_PROFILES_FILE')
         (args.output / 'check.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')

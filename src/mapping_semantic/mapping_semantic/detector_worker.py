@@ -1,4 +1,4 @@
-"""별도 가상환경에서 로컬 YOLOE를 유지하는 JSON-lines 검출 worker."""
+"""별도 가상환경에서 설정으로 선택한 로컬 문 검출기를 유지하는 JSON-lines worker."""
 
 import argparse
 from contextlib import redirect_stdout
@@ -14,6 +14,7 @@ def runtime_config(source, directory):
     source, directory = Path(source).resolve(), Path(directory)
     original = source.read_bytes()
     config = json.loads(original)
+    config.pop('backend', None)
     for name in ['checkpoint', 'embeddings', 'manifest', 'prompts_config']:
         asset = (source.parent / config[name]).resolve()
         if not asset.is_file():
@@ -23,6 +24,33 @@ def runtime_config(source, directory):
     target = directory / 'detector-config.json'
     target.write_text(json.dumps(config, ensure_ascii=False, indent=2) + '\n')
     return target, hashlib.sha256(original).hexdigest()
+
+
+def backend_name(source):
+    config = json.loads(Path(source).read_text())
+    if not isinstance(config, dict) or config.get('backend', 'yoloe') not in ('yoloe', 'yolo11'):
+        raise ValueError('검출 backend는 yoloe 또는 yolo11이어야 합니다')
+    return config.get('backend', 'yoloe')
+
+
+def load_detector(args):
+    """기본 YOLOE와 명시적으로 선택한 YOLO11만 연결한다."""
+    selected = backend_name(args.config)
+    if selected == 'yolo11':
+        # 직접 실행한 worker의 가상환경에서도 이 저장소 패키지를 찾는다.
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        from mapping_semantic.yolo11_doorway import YOLO11DoorwayDetector
+        return (YOLO11DoorwayDetector(args.config, args.runtime),
+                hashlib.sha256(args.config.read_bytes()).hexdigest(), selected)
+    import recon_report.grounding.yoloe as backend
+    config, source_hash = runtime_config(args.config, args.runtime)
+    original_runtime = backend._runtime
+    backend._runtime = lambda ignored: original_runtime(args.runtime / 'ultralytics-config')
+    return backend.YOLOEDetector(config), source_hash, selected
+
+
+def serialize_detection(detection):
+    return detection if isinstance(detection, dict) else detection.model_dump(by_alias=True)
 
 
 def main():
@@ -35,24 +63,20 @@ def main():
     detector = None
     try:
         with redirect_stdout(sys.stderr):
-            import recon_report.grounding.yoloe as backend
-            config, source_hash = runtime_config(args.config, args.runtime)
-            original_runtime = backend._runtime
-            backend._runtime = lambda ignored: original_runtime(args.runtime / 'ultralytics-config')
-            detector = backend.YOLOEDetector(config)
+            detector, source_hash, selected_backend = load_detector(args)
         for line in sys.stdin:
             request = None
             start = time.monotonic()
             try:
                 request = json.loads(line)
-                if not isinstance(request.get('id'), int) or not isinstance(request.get('image_path'), str):
+                if type(request.get('id')) is not int or not isinstance(request.get('image_path'), str):
                     raise ValueError('worker 요청 형식 오류')
                 if hashlib.sha256(args.config.read_bytes()).hexdigest() != source_hash:
                     raise ValueError('실행 중 원본 검출 설정 변경')
                 with redirect_stdout(sys.stderr):
                     detections = detector.detect(Path(request['image_path']).read_bytes())
-                reply = dict(id=request['id'], detections=[d.model_dump(by_alias=True) for d in detections],
-                             metadata=dict(source_config_sha256=source_hash, release_policy_override='keep',
+                reply = dict(id=request['id'], detections=[serialize_detection(d) for d in detections],
+                             metadata=dict(backend=selected_backend, source_config_sha256=source_hash, release_policy_override='keep',
                                            cache_override=str(args.runtime / 'ultralytics-config'),
                                            last_run=detector.last_run), inference_wall_sec=time.monotonic()-start)
             except Exception as exc:

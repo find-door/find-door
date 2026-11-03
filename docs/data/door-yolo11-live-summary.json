@@ -1,0 +1,2154 @@
+{
+  "date": "2026-11-03",
+  "stage": "v0.2.0-door-yolo11-live.1",
+  "base_commit": "17f6425",
+  "default_backend": "yoloe",
+  "candidate_backend": "yolo11",
+  "scope": "같은 개발 장면의 실제 Gazebo 통합 진단. 독립·실물 성능 아님",
+  "tests": {
+    "offline_passed": 898,
+    "offline_ros_skipped": 5,
+    "package_passed": 340,
+    "package_errors": 0,
+    "package_failures": 0
+  },
+  "cases": [
+    {
+      "name": "cold-closed-01",
+      "raw_path": "experiments/door_probe/yolo11-live-01/cold-closed-01/check.json",
+      "raw_sha256": "3db49c233e1125faa27e43f20a8d8b9cb171492d118221db71669c4ab9475264",
+      "report": {
+        "state": "closed",
+        "mode": "live_gazebo_yolo11_lidar_slam_stationary",
+        "status": "complete",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "단일 문 모델·2m 정면 정지 관측",
+          "지도 정확도·실물·독립 장소 성능 시험 아님",
+          "상태별 별도 시뮬레이션이며 실제 문 상태 전이 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_closed.sdf",
+        "world_sha256": "bb5c93a6aa108ad2860dba7a636e2ec99532759efcd5b27b4bf492799988f286",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_closed.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2746131
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-closed-cold-closed-01",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/cold-closed-01/doors.json"
+          ],
+          "pgid": 2746132
+        },
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 16,
+          "source_age_sec": 0.087,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        },
+        "door_map": {
+          "map_id": "live-door-probe-closed-cold-closed-01",
+          "frame": "map",
+          "stamp_ns": 3214000000,
+          "observation_stamp_ns": 3036000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                -0.05000006470974183,
+                4.191309836388943e-08,
+                0.0027256377781369467
+              ],
+              "state": "closed",
+              "last_stamp_ns": 3036000000,
+              "observations": 24
+            }
+          ],
+          "counters": {
+            "received_rgb": 26,
+            "received_depth": 26,
+            "received_camera_info": 26,
+            "received_detections": 26,
+            "synchronized": 26,
+            "tf_timeout": 1,
+            "processed": 24
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "detector_status": {
+          "counters": {
+            "received": 50,
+            "submitted": 30,
+            "replaced": 20,
+            "completed": 30
+          },
+          "epoch": 0,
+          "worker_pgid": 2746245,
+          "worker_start_ticks": 171412369,
+          "latency_sec": 0.04230632202234119,
+          "source_age_sec": 0.065,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-k6k_duex/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-k6k_duex/ultralytics-config",
+              "success": true,
+              "input_sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 1,
+              "inference_wall_sec": 0.01567320100730285
+            }
+          },
+          "last_error": ""
+        },
+        "scan_count": 17,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "map_updates": 3,
+        "clock_publishers": 1,
+        "map_metadata": {
+          "width": 42,
+          "height": 281,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -2.070897,
+            -7.030034783462254,
+            0.0
+          ]
+        },
+        "rgb_stamp_ns": 3301000000,
+        "worker_group_gone": true,
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "7d8624c119377fe647d9b0979d19f5c3441f25fc2b0f63831f61c8caaba4d267"
+        },
+        "harness_sha256": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "cold-start-history.json": "7d8624c119377fe647d9b0979d19f5c3441f25fc2b0f63831f61c8caaba4d267",
+        "doors.json": "faa631ecff43b059fb39d76e3c9045e52ca8ada84731a046d1b120338fad00da",
+        "rgb.png": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+        "occupancy.npy": "604c10fa5e2f86c52be33bee8e561b59ed71491fdad3693a77a0280ea9b7acc3",
+        "map-doors.png": "a72defaaab3a6c2812634b810745900c5017a675ed74804e75287fa9b78aab98",
+        "simulation.log": "bf287304cf064a510ec305ef8f0f1fa9ff99f596acb1f3386407edb47054b394",
+        "doors.log": "d29463e4fababac56aa64db5d679f265240c4ce9e8de9a64d2cb5cae57bab08b"
+      },
+      "final_history_recheck": {
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 24,
+          "source_age_sec": 0.178,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        }
+      }
+    },
+    {
+      "name": "cold-half-01",
+      "raw_path": "experiments/door_probe/yolo11-live-01/cold-half-01/check.json",
+      "raw_sha256": "123c6697a87ffdd8fb652c03a17fab97cc25b96631ef677dc0353c54102855bb",
+      "report": {
+        "state": "open",
+        "mode": "live_gazebo_yolo11_lidar_slam_stationary",
+        "status": "complete",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "단일 문 모델·2m 정면 정지 관측",
+          "지도 정확도·실물·독립 장소 성능 시험 아님",
+          "상태별 별도 시뮬레이션이며 실제 문 상태 전이 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_half.sdf",
+        "world_sha256": "50b3f2a90e46f642282191fc2e1c7227fc33d1bb428076d1956484e8a358a060",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_half.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2746450
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-open-cold-half-01",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/cold-half-01/doors.json"
+          ],
+          "pgid": 2746451
+        },
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 15,
+          "source_age_sec": 0.159,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        },
+        "door_map": {
+          "map_id": "live-door-probe-open-cold-half-01",
+          "frame": "map",
+          "stamp_ns": 3136000000,
+          "observation_stamp_ns": 2971000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                -0.05000006470974183,
+                4.191309836388943e-08,
+                0.0027256377781369467
+              ],
+              "state": "open",
+              "last_stamp_ns": 2971000000,
+              "observations": 20
+            }
+          ],
+          "counters": {
+            "received_rgb": 21,
+            "received_depth": 21,
+            "received_camera_info": 21,
+            "received_detections": 21,
+            "synchronized": 21,
+            "tf_timeout": 1,
+            "processed": 20
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "detector_status": {
+          "counters": {
+            "received": 51,
+            "submitted": 29,
+            "replaced": 22,
+            "completed": 28
+          },
+          "epoch": 0,
+          "worker_pgid": 2746554,
+          "worker_start_ticks": 171413382,
+          "latency_sec": 0.03791956405621022,
+          "source_age_sec": 0.101,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-w1ez7btp/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-w1ez7btp/ultralytics-config",
+              "success": true,
+              "input_sha256": "f23d9c7248b2454c9c555393c544b040a2970df7c36de0269bb89c24f22684e5",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 1,
+              "inference_wall_sec": 0.017580165003892034
+            }
+          },
+          "last_error": ""
+        },
+        "scan_count": 18,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "map_updates": 4,
+        "clock_publishers": 1,
+        "map_metadata": {
+          "width": 101,
+          "height": 280,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -2.070897,
+            -7.000606569737403,
+            0.0
+          ]
+        },
+        "rgb_stamp_ns": 3367000000,
+        "worker_group_gone": true,
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "a907196870e21bfd30e2eb0d5a3d5857955246be97b190dafabe09563b760764"
+        },
+        "harness_sha256": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "cold-start-history.json": "a907196870e21bfd30e2eb0d5a3d5857955246be97b190dafabe09563b760764",
+        "doors.json": "4e22706fcfee6914f42d7bc253b9f35bb4b028189f3493b84d3aa3f27b116882",
+        "rgb.png": "f23d9c7248b2454c9c555393c544b040a2970df7c36de0269bb89c24f22684e5",
+        "occupancy.npy": "1ab54d37e0b726055b60d9e059220bbb148010244d45bebb65ef8b70cbbe3581",
+        "map-doors.png": "61f96023d5f2da89b234e6c6fec82d20988a8e4a928318c7d5c7db1778e130cd",
+        "simulation.log": "4a081cf2512f16c41642a61aee4e75ad145c12c4688620d5b1d96e2306870b01",
+        "doors.log": "6211815988ff1c296332d85fcc7be73a4ce9d9c8aa63eaf161eeb937ecaee9ef"
+      },
+      "final_history_recheck": {
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 20,
+          "source_age_sec": 0.165,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        }
+      }
+    },
+    {
+      "name": "cold-open-02",
+      "raw_path": "experiments/door_probe/yolo11-live-01/cold-open-02/check.json",
+      "raw_sha256": "2a585a8f70966e805e403ba037d1a13c99deddba96ca0309eea1a77ab6d301f3",
+      "report": {
+        "state": "open",
+        "mode": "live_gazebo_yolo11_lidar_slam_stationary",
+        "status": "complete",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "단일 문 모델·2m 정면 정지 관측",
+          "지도 정확도·실물·독립 장소 성능 시험 아님",
+          "상태별 별도 시뮬레이션이며 실제 문 상태 전이 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_open.sdf",
+        "world_sha256": "e8cdd10a74900ebcddb6635f31243f657466f4bceccf041c68d877e1ada39e5e",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_open.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2744409
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-open-cold-open-02",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/cold-open-02/doors.json"
+          ],
+          "pgid": 2744410
+        },
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 16,
+          "source_age_sec": 0.085,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        },
+        "door_map": {
+          "map_id": "live-door-probe-open-cold-open-02",
+          "frame": "map",
+          "stamp_ns": 3141000000,
+          "observation_stamp_ns": 2509000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                -0.05000006470974183,
+                4.191309836388943e-08,
+                0.0027256377781369467
+              ],
+              "state": "open",
+              "last_stamp_ns": 2509000000,
+              "observations": 16
+            }
+          ],
+          "counters": {
+            "received_rgb": 23,
+            "received_depth": 23,
+            "received_camera_info": 23,
+            "received_detections": 23,
+            "synchronized": 23,
+            "tf_timeout": 1,
+            "processed": 16
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "detector_status": {
+          "counters": {
+            "received": 49,
+            "submitted": 27,
+            "replaced": 22,
+            "completed": 27
+          },
+          "epoch": 0,
+          "worker_pgid": 2744554,
+          "worker_start_ticks": 171399922,
+          "latency_sec": 0.039590128988493234,
+          "source_age_sec": 0.067,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-ux4f92d7/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-ux4f92d7/ultralytics-config",
+              "success": true,
+              "input_sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 1,
+              "inference_wall_sec": 0.020881498989183456
+            }
+          },
+          "last_error": ""
+        },
+        "scan_count": 17,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "map_updates": 3,
+        "clock_publishers": 1,
+        "map_metadata": {
+          "width": 101,
+          "height": 280,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -2.070897,
+            -7.000506544001993,
+            0.0
+          ]
+        },
+        "rgb_stamp_ns": 3169000000,
+        "worker_group_gone": true,
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "3128411587445e1769d7e05645d99b250ca5ef9403334208d4e234ba10034f37"
+        },
+        "harness_sha256": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "cold-start-history.json": "3128411587445e1769d7e05645d99b250ca5ef9403334208d4e234ba10034f37",
+        "doors.json": "16752529843f18c71ac9a22083a1cb5b99e2c6523bb7b2dc0029a91676758ea1",
+        "rgb.png": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+        "occupancy.npy": "199f83d03f9760c2e8f762a07b3f639b78c76c5dd256957a13d067b7adeb54a6",
+        "map-doors.png": "a379ed78ad52a51856e5682d69d15c0d515f789bba5e930e15ccf0d2db42372e",
+        "simulation.log": "ba9d6400d2596136740ef9bffa1ba9f3439c0f6b2a64abe9f461412f1c9bad9c",
+        "doors.log": "bc49f79d22a66d522f366a1e6efb9677936098368787689d9b41bcc4318bdab1"
+      },
+      "final_history_recheck": {
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 16,
+          "source_age_sec": 0.632,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        }
+      }
+    },
+    {
+      "name": "negative-02",
+      "raw_path": "experiments/door_probe/yolo11-live-01/negative-02/check.json",
+      "raw_sha256": "cafbea2e73c860f756211280ec1b5638bce908feb7b510a11a4dc3fb704f57ec",
+      "report": {
+        "state": "negative",
+        "mode": "live_gazebo_yolo11_lidar_slam_stationary",
+        "status": "complete",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "문 없는 벽의 2m 정면 정지 관측",
+          "최소 3sim초·완료 묶음 10개 확인",
+          "다양한 음성 장면·실물·독립 장소 성능 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_negative.sdf",
+        "world_sha256": "fa38eafd2028e5837d18e7d2a239e6e73c47cf9efbe18c76d6ad1aca79092ce6",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_negative.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2748274
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-negative-negative-02",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/negative-02/doors.json"
+          ],
+          "pgid": 2748275
+        },
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 0,
+          "reobserved": 0
+        },
+        "negative_observation": {
+          "completed": 26,
+          "duration_sim_sec": 3.166,
+          "final_objects": 0
+        },
+        "save_response": {
+          "success": false,
+          "message": "관측과 현재 지도 보정 TF가 필요합니다"
+        },
+        "door_map": {
+          "map_id": "live-door-probe-negative-negative-02",
+          "frame": "map",
+          "stamp_ns": 3266000000,
+          "observation_stamp_ns": 0,
+          "epoch": 0,
+          "objects": [],
+          "counters": {
+            "received_rgb": 26,
+            "received_depth": 26,
+            "received_camera_info": 26,
+            "received_detections": 26,
+            "synchronized": 26,
+            "no_detection": 25,
+            "tf_timeout": 1
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "detector_status": {
+          "counters": {
+            "received": 50,
+            "submitted": 28,
+            "replaced": 22,
+            "completed": 27
+          },
+          "epoch": 0,
+          "worker_pgid": 2748377,
+          "worker_start_ticks": 171427001,
+          "latency_sec": 0.04351383098401129,
+          "source_age_sec": 0.104,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-orv14qqr/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-orv14qqr/ultralytics-config",
+              "success": true,
+              "input_sha256": "ab6d8a08e113de3b0638f35c42de09819d4d5cb707bdb0c7862599b8ae757d31",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 0,
+              "inference_wall_sec": 0.015661288052797318
+            }
+          },
+          "last_error": ""
+        },
+        "scan_count": 17,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "map_updates": 3,
+        "clock_publishers": 1,
+        "map_metadata": {
+          "width": 41,
+          "height": 221,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -2.070897,
+            -5.512010025960892,
+            0.0
+          ]
+        },
+        "rgb_stamp_ns": 3234000000,
+        "worker_group_gone": true,
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "c0956992eacf6f0f6f25e723bee79200d22e22fe0a794ec85f1b292443a1eac3"
+        },
+        "harness_sha256": "f9c8ced0cc790d729154363112a92c7525fabcf3b2624a934cb95bf4d8bb865d",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "f9c8ced0cc790d729154363112a92c7525fabcf3b2624a934cb95bf4d8bb865d",
+        "cold-start-history.json": "c0956992eacf6f0f6f25e723bee79200d22e22fe0a794ec85f1b292443a1eac3",
+        "rgb.png": "ab6d8a08e113de3b0638f35c42de09819d4d5cb707bdb0c7862599b8ae757d31",
+        "occupancy.npy": "ce71e6e590162be3343277f3120893bd2ddd3ee67d99b2addde39e3aca76bddd",
+        "map-doors.png": "ce0961307ad312cfabedb2eedd89496b492018c89c9e1e00b6f9f09b3c5c211e",
+        "simulation.log": "5146c659eabdc5080375d18bb71d78d70b6ee7c29839c108561ab03ecc691c81",
+        "doors.log": "e795fc1266da711fb5e20e9236992ea6f14e23402edf11921cd1801f9582c6ce"
+      },
+      "final_history_recheck": {
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 0,
+          "reobserved": 0
+        },
+        "negative_observation": {
+          "completed": 27,
+          "duration_sim_sec": 3.266,
+          "final_objects": 0
+        }
+      }
+    },
+    {
+      "name": "transition-01",
+      "raw_path": "experiments/door_probe/yolo11-live-01/transition-01/check.json",
+      "raw_sha256": "d13514d932cca3b8409a54068ca4d2ed6cab4c79d6f13c0ecd4a7a978fc37422",
+      "report": {
+        "state": "closed",
+        "mode": "live_gazebo_yolo11_lidar_slam_door_transition",
+        "status": "complete",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "단일 문 모델·2m 정면·로봇 정지",
+          "순간 pose 변경이며 연속 경첩 회전 시험 아님",
+          "지도 정확도·실물·독립 장소 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_closed.sdf",
+        "world_sha256": "bb5c93a6aa108ad2860dba7a636e2ec99532759efcd5b27b4bf492799988f286",
+        "transition_control": {
+          "world": "door_metal_v1",
+          "hinge_position": [
+            0.0,
+            -0.6,
+            0.0
+          ]
+        },
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_closed.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2754839
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-closed-transition-01",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/transition-01/doors.json"
+          ],
+          "pgid": 2754840
+        },
+        "cold_start_initial": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 15,
+          "source_age_sec": 0.131,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        },
+        "transitions": [
+          {
+            "expected_state": "open",
+            "command": [
+              "gz",
+              "service",
+              "-s",
+              "/world/door_metal_v1/set_pose",
+              "--reqtype",
+              "gz.msgs.Pose",
+              "--reptype",
+              "gz.msgs.Boolean",
+              "--timeout",
+              "5000",
+              "--req",
+              "name: \"door_leaf\", position: {x: 0.0, y: -0.6, z: 0.0}, orientation: {z: -0.7071067811865475, w: 0.7071067811865476}"
+            ],
+            "stdout": "data: true\n\n",
+            "stderr": "",
+            "begin_sim_ns": 2573000000,
+            "history": [
+              {
+                "map_id": "live-door-probe-closed-transition-01",
+                "frame": "map",
+                "stamp_ns": 3473000000,
+                "observation_stamp_ns": 3367000000,
+                "epoch": 0,
+                "objects": [
+                  {
+                    "id": "door_000001",
+                    "position": [
+                      -0.05000006470974183,
+                      4.191309836388943e-08,
+                      0.0027256377781369467
+                    ],
+                    "state": "closed",
+                    "last_stamp_ns": 3367000000,
+                    "observations": 26
+                  }
+                ],
+                "counters": {
+                  "received_rgb": 27,
+                  "received_depth": 27,
+                  "received_camera_info": 27,
+                  "received_detections": 27,
+                  "synchronized": 27,
+                  "tf_timeout": 1,
+                  "processed": 26
+                },
+                "last_error": "관측 시각 TF 대기 초과"
+              },
+              {
+                "map_id": "live-door-probe-closed-transition-01",
+                "frame": "map",
+                "stamp_ns": 3523000000,
+                "observation_stamp_ns": 3367000000,
+                "epoch": 0,
+                "objects": [
+                  {
+                    "id": "door_000001",
+                    "position": [
+                      -0.05000006470974183,
+                      4.191309836388943e-08,
+                      0.0027256377781369467
+                    ],
+                    "state": "closed",
+                    "last_stamp_ns": 3367000000,
+                    "observations": 26
+                  }
+                ],
+                "counters": {
+                  "received_rgb": 27,
+                  "received_depth": 27,
+                  "received_camera_info": 27,
+                  "received_detections": 27,
+                  "synchronized": 27,
+                  "tf_timeout": 1,
+                  "processed": 26
+                },
+                "last_error": "관측 시각 TF 대기 초과"
+              },
+              {
+                "map_id": "live-door-probe-closed-transition-01",
+                "frame": "map",
+                "stamp_ns": 3673000000,
+                "observation_stamp_ns": 3565000000,
+                "epoch": 0,
+                "objects": [
+                  {
+                    "id": "door_000001",
+                    "position": [
+                      -0.05000006470974183,
+                      4.191309836388943e-08,
+                      0.0027256377781369467
+                    ],
+                    "state": "open",
+                    "last_stamp_ns": 3565000000,
+                    "observations": 29
+                  }
+                ],
+                "counters": {
+                  "received_rgb": 30,
+                  "received_depth": 30,
+                  "received_camera_info": 30,
+                  "received_detections": 30,
+                  "synchronized": 30,
+                  "tf_timeout": 1,
+                  "processed": 29
+                },
+                "last_error": "관측 시각 TF 대기 초과"
+              }
+            ],
+            "final": {
+              "id": "door_000001",
+              "position": [
+                -0.05000006470974183,
+                4.191309836388943e-08,
+                0.0027256377781369467
+              ],
+              "state": "open",
+              "last_stamp_ns": 3565000000,
+              "observations": 29
+            },
+            "confirmation_wall_sec": 0.6014933959813789,
+            "confirmation_sim_sec": 0.992,
+            "unknown_seen": false,
+            "rgb": "transition-open-rgb.png",
+            "rgb_sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+            "rgb_stamp_ns": 3630000000
+          },
+          {
+            "expected_state": "closed",
+            "command": [
+              "gz",
+              "service",
+              "-s",
+              "/world/door_metal_v1/set_pose",
+              "--reqtype",
+              "gz.msgs.Pose",
+              "--reptype",
+              "gz.msgs.Boolean",
+              "--timeout",
+              "5000",
+              "--req",
+              "name: \"door_leaf\", position: {x: 0.0, y: -0.6, z: 0.0}, orientation: {z: 0.0, w: 1.0}"
+            ],
+            "stdout": "data: true\n\n",
+            "stderr": "",
+            "begin_sim_ns": 3673000000,
+            "history": [
+              {
+                "map_id": "live-door-probe-closed-transition-01",
+                "frame": "map",
+                "stamp_ns": 3973000000,
+                "observation_stamp_ns": 3828000000,
+                "epoch": 0,
+                "objects": [
+                  {
+                    "id": "door_000001",
+                    "position": [
+                      -0.05000006470974183,
+                      4.191309836388943e-08,
+                      0.0027256377781369467
+                    ],
+                    "state": "open",
+                    "last_stamp_ns": 3828000000,
+                    "observations": 33
+                  }
+                ],
+                "counters": {
+                  "received_rgb": 34,
+                  "received_depth": 34,
+                  "received_camera_info": 34,
+                  "received_detections": 34,
+                  "synchronized": 34,
+                  "tf_timeout": 1,
+                  "processed": 33
+                },
+                "last_error": "관측 시각 TF 대기 초과"
+              },
+              {
+                "map_id": "live-door-probe-closed-transition-01",
+                "frame": "map",
+                "stamp_ns": 4023000000,
+                "observation_stamp_ns": 3895000000,
+                "epoch": 0,
+                "objects": [
+                  {
+                    "id": "door_000001",
+                    "position": [
+                      -0.05000006470974183,
+                      4.191309836388943e-08,
+                      0.0027256377781369467
+                    ],
+                    "state": "unknown",
+                    "last_stamp_ns": 3895000000,
+                    "observations": 34
+                  }
+                ],
+                "counters": {
+                  "received_rgb": 35,
+                  "received_depth": 35,
+                  "received_camera_info": 35,
+                  "received_detections": 35,
+                  "synchronized": 35,
+                  "tf_timeout": 1,
+                  "processed": 34
+                },
+                "last_error": "관측 시각 TF 대기 초과"
+              },
+              {
+                "map_id": "live-door-probe-closed-transition-01",
+                "frame": "map",
+                "stamp_ns": 4173000000,
+                "observation_stamp_ns": 4026000000,
+                "epoch": 0,
+                "objects": [
+                  {
+                    "id": "door_000001",
+                    "position": [
+                      -0.05000006470974183,
+                      4.191309836388943e-08,
+                      0.0027256377781369467
+                    ],
+                    "state": "closed",
+                    "last_stamp_ns": 4026000000,
+                    "observations": 36
+                  }
+                ],
+                "counters": {
+                  "received_rgb": 37,
+                  "received_depth": 37,
+                  "received_camera_info": 37,
+                  "received_detections": 37,
+                  "synchronized": 37,
+                  "tf_timeout": 1,
+                  "processed": 36
+                },
+                "last_error": "관측 시각 TF 대기 초과"
+              }
+            ],
+            "final": {
+              "id": "door_000001",
+              "position": [
+                -0.05000006470974183,
+                4.191309836388943e-08,
+                0.0027256377781369467
+              ],
+              "state": "closed",
+              "last_stamp_ns": 4026000000,
+              "observations": 36
+            },
+            "confirmation_wall_sec": 0.6258502589771524,
+            "confirmation_sim_sec": 0.353,
+            "unknown_seen": true,
+            "rgb": "transition-closed-rgb.png",
+            "rgb_sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+            "rgb_stamp_ns": 4224000000
+          }
+        ],
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 36,
+          "source_age_sec": 0.147,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        },
+        "save_response": {
+          "success": true,
+          "message": "문 지도 저장 완료"
+        },
+        "door_map": {
+          "map_id": "live-door-probe-closed-transition-01",
+          "frame": "map",
+          "stamp_ns": 4273000000,
+          "observation_stamp_ns": 4159000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                -0.05000006470974183,
+                4.191309836388943e-08,
+                0.0027256377781369467
+              ],
+              "state": "closed",
+              "last_stamp_ns": 4159000000,
+              "observations": 38
+            }
+          ],
+          "counters": {
+            "received_rgb": 39,
+            "received_depth": 39,
+            "received_camera_info": 39,
+            "received_detections": 39,
+            "synchronized": 39,
+            "tf_timeout": 1,
+            "processed": 38
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "detector_status": {
+          "counters": {
+            "received": 66,
+            "submitted": 44,
+            "replaced": 22,
+            "completed": 43
+          },
+          "epoch": 0,
+          "worker_pgid": 2754984,
+          "worker_start_ticks": 171486908,
+          "latency_sec": 0.038973447983153164,
+          "source_age_sec": 0.065,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-swatgqvm/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-swatgqvm/ultralytics-config",
+              "success": true,
+              "input_sha256": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 1,
+              "inference_wall_sec": 0.015625821019057184
+            }
+          },
+          "last_error": ""
+        },
+        "scan_count": 22,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "map_updates": 5,
+        "clock_publishers": 1,
+        "map_metadata": {
+          "width": 42,
+          "height": 280,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -2.070897,
+            -6.997793919471047,
+            0.0
+          ]
+        },
+        "rgb_stamp_ns": 4291000000,
+        "worker_group_gone": true,
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "24d51c3231bfea78c165bc3fccc936dd58a97de02062d69f7586bbbb88d92fa8"
+        },
+        "harness_sha256": "64b3363d88faa07f4e00bbe78d9f0b3688fafeca41288f79ca8b5ff3fc8c5ea9",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "64b3363d88faa07f4e00bbe78d9f0b3688fafeca41288f79ca8b5ff3fc8c5ea9",
+        "cold-start-history.json": "24d51c3231bfea78c165bc3fccc936dd58a97de02062d69f7586bbbb88d92fa8",
+        "doors.json": "f3179c11d47e0e2b70b66e07f367f321eabd28f23f98f2bf56777bafc8fde94f",
+        "rgb.png": "ad6cd3f81c5cf6ac98c41a279c85583faf9ca0fc2e60f17a63fae16bd76b9e7d",
+        "occupancy.npy": "da1760db694c8d10c808c194bb5ac221abb880963466a0241b69dd17c0bfb421",
+        "map-doors.png": "f5eb7c1dbea6c2cb4667dcfc2a5d3c14783bdc8d40a02cdd264eec84e3b23766",
+        "simulation.log": "3525bc8c0de7908ddd49a4cbef0b36a6dda73921667e78746e2f7bd901322803",
+        "doors.log": "c963576f5fc565cfef979a1a6ff5104aee223391e044be31eb984e81156927cb"
+      },
+      "final_history_recheck": {
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 38,
+          "source_age_sec": 0.114,
+          "door_id": "door_000001",
+          "position": [
+            -0.05000006470974183,
+            4.191309836388943e-08,
+            0.0027256377781369467
+          ]
+        }
+      }
+    },
+    {
+      "name": "baseline-closed-01",
+      "raw_path": "experiments/door_probe/yolo11-live-01/baseline-closed-01/check.json",
+      "raw_sha256": "e4e852ec4dbcbb12c41b01eeaf76c9d53d3155a93c9ea147ae92d239e11ca1ae",
+      "report": {
+        "state": "closed",
+        "mode": "live_gazebo_yoloe_lidar_slam_stationary",
+        "status": "complete",
+        "detector_config_path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person.json",
+        "detector_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+        "detector_backend": "yoloe",
+        "cold_start_requested": true,
+        "limitations": [
+          "단일 문 모델·2m 정면 정지 관측",
+          "지도 정확도·실물·독립 장소 성능 시험 아님",
+          "상태별 별도 시뮬레이션이며 실제 문 상태 전이 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_closed.sdf",
+        "world_sha256": "6c3eca3eae72fe1d39f9f253cd372f075bd4c7eef64d3672d39137c940c58cd6",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_closed.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2749622
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-closed-baseline-closed-01",
+            "detector_config:=/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/baseline-closed-01/doors.json"
+          ],
+          "pgid": 2749623
+        },
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 3,
+          "source_age_sec": 0.212,
+          "door_id": "door_000001",
+          "position": [
+            -0.050000010211790125,
+            3.73838519415338e-08,
+            0.00272563450439281
+          ]
+        },
+        "save_response": {
+          "success": true,
+          "message": "문 지도 저장 완료"
+        },
+        "door_map": {
+          "map_id": "live-door-probe-closed-baseline-closed-01",
+          "frame": "map",
+          "stamp_ns": 3877000000,
+          "observation_stamp_ns": 3565000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                -0.050000010211790125,
+                3.73838519415338e-08,
+                0.00272563450439281
+              ],
+              "state": "closed",
+              "last_stamp_ns": 3565000000,
+              "observations": 3
+            }
+          ],
+          "counters": {
+            "received_rgb": 4,
+            "received_depth": 4,
+            "received_camera_info": 4,
+            "received_detections": 4,
+            "synchronized": 4,
+            "no_detection": 1,
+            "processed": 3
+          },
+          "last_error": ""
+        },
+        "detector_status": {
+          "counters": {
+            "received": 60,
+            "submitted": 6,
+            "replaced": 54,
+            "completed": 5
+          },
+          "epoch": 0,
+          "worker_pgid": 2749726,
+          "worker_start_ticks": 171438623,
+          "latency_sec": 0.19151387899182737,
+          "source_age_sec": 0.226,
+          "metadata": {
+            "backend": "yoloe",
+            "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-_qw7yjya/ultralytics-config",
+            "last_run": {
+              "device": "0",
+              "release_policy": "keep",
+              "settings": {
+                "version": "0.1.0",
+                "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+                "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+                "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+                "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+                "device": "0",
+                "imgsz": 640,
+                "max_det": 300,
+                "iou": 0.45,
+                "agnostic_nms": false,
+                "release_policy": "keep",
+                "include_mask_area": false,
+                "classes": [
+                  {
+                    "prompt": "door",
+                    "class": "door",
+                    "report_class": "door",
+                    "candidate_for": null,
+                    "confidence": 0.1
+                  },
+                  {
+                    "prompt": "person",
+                    "class": "person",
+                    "report_class": "person",
+                    "candidate_for": null,
+                    "confidence": 0.25
+                  }
+                ]
+              },
+              "success": true,
+              "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+              "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+              "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+              "cuda_allocated_before_predict": 54404096,
+              "ultralytics": "8.4.191",
+              "input_size": [
+                640,
+                480
+              ],
+              "model_end2end_before_predict": false,
+              "backend_end2end": false,
+              "candidate_limit_reached": false,
+              "cuda_peak_allocated_predict": 84042752,
+              "release_completed": true,
+              "cuda_allocated_after_cleanup": 54404096,
+              "processing_time_seconds": 0.1410679510445334
+            }
+          },
+          "last_error": ""
+        },
+        "scan_count": 20,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "map_updates": 4,
+        "clock_publishers": 1,
+        "map_metadata": {
+          "width": 41,
+          "height": 221,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -2.070897,
+            -5.51795034698966,
+            0.0
+          ]
+        },
+        "rgb_stamp_ns": 3895000000,
+        "worker_group_gone": true,
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "096392d8d164bfe331a30b5ddccb34e55d9a326e9e32e62254696483f892748c"
+        },
+        "harness_sha256": "f9c8ced0cc790d729154363112a92c7525fabcf3b2624a934cb95bf4d8bb865d",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "f9c8ced0cc790d729154363112a92c7525fabcf3b2624a934cb95bf4d8bb865d",
+        "cold-start-history.json": "096392d8d164bfe331a30b5ddccb34e55d9a326e9e32e62254696483f892748c",
+        "doors.json": "449fc5f8a1ad7300f7d864855d34d9c02ee64643cfd132b60dfff5d9bb468841",
+        "rgb.png": "1ff8635076d8d364052b7643fe73df3682d37f92c5644d6f0c81debaf8657de7",
+        "occupancy.npy": "1f7e2ec9b35ad91ed7546272020f937e1eb30ed22e368d599ec1f756808f6cb0",
+        "map-doors.png": "d9c55fd9e10118735c714a19685f44136b26901052f9863760615d202d0660ed",
+        "simulation.log": "32af429c341f33dff5ad21c8e7ddb268eb4d8bb0f3b1163635b01ee896982dd6",
+        "doors.log": "010e3ae5b19dd49c46cb24220b65bf993fe7d2d2d469937796059c12709ed7c5"
+      },
+      "final_history_recheck": {
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 1,
+          "reobserved": 0,
+          "observations": 3,
+          "source_age_sec": 0.312,
+          "door_id": "door_000001",
+          "position": [
+            -0.050000010211790125,
+            3.73838519415338e-08,
+            0.00272563450439281
+          ]
+        }
+      }
+    },
+    {
+      "name": "baseline-open-01",
+      "raw_path": "experiments/door_probe/yolo11-live-01/baseline-open-01/check.json",
+      "raw_sha256": "f9971fd6e8d2447ddba7e2fd809cb7724d817e47c804ed7dc56ba163a5b0d0ea",
+      "report": {
+        "state": "open",
+        "mode": "live_gazebo_yoloe_lidar_slam_stationary",
+        "status": "failed",
+        "detector_config_path": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person.json",
+        "detector_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+        "detector_backend": "yoloe",
+        "cold_start_requested": true,
+        "limitations": [
+          "단일 문 모델·2m 정면 정지 관측",
+          "지도 정확도·실물·독립 장소 성능 시험 아님",
+          "상태별 별도 시뮬레이션이며 실제 문 상태 전이 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_open.sdf",
+        "world_sha256": "e8cdd10a74900ebcddb6635f31243f657466f4bceccf041c68d877e1ada39e5e",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_open.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2750990
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-open-baseline-open-01",
+            "detector_config:=/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/baseline-open-01/doors.json"
+          ],
+          "pgid": 2750991
+        },
+        "error": "TimeoutError: LiDAR 지도·실시간 문 상태 확인 시간 초과",
+        "last_door_map": {
+          "map_id": "live-door-probe-open-baseline-open-01",
+          "frame": "map",
+          "stamp_ns": 40583000000,
+          "observation_stamp_ns": 0,
+          "epoch": 0,
+          "objects": [],
+          "counters": {
+            "received_rgb": 242,
+            "received_depth": 242,
+            "received_camera_info": 242,
+            "received_detections": 242,
+            "synchronized": 242,
+            "no_detection": 242
+          },
+          "last_error": ""
+        },
+        "last_detector": {
+          "counters": {
+            "received": 615,
+            "submitted": 243,
+            "replaced": 371,
+            "completed": 242
+          },
+          "epoch": 0,
+          "worker_pgid": 2751093,
+          "worker_start_ticks": 171449242,
+          "latency_sec": 0.13737352896714583,
+          "source_age_sec": 0.176,
+          "metadata": {
+            "backend": "yoloe",
+            "source_config_sha256": "1cf3ae1332945d0421095704e21938dc931e9a1ebf723e6a6863aa10a57c3905",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-_ryztad8/ultralytics-config",
+            "last_run": {
+              "device": "0",
+              "release_policy": "keep",
+              "settings": {
+                "version": "0.1.0",
+                "prompts_config": "/home/blind/cv-middle/CV-VLM/recon-report/experiments/configs/yoloe-door-person-prompts.json",
+                "checkpoint": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/yoloe-26n-seg.pt",
+                "embeddings": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/recon-door-person.npz",
+                "manifest": "/home/blind/cv-middle/CV-VLM/recon-report/models/yoloe/preparation-door-person.json",
+                "device": "0",
+                "imgsz": 640,
+                "max_det": 300,
+                "iou": 0.45,
+                "agnostic_nms": false,
+                "release_policy": "keep",
+                "include_mask_area": false,
+                "classes": [
+                  {
+                    "prompt": "door",
+                    "class": "door",
+                    "report_class": "door",
+                    "candidate_for": null,
+                    "confidence": 0.1
+                  },
+                  {
+                    "prompt": "person",
+                    "class": "person",
+                    "report_class": "person",
+                    "candidate_for": null,
+                    "confidence": 0.25
+                  }
+                ]
+              },
+              "success": true,
+              "checkpoint_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+              "embeddings_sha256": "4400df642bf824ebb6cd07342647a156680d41443976c7a4bf08d3063bbff872",
+              "config_sha256": "b7420a403eb74675afe4d76f0d45641346251e90e2e003562aa68cf9a8b02088",
+              "cuda_allocated_before_predict": 54096384,
+              "ultralytics": "8.4.191",
+              "input_size": [
+                640,
+                480
+              ],
+              "model_end2end_before_predict": false,
+              "backend_end2end": false,
+              "candidate_limit_reached": false,
+              "cuda_peak_allocated_predict": 83735040,
+              "release_completed": true,
+              "cuda_allocated_after_cleanup": 54096384,
+              "processing_time_seconds": 0.12461126397829503
+            }
+          },
+          "last_error": ""
+        },
+        "worker_group_gone": true,
+        "failure_rgb": {
+          "path": "failure-rgb.png",
+          "sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+          "stamp_ns": 40525000000
+        },
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "d2fa2d98d782315221e64eaf54fae04c24d69c362d3a1e80b25a931f80346605"
+        },
+        "harness_sha256": "f9c8ced0cc790d729154363112a92c7525fabcf3b2624a934cb95bf4d8bb865d",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "f9c8ced0cc790d729154363112a92c7525fabcf3b2624a934cb95bf4d8bb865d",
+        "cold-start-history.json": "d2fa2d98d782315221e64eaf54fae04c24d69c362d3a1e80b25a931f80346605",
+        "simulation.log": "72b5d232514e720f88e9f0b4aa9967e5675c8c58d23605f7965dd87df4e246b7",
+        "doors.log": "23986f4375951be5157c1d25b8c92949c57624ff26b3f071db8b2f0d6d13a6ea"
+      }
+    },
+    {
+      "name": "cold-open-01",
+      "raw_path": "experiments/door_probe/yolo11-live-01/cold-open-01/check.json",
+      "raw_sha256": "96ce7b266739ab71a142fe990967e3c47106b120220ab876fae7b4694aca1ff4",
+      "report": {
+        "state": "open",
+        "mode": "live_gazebo_yolo11_lidar_slam_stationary",
+        "status": "failed",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "단일 문 모델·2m 정면 정지 관측",
+          "지도 정확도·실물·독립 장소 성능 시험 아님",
+          "상태별 별도 시뮬레이션이며 실제 문 상태 전이 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_open.sdf",
+        "world_sha256": "e8cdd10a74900ebcddb6635f31243f657466f4bceccf041c68d877e1ada39e5e",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/metal-scene-01/door_metal_open.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2742558
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-open-cold-open-01",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/cold-open-01/doors.json"
+          ],
+          "pgid": 2742559
+        },
+        "error": "RuntimeError: cold-start 검사에서 알려진 문 재관측 사용",
+        "last_door_map": {
+          "map_id": "live-door-probe-open-cold-open-01",
+          "frame": "map",
+          "stamp_ns": 2981000000,
+          "observation_stamp_ns": 2377000000,
+          "epoch": 0,
+          "objects": [
+            {
+              "id": "door_000001",
+              "position": [
+                -0.05000006470974183,
+                4.191309836388943e-08,
+                0.0027256377781369467
+              ],
+              "state": "open",
+              "last_stamp_ns": 2377000000,
+              "observations": 15
+            }
+          ],
+          "counters": {
+            "received_rgb": 18,
+            "received_depth": 18,
+            "received_camera_info": 18,
+            "received_detections": 18,
+            "synchronized": 18,
+            "tf_timeout": 1,
+            "processed": 15
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "last_detector": {
+          "counters": {
+            "received": 48,
+            "submitted": 27,
+            "replaced": 21,
+            "completed": 26
+          },
+          "epoch": 0,
+          "worker_pgid": 2742690,
+          "worker_start_ticks": 171385373,
+          "latency_sec": 0.042874693986959755,
+          "source_age_sec": 0.065,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-no7ulqz3/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-no7ulqz3/ultralytics-config",
+              "success": true,
+              "input_sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 1,
+              "inference_wall_sec": 0.018941558024380356
+            }
+          },
+          "last_error": ""
+        },
+        "worker_group_gone": true,
+        "failure_rgb": {
+          "path": "failure-rgb.png",
+          "sha256": "a55231cb34c748ee2cb0c2542b5a411ba6f1f32fcf1ddc260e198c0dbf41e460",
+          "stamp_ns": 3103000000
+        },
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "c4f2c4869b017450f69572704af1410077cd61ae1efe09af0d0543a2361e4620"
+        },
+        "harness_sha256": "c18b3aadadbbcb8a5d24c25ea9908a2557289e8fc0a5c98169dd1308878a0e4e",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "c18b3aadadbbcb8a5d24c25ea9908a2557289e8fc0a5c98169dd1308878a0e4e",
+        "cold-start-history.json": "c4f2c4869b017450f69572704af1410077cd61ae1efe09af0d0543a2361e4620",
+        "simulation.log": "d589481bbf65422d1eba5d51325442a56f0bf65fdf3c402cb8ea58b763c786f7",
+        "doors.log": "093ef6a15d2eafd06b222b1506a91b38c1c3f82229c6483ac4ead66502f2a107"
+      }
+    },
+    {
+      "name": "negative-01",
+      "raw_path": "experiments/door_probe/yolo11-live-01/negative-01/check.json",
+      "raw_sha256": "63fb8c16b9090ed88e5cf0d3e0e91022dde5c66585b0f4ffbf452c69a1436d3f",
+      "report": {
+        "state": "negative",
+        "mode": "live_gazebo_yolo11_lidar_slam_stationary",
+        "status": "failed",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "문 없는 벽의 2m 정면 정지 관측",
+          "최소 3sim초·완료 묶음 10개 확인",
+          "다양한 음성 장면·실물·독립 장소 성능 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_negative.sdf",
+        "world_sha256": "fa38eafd2028e5837d18e7d2a239e6e73c47cf9efbe18c76d6ad1aca79092ce6",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_negative.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2746798
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-negative-negative-01",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/negative-01/doors.json"
+          ],
+          "pgid": 2746799
+        },
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 0,
+          "reobserved": 0
+        },
+        "negative_observation": {
+          "completed": 26,
+          "duration_sim_sec": 3.171,
+          "final_objects": 0
+        },
+        "error": "RuntimeError: 문 저장 실패",
+        "last_door_map": {
+          "map_id": "live-door-probe-negative-negative-01",
+          "frame": "map",
+          "stamp_ns": 3271000000,
+          "observation_stamp_ns": 0,
+          "epoch": 0,
+          "objects": [],
+          "counters": {
+            "received_rgb": 28,
+            "received_depth": 28,
+            "received_camera_info": 28,
+            "received_detections": 28,
+            "synchronized": 28,
+            "no_detection": 27,
+            "tf_timeout": 1
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "last_detector": {
+          "counters": {
+            "received": 50,
+            "submitted": 29,
+            "replaced": 21,
+            "completed": 29
+          },
+          "epoch": 0,
+          "worker_pgid": 2746904,
+          "worker_start_ticks": 171414413,
+          "latency_sec": 0.03994548198534176,
+          "source_age_sec": 0.07,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-wmnu7t_d/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-wmnu7t_d/ultralytics-config",
+              "success": true,
+              "input_sha256": "ab6d8a08e113de3b0638f35c42de09819d4d5cb707bdb0c7862599b8ae757d31",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 0,
+              "inference_wall_sec": 0.017778431996703148
+            }
+          },
+          "last_error": ""
+        },
+        "worker_group_gone": true,
+        "failure_rgb": {
+          "path": "failure-rgb.png",
+          "sha256": "ab6d8a08e113de3b0638f35c42de09819d4d5cb707bdb0c7862599b8ae757d31",
+          "stamp_ns": 3301000000
+        },
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "228e7dd02e8582cfbf899de8e7e87368932abbc4b770250786571e60181449e7"
+        },
+        "harness_sha256": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "87f611acefa10f03633bb0f3a3733891476daa02041614683a0b59e498eae9c1",
+        "cold-start-history.json": "228e7dd02e8582cfbf899de8e7e87368932abbc4b770250786571e60181449e7",
+        "simulation.log": "a22b361e5eb6cdbe937792908c9c52329de3903dc7e06935e7c44d134fa01eb4",
+        "doors.log": "1987b216690013b6a7524bf0f62111188a5881e0bff5daa1bda3660bd02604d4"
+      }
+    },
+    {
+      "name": "negative-03",
+      "raw_path": "experiments/door_probe/yolo11-live-01/negative-03/check.json",
+      "raw_sha256": "ad07168f4fb7424191752750cb5e98cdc172319751cdaeaee56ea0a23cd8681b",
+      "report": {
+        "state": "negative",
+        "mode": "live_gazebo_yolo11_lidar_slam_stationary",
+        "status": "complete",
+        "detector_config_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+        "detector_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+        "detector_backend": "yolo11",
+        "cold_start_requested": true,
+        "limitations": [
+          "문 없는 벽의 2m 정면 정지 관측",
+          "최소 3sim초·완료 묶음 10개 확인",
+          "다양한 음성 장면·실물·독립 장소 성능 시험 아님"
+        ],
+        "world_path": "/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_negative.sdf",
+        "world_sha256": "fa38eafd2028e5837d18e7d2a239e6e73c47cf9efbe18c76d6ad1aca79092ce6",
+        "simulation": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_slam",
+            "simulation.launch.py",
+            "gui:=false",
+            "world:=/home/blind/cv-middle/prometheus-mapping/src/mapping_gazebo/worlds/door_probe_negative.sdf",
+            "x:=-2.082373",
+            "y:=-7.9091e-05",
+            "yaw:=-0.0"
+          ],
+          "pgid": 2758800
+        },
+        "doors": {
+          "command": [
+            "ros2",
+            "launch",
+            "mapping_semantic",
+            "live_doors.launch.py",
+            "recon_root:=/home/blind/cv-middle/CV-VLM/recon-report",
+            "reobserve_known_doors:=false",
+            "map_id:=live-door-probe-negative-negative-03",
+            "detector_config:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/detector.json",
+            "output_path:=/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-live-01/negative-03/doors.json"
+          ],
+          "pgid": 2758801
+        },
+        "cold_start_initial": {
+          "initial_objects": 0,
+          "final_objects": 0,
+          "reobserved": 0
+        },
+        "save_response": {
+          "success": false,
+          "message": "관측과 현재 지도 보정 TF가 필요합니다"
+        },
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 0,
+          "reobserved": 0
+        },
+        "negative_observation": {
+          "completed": 28,
+          "duration_sim_sec": 3.299,
+          "final_objects": 0
+        },
+        "door_map": {
+          "map_id": "live-door-probe-negative-negative-03",
+          "frame": "map",
+          "stamp_ns": 3299000000,
+          "observation_stamp_ns": 0,
+          "epoch": 0,
+          "objects": [],
+          "counters": {
+            "received_rgb": 28,
+            "received_depth": 28,
+            "received_camera_info": 28,
+            "received_detections": 28,
+            "synchronized": 28,
+            "no_detection": 27,
+            "tf_timeout": 1
+          },
+          "last_error": "관측 시각 TF 대기 초과"
+        },
+        "detector_status": {
+          "counters": {
+            "received": 50,
+            "submitted": 29,
+            "replaced": 21,
+            "completed": 28
+          },
+          "epoch": 0,
+          "worker_pgid": 2758904,
+          "worker_start_ticks": 171519871,
+          "latency_sec": 0.040676239994354546,
+          "source_age_sec": 0.095,
+          "metadata": {
+            "backend": "yolo11",
+            "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+            "release_policy_override": "keep",
+            "cache_override": "/tmp/find-door-live-twsy0vej/ultralytics-config",
+            "last_run": {
+              "model_backend": "yolo11",
+              "training_target": "doorway",
+              "checkpoint_sha256": "818142878071d643a9d6d5d5f703272b8eb95677c93aae09e47a00a03a6dd144",
+              "source_config_sha256": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+              "ultralytics_version": "8.4.191",
+              "torch_version": "2.14.1+cu126",
+              "device": "0",
+              "release_policy": "keep",
+              "cache_override": "/tmp/find-door-live-twsy0vej/ultralytics-config",
+              "success": true,
+              "input_sha256": "ab6d8a08e113de3b0638f35c42de09819d4d5cb707bdb0c7862599b8ae757d31",
+              "input_size": [
+                640,
+                480
+              ],
+              "imgsz": 640,
+              "confidence": 0.1,
+              "iou": 0.45,
+              "max_det": 300,
+              "detections": 0,
+              "inference_wall_sec": 0.016547787992749363
+            }
+          },
+          "last_error": ""
+        },
+        "scan_count": 17,
+        "map_publishers": [
+          "slam_toolbox"
+        ],
+        "map_updates": 3,
+        "clock_publishers": 1,
+        "map_metadata": {
+          "width": 41,
+          "height": 221,
+          "resolution": 0.05000000074505806,
+          "origin": [
+            -2.070897,
+            -5.518826971662284,
+            0.0
+          ]
+        },
+        "rgb_stamp_ns": 3234000000,
+        "worker_group_gone": true,
+        "source_sha256": {
+          "live_detector.py": "cd9140941a069ddb866fa3e88312d8754a24eb9caa4e73077afe100b331cce63",
+          "detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+          "door_node.py": "24b343565ee5368892b03322be52b768fd666e75e98c8165956f57c881e72081",
+          "doorway.py": "758841cdd77611e7865589a0122a0ca38c4c30fe422e2b20d6870ce09434de8e",
+          "door_state.py": "7227cee8228f939b212e156b52b25b4a0e0b5aae86d26a447a374b8fdde0f13b",
+          "door_map.py": "816f34ea930c6a7e6cbe8ee13bdaa1068a6142f66f91efc3dde10866dca04762",
+          "door_position.py": "0432eb98e6dc27c190bd6ca5e97fd2d9e8b3930151ba41a6ed3a7b0bcaef8144",
+          "door_reobservation.py": "4c49e7a88e87fd09ce94365271e0724944add42cb9cba15428792bcb08c3562f",
+          "yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174"
+        },
+        "cold_start_history": {
+          "path": "cold-start-history.json",
+          "sha256": "9289b003bfab41659beb53111adc1a51b8ce4ded52072879bebb1304e14c73d0"
+        },
+        "harness_sha256": "5994af7134bb099f59040072ae15556933bb7ca5bb1aa33aa8ee434aee4c8a32",
+        "dds_profile": "/home/blind/worker_following_ws/src/wf_gazebo/config/fastdds_bridge.xml"
+      },
+      "artifacts": {
+        "executed-harness.py": "5994af7134bb099f59040072ae15556933bb7ca5bb1aa33aa8ee434aee4c8a32",
+        "cold-start-history.json": "9289b003bfab41659beb53111adc1a51b8ce4ded52072879bebb1304e14c73d0",
+        "rgb.png": "ab6d8a08e113de3b0638f35c42de09819d4d5cb707bdb0c7862599b8ae757d31",
+        "occupancy.npy": "d51bf767b2eb6674c4dccab4b027d803f52911d22a83806bcc9ec7849a5eed3c",
+        "map-doors.png": "19d0f76573ea9d09561038f836dc607957d4c7b4635c9a159433dbc04aa98643",
+        "simulation.log": "b28ef5d182afe51d637eaeb4558e0f6d96cc27a85d686236a4a18029d9f45daa",
+        "doors.log": "5b9cc9d191cffedb95f1505918ba16b88fe6a95851e8c8485bcea2fe030a5a58"
+      },
+      "final_history_recheck": {
+        "cold_start": {
+          "initial_objects": 0,
+          "final_objects": 0,
+          "reobserved": 0
+        },
+        "negative_observation": {
+          "completed": 28,
+          "duration_sim_sec": 3.299,
+          "final_objects": 0
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "scripts/door_probe/yolo11_live_report.py": "71adeb875c186d8d0f7beeee284e44332f2fb11c5fb1204f60c1f05dabd6e821",
+    "scripts/door_probe/live_check.py": "5994af7134bb099f59040072ae15556933bb7ca5bb1aa33aa8ee434aee4c8a32",
+    "src/mapping_semantic/mapping_semantic/yolo11_doorway.py": "ef6d19b6ec55f090586f5edfae14287082e608af0e1631ecf6282ae9e4947174",
+    "src/mapping_semantic/mapping_semantic/detector_worker.py": "2306a7ad54c572869263e0eaf38ffc631c46676900f53451a990a0db7be23245",
+    "experiments/door_probe/yolo11-live-01/detector.json": "92b74d156947affec9e348e9e0324b209512b7212fa308eef3be0bcf2726b82c",
+    "experiments/door_probe/yolo11-live-01/worker-probe.json": "9e5cd3a953687596ed4bb45371158f689e79dce454de33a6a062345e9697caa1",
+    "experiments/door_probe/yolo11-live-01/invalid-first-run.json": "efe9c45d75fa44f425c962353cb589523d8858186d6b6a04e61aa22f90cb3d43"
+  },
+  "figures": {
+    "docs/images/door-yolo11-live/stationary.png": "988e1fc76fb1600556656e6982610553661b7600b153de5ab1d82b9bd8407f3e",
+    "docs/images/door-yolo11-live/transition.png": "2562e44a136167529cc4e9e6ef3e8c19d81583344629a1100e6a5a7ab8c95be2"
+  }
+}
