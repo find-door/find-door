@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "purpose": "AI_label_small_development_training_not_independent_test",
+  "checkpoint": {
+    "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/yolo11-pilot-01/assets/yolo11n.pt",
+    "sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+    "source": {
+      "browser_download_url": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11n.pt",
+      "digest": "sha256:0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+      "id": 340060970,
+      "name": "yolo11n.pt",
+      "size": 5613764
+    }
+  },
+  "versions": {
+    "ultralytics": "8.4.191",
+    "torch": "2.14.1+cu126",
+    "torchvision": "0.29.1+cu126"
+  },
+  "datasets": {
+    "leaf": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/training-data-01/leaf",
+      "manifest_sha256": "75bfca7aa665e51f72134e99dfe596732dd8902459fec9ae62ccb4d766fa70ca",
+      "yaml_sha256": "6189a004abd3f3bf9efc7147a525aac4f22db72714d5a9a79a9869b1296b4483",
+      "report_sha256": "f84d825d91ababaad58669d37101fbe45feafe11b704e519f86a1f8d1c63d314"
+    },
+    "doorway": {
+      "path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/training-data-01/doorway",
+      "manifest_sha256": "83b60854e05d7bf20707cad91b81a702584e6cc3468b93b36c058be73abec7e9",
+      "yaml_sha256": "d1fb3815813a86d0d96b0349982ef7f81d9e5316ebea1c18eda961c58a17d15a",
+      "report_sha256": "8bf247da18f42bca13e78b099ea93524b2f8e620ce50c9c76cf49a8e72f0cc32"
+    }
+  },
+  "validation_frame_ids": [
+    "real_oi_28f45b12ee25ae19",
+    "real_oi_32255e4104d8f9b7",
+    "real_oi_44a1c33f790c5687",
+    "real_oi_294885a08c11dfa4",
+    "real_oi_e6d27669b2efb650",
+    "real_oi_05042cfa44abe4f6",
+    "real_oi_1229d5e203956ac6"
+  ],
+  "gazebo": {
+    "manifest_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/reviewed-nine-01/dataset-reviewed.json",
+    "manifest_sha256": "1ba7b7575744646e20baabf5058895c794f36e0c5d586338eebde7114d30943f",
+    "baseline_predictions_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/reviewed-nine-01/completed/predictions.json",
+    "baseline_predictions_sha256": "446b406dabb9cd43bf65e3b3bbf9098028fcb34a5f8e6df26c8b685cdc702ee2"
+  },
+  "real_baseline": {
+    "predictions_path": "/home/blind/cv-middle/prometheus-mapping/experiments/door_probe/real-predictions-01/predictions.json",
+    "predictions_sha256": "e4a584e94e5b2332fc7c4e45da9f933910784a1b7d9ef953088942dcad1ba4d5"
+  },
+  "training": {
+    "epochs": 30,
+    "batch": 2,
+    "nbs": 2,
+    "imgsz": 640,
+    "device": 0,
+    "workers": 0,
+    "amp": false,
+    "optimizer": "AdamW",
+    "lr0": 0.001,
+    "lrf": 0.1,
+    "warmup_epochs": 2.0,
+    "warmup_bias_lr": 0.0,
+    "patience": 0,
+    "seed": 20261103,
+    "deterministic": true,
+    "cache": false,
+    "plots": false,
+    "val": true,
+    "save": true,
+    "save_period": -1,
+    "mosaic": 0.5,
+    "close_mosaic": 5,
+    "mixup": 0.0,
+    "fliplr": 0.5,
+    "cos_lr": true,
+    "verbose": false,
+    "resume": false
+  },
+  "inference": {
+    "imgsz": 640,
+    "conf": 0.1,
+    "iou": 0.45,
+    "max_det": 300
+  },
+  "checkpoint_selection": "Ultralytics best.pt: validation mAP50-95 fitness, development selection only",
+  "limitations": [
+    "학습32장/개발검증7장,AI라벨이며독립시험아님",
+    "실제RGB와Gazebo개발9장결과별도",
+    "기존가중치·ROS기본설정은변경하지않음",
+    "실험종료후같은검증RGB·IoU.5·confidence.1로기존C와비교"
+  ]
+}

@@ -393,3 +393,16 @@ Open Images는 작성자 그룹별 seed·해시·라벨 층화로 validation 7�
 이는 이미 관찰한 AI 자료의 소규모 개발 입력이며 사람 정답·독립 시험셋이 아니다. 학습·새 가중치·모델 교체는 실행하지 않았다.
 [그룹 감사](data/door-training-group-audit.json)·[고정 계획](data/door-training-split-plan.json)·[코드/입출력 해시](data/door-training-data-summary.json)를 보존했다.
 관련 11검사·전체 오프라인 799검사 통과, ROS 전용 5검사 건너뜀. ROS 제품 패키지는 변경하지 않았다.
+
+## YOLO11 첫 개발 학습 — 2026-11-03
+
+기준 `53a800d` 이후 `v0.2.0-door-yolo11-pilot.1`에서 [두 target의 CUDA 학습](door-yolo11-pilot.md)을 실행했다.
+공식 YOLO11n 5,613,764bytes의 asset SHA를 확인해 받았고 기존 venv로 문짝·출입구를 각각 30 epoch/480 batch 학습했다.
+32 train·7 AI validation·seed/설정/입력을 고정하고 best.pt로 실제 7장·Gazebo 사용자 개발 9장을 각각 추론했다.
+실제 validation 문짝은 기존 TP0/FP1/FN3→후보0/0/3, 출입구는1/0/2→2/2/1이다.
+Gazebo 문짝은4/0/5→0/0/9, 출입구는4/0/5→4/7/5다. 높은 보조 시점의 완전 열림 TP가 1개 생겼지만 낮은 로봇 시점은 미해결이다.
+AI 라벨·개발 자료·환경별/target별 분모를 유지하며 상태·지도·독립 성능으로 해석하지 않는다. 기본 모델은 변경하지 않았다.
+초기 CUDA 순서 오류의 0 epoch 실패와 실행 소스를 보존했고, 상대 출력 경로 문제는 생성물을 동일 SHA로 복사하고 절대 경로로 보완했다.
+[프로토콜](data/door-yolo11-pilot-protocol.json)·[가중치/소스/실행/결과/복사/그림 해시](data/door-yolo11-pilot-summary.json)를 보존했다.
+관련 12검사·전체 오프라인 811검사 통과, ROS 전용 5검사 건너뜀. 문서 66개 링크·앵커 오류 0.
+실제 두 학습·32추론 오류 0·프로세스 그룹 종료 확인. 추가 이미지의 확장자·깨진 symlink와 관계없이 목록 일치를 검사한다.
