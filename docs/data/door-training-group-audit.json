@@ -1,0 +1,94 @@
+{
+  "method": "AI_visual_and_source_metadata_audit",
+  "human_verified_scene_independence": false,
+  "source_split_counts": {
+    "test": 30,
+    "validation": 20
+  },
+  "source_group_counts": {
+    "DeepDoors2": 30,
+    "Open Images V7": 20
+  },
+  "openimages_author_groups": 20,
+  "deepdoors_training_group": "legacy_collection_DeepDoors2",
+  "visual_repetition_candidates": [
+    {
+      "candidate_id": "postered_room",
+      "frame_ids": [
+        "real_dd2_closed_Door0016",
+        "real_dd2_semi_Door2081"
+      ],
+      "visual_evidence": "종이·지도·그림과 다리미판",
+      "certainty": "strong_visual_match"
+    },
+    {
+      "candidate_id": "small_glass_porch",
+      "frame_ids": [
+        "real_dd2_closed_Door0245",
+        "real_dd2_open_Door1208",
+        "real_dd2_semi_Door2372"
+      ],
+      "visual_evidence": "동일 현관 유리·둥근 손잡이·표찰·화분대·석재 문틀",
+      "certainty": "strong_visual_match"
+    },
+    {
+      "candidate_id": "large_glass_stone",
+      "frame_ids": [
+        "real_dd2_closed_Door0343",
+        "real_dd2_semi_Door2245"
+      ],
+      "visual_evidence": "큰 유리·흰 하부 패널·레버 손잡이·석재 문틀",
+      "certainty": "strong_visual_match"
+    },
+    {
+      "candidate_id": "coat_flower_hall",
+      "frame_ids": [
+        "real_dd2_open_Door1146",
+        "real_dd2_semi_Door2208"
+      ],
+      "visual_evidence": "파란 옷·꽃병·작은 탁자·후경 격자 유리문",
+      "certainty": "strong_visual_match"
+    },
+    {
+      "candidate_id": "azulejo_glass",
+      "frame_ids": [
+        "real_dd2_open_Door1115",
+        "real_dd2_semi_Door2016"
+      ],
+      "visual_evidence": "청백색 벽 타일·목재 격자 유리문",
+      "certainty": "strong_visual_match"
+    },
+    {
+      "candidate_id": "white_glass_corridor",
+      "frame_ids": [
+        "real_dd2_open_Door1081",
+        "real_dd2_semi_Door2146"
+      ],
+      "visual_evidence": "흰 유리 요소·끝벽 장식·서랍장·끝방 출입구",
+      "certainty": "strong_visual_match"
+    },
+    {
+      "candidate_id": "metal_double_candidate",
+      "frame_ids": [
+        "real_dd2_open_Door1343",
+        "real_dd2_open_Door1372"
+      ],
+      "visual_evidence": "금속 양개문·삼각 보강판·가로 이음선, 반대 시점 후보",
+      "certainty": "unconfirmed_visual_candidate"
+    },
+    {
+      "candidate_id": "kitchen_glass_candidate",
+      "frame_ids": [
+        "real_dd2_closed_Door0401",
+        "real_dd2_open_Door1245"
+      ],
+      "visual_evidence": "흰 문짝·큰 유리·옆 냉장고·부엌 배치",
+      "certainty": "unconfirmed_visual_candidate"
+    }
+  ],
+  "limitations": [
+    "시각 소그룹은 장소 독립성 증명이 아니므로 DeepDoors2 collection 전체를 한 분할에 유지",
+    "Open Images 작성자 차이는 촬영 장소·세션 독립성 증명이 아님",
+    "새 독립 시험 분할 없음"
+  ]
+}

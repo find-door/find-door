@@ -382,3 +382,14 @@ AI 작성 라벨을 참조했으며 사람 정답·새 독립 시험·상태 분
 01의 부모/subset 해시 필드 혼동을 02에서 바로잡았으며 채점 수치는 동일하다.
 두 그룹 CLI 재현·모든 계산 필드/대응/해시·상태/실패 집계 일치를 확인했고 문서 64개 링크·앵커 오류 0이다.
 제품·평가 코드 변경 없이 기록·그림만 추가했으므로 전체 단위 테스트·패키지 빌드는 반복하지 않았다.
+
+## 출처 그룹을 보존한 개발 학습 입력 — 2026-11-03
+
+기준 `d34da88` 이후 `v0.2.0-door-training-data.1`에서 [문짝/출입구별 학습 입력](door-training-data.md)을 준비했다.
+반복되는 문·복도를 시각 확인했고 DeepDoors2 30장은 collection 전체를 한 train 그룹으로 유지했다.
+Open Images는 작성자 그룹별 seed·해시·라벨 층화로 validation 7그룹을 고정했다. 예측·성능을 분할 입력으로 쓰지 않았다.
+두 target 모두 train 32장(양성25/음성7)·validation 7장(양성3/음성4)이며 같은 검증 RGB를 사용한다.
+보류 9장·target 불명 2장씩 제외하고 원본·기존 Gazebo·사용자 검수는 보존했다. 상류 test/validation 출처를 기록했다.
+이는 이미 관찰한 AI 자료의 소규모 개발 입력이며 사람 정답·독립 시험셋이 아니다. 학습·새 가중치·모델 교체는 실행하지 않았다.
+[그룹 감사](data/door-training-group-audit.json)·[고정 계획](data/door-training-split-plan.json)·[코드/입출력 해시](data/door-training-data-summary.json)를 보존했다.
+관련 11검사·전체 오프라인 799검사 통과, ROS 전용 5검사 건너뜀. ROS 제품 패키지는 변경하지 않았다.

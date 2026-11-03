@@ -6,6 +6,9 @@
 
 ## 확인한 사실
 
+아래 표는 최초 점검 시점이다. 이후 [실제 AI 라벨](door-ai-labels.md)을 작성하고
+[출처 그룹별 개발 학습 입력](door-training-data.md)을 준비했다. 사람 검수·독립 시험 준비와 구분한다.
+
 | 항목 | 확인 결과 |
 |---|---|
 | 검수된 자료 | 동일 Gazebo family/development 그룹의 양성 9장 |
