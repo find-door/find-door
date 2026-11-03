@@ -406,3 +406,18 @@ AI 라벨·개발 자료·환경별/target별 분모를 유지하며 상태·지
 [프로토콜](data/door-yolo11-pilot-protocol.json)·[가중치/소스/실행/결과/복사/그림 해시](data/door-yolo11-pilot-summary.json)를 보존했다.
 관련 12검사·전체 오프라인 811검사 통과, ROS 전용 5검사 건너뜀. 문서 66개 링크·앵커 오류 0.
 실제 두 학습·32추론 오류 0·프로세스 그룹 종료 확인. 추가 이미지의 확장자·깨진 symlink와 관계없이 목록 일치를 검사한다.
+
+## 출입구 학습 예산 비교 — 2026-11-03
+
+기준 `1ab8a4b` 이후 `v0.2.0-door-yolo11-budget.1`에서 [동일 입력의 150 epoch 재학습](door-yolo11-budget.md)을 수행했다.
+초기 checkpoint·32 train/7 AI validation·seed·추론 조건을 유지하고 명시적 학습 변경은 epochs30→150이다.
+총 epoch에 따른 cosine LR·mosaic 종료 일정도 달라져 업데이트 수만의 인과 비교는 아니다.
+150 epoch/2,400 batch를 315.73초에 완료했고 주 비교 16회 추론 오류는 0이다.
+출입구 기준 실제 AI 검증은 기존 C 1/0/2→30 epoch 2/2/1→150 epoch 1/4/2,
+Gazebo는 4/0/5→4/7/5→8/2/1(TP/FP/FN)이다.
+Gazebo 완전 열림 3조건이 낮은 시점까지 TP1/FP0으로 대응됐다. 닫힘 3m 낮은 시점 누락·반열림 3m 추가 박스 2개는 남았다.
+실시간 상태·지도 등록을 검증한 것은 아니며 실제 AI 검증 악화로 기본 모델은 유지했다.
+별도 conf=0.001 점수 진단 32회 추론 오류는 0이고 주 conf=0.1은 변경하지 않았다.
+[프로토콜](data/door-yolo11-budget-protocol.json)·[하네스/가중치/CSV/결과/진단/그림 해시](data/door-yolo11-budget-summary.json)를 보존했다.
+6조건 CLI 재현과 모든 공통 계산 필드·대응·입력 해시 일치를 확인했다.
+제품·하네스 변경 없이 모델 실험만 추가해 전체 단위 검사는 반복하지 않았다.
