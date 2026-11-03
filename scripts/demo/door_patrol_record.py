@@ -242,9 +242,12 @@ def main():
             draw.text((5, 925), '로봇 RGB', font=small, fill='white', stroke_width=1, stroke_fill='black')
             mapping = current['map']
             objects = mapping['objects']
-            counts = Counter(obj.get('state', 'unknown') for obj in objects)
-            draw.text((240, 934), f'실제 문 지도: {len(objects)}개  ·  열림 {counts["open"]} / '
-                      f'닫힘 {counts["closed"]} / 불명 {counts["unknown"]}', font=large, fill='white')
+            counts = Counter(obj.get('last_confirmed_state', obj.get('state', 'unknown'))
+                             for obj in objects)
+            observation_counts = Counter(obj.get('observation_status', 'unavailable')
+                                         for obj in objects)
+            draw.text((240, 934), f'마지막 확인: 문 {len(objects)}개  ·  열림 {counts["open"]} / '
+                      f'닫힘 {counts["closed"]} / 미확정 {counts["unknown"]}', font=large, fill='white')
             progress = current['patrol'] or dict(stage='waiting', label='순찰 시작 대기')
             label = str(progress.get('label', progress.get('stage', '상태 대기')))[:58]
             draw.text((240, 982), '현재 동작: ' + label, font=medium, fill=(180, 225, 255))
@@ -252,11 +255,17 @@ def main():
             pose_text = ''
             if isinstance(pose, list) and len(pose) == 3:
                 pose_text = f' · odom ({pose[0]:.2f}, {pose[1]:.2f})m'
-            draw.text((240, 1027), f'영상 경과 {elapsed:05.1f}s{pose_text} · 보지 못한 문의 상태는 TTL 후 불명',
+            draw.text((240, 1027), f'영상 경과 {elapsed:05.1f}s{pose_text} · 마지막 상태와 현재 관측 여부 분리',
                       font=small, fill=(185, 200, 215))
-            draw.text((1420, 942), '빨강: 닫힘 / 초록: 열림', font=small, fill=(200, 215, 230))
-            draw.text((1420, 981), '노랑: 불명 · 지도는 실제 SLAM', font=small, fill=(200, 215, 230))
-            draw.text((1420, 1021), '시험 경로 순찰 · 실물 촬영 아님', font=small, fill=(200, 215, 230))
+            observation_label = (f'현재 관측: 확정 {observation_counts["confirmed"]} / '
+                                 f'불명 {observation_counts["uncertain"]} / '
+                                 f'만료 {observation_counts["stale"]}')
+            if observation_counts['unavailable']:
+                observation_label += f' / 미상 {observation_counts["unavailable"]}'
+            draw.text((1420, 942), observation_label, font=small, fill=(200, 215, 230))
+            draw.text((1420, 981), '옅은색: 과거 확인 · 현재 미확인', font=small, fill=(200, 215, 230))
+            draw.text((1420, 1021), '빨강: 닫힘 / 초록: 열림 · 실물 촬영 아님',
+                      font=small, fill=(200, 215, 230))
             pixels = cv2.cvtColor(np.asarray(canvas), cv2.COLOR_RGB2BGR)
             record = dict(capture=captures, capture_wall_ns=capture_wall, elapsed_sec=elapsed,
                           map_stamp_ns=mapping.get('stamp_ns'), rgb_stamp_ns=rgb_stamp,

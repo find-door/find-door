@@ -3,7 +3,7 @@ from copy import deepcopy
 import math
 from types import SimpleNamespace as N
 import pytest
-from patrol_check import command_for,directional_clearance,evaluate_observations,stages,validate_saved_snapshot
+from patrol_check import command_for,directional_clearance,evaluate_observations,stages,validate_saved_snapshot,validate_historical_states
 
 
 def test_northbound_route_is_body_forward_and_stops_within_tolerance():
@@ -95,3 +95,33 @@ def test_saved_snapshot_must_match_latest_map_even_after_save_wait(problem):
     elif problem=='state':saved['memory']['objects'][0]['state']='unknown'
     else:saved['memory']['map_id']='other'
     with pytest.raises(RuntimeError):validate_saved_snapshot(saved,'run',objects)
+
+
+def historical_map():
+    truth,history=truth_and_history()
+    evaluation=evaluate_observations(history,truth,[0.,0.,0.])
+    mapping=deepcopy(history[-1]['door_map'])
+    for record in mapping['objects']:
+        record.update(last_confirmed_state=record['state'],last_confirmed_stamp_ns=record['last_stamp_ns'],
+                      state='unknown',observation_status='stale')
+    return mapping,evaluation
+
+
+def test_last_state_persists_but_does_not_count_as_a_current_known_observation():
+    mapping,evaluation=historical_map()
+    assert validate_historical_states(mapping,evaluation)['passed']
+    truth,_=truth_and_history()
+    assert not evaluate_observations([dict(door_map=mapping)],truth,[0.,0.,0.])['passed']
+    saved=dict(door_session_schema_version=2,memory=dict(map_id='run',objects=deepcopy(mapping['objects'])))
+    assert validate_saved_snapshot(saved,'run',mapping['objects'])['matched']
+    saved['memory']['objects'][0]['last_confirmed_stamp_ns']-=1
+    with pytest.raises(RuntimeError):validate_saved_snapshot(saved,'run',mapping['objects'])
+
+
+@pytest.mark.parametrize('problem',['lost_state','future_stamp','fake_current'])
+def test_history_is_not_silently_replaced_or_presented_as_fresh(problem):
+    mapping,evaluation=historical_map();record=mapping['objects'][0]
+    if problem=='lost_state':record['last_confirmed_state']='unknown'
+    elif problem=='future_stamp':record['last_confirmed_stamp_ns']+=1
+    else:record.update(state='closed',observation_status='confirmed')
+    with pytest.raises(RuntimeError):validate_historical_states(mapping,evaluation)

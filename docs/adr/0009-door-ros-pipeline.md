@@ -50,3 +50,6 @@ JSON은 개발 계약이며 map_id/frame/현재 시각/마지막 관측 시각/e
 [ROS 재생 진단](../door-ros.md)에서 실제 저장 RGB-D·C 검출을 ROS 메시지로 발행하고
 상태 전환·ID·마커·저장/복원·입력 거부·TTL·지도 보정·시각 역행과 TF epoch 격리를 확인한다.
 항등 map→odom을 제공하는 인위적 재생과 실제 LiDAR SLAM 검증을 구분한다.
+
+후속 [ADR-0015](0015-door-last-confirmed-state.md)에서 현재 판단과 마지막 확인 이력을 분리하고 schema2로 확장했다.
+위 schema1·TTL 설명은 초기 연결의 이력이며 현재 표시·저장은 후속 계약을 따른다.

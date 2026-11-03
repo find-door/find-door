@@ -180,3 +180,11 @@ rviz2 -d "$(ros2 pkg prefix mapping_semantic)/share/mapping_semantic/config/sema
 ```
 
 자동 통합 시험은 [시맨틱 검증 절차](../../docs/semantic-evaluation.md)를 따릅니다.
+
+
+## 문 마지막 확인과 현재 관측
+
+[ADR-0015](../../docs/adr/0015-door-last-confirmed-state.md)에 따라 현재 state와 마지막 확정 상태·시각을 분리합니다.
+관측 TTL을 지나도 last_confirmed_state/last_confirmed_stamp_ns는 유지하며,
+RViz는 과거 확인 색·관측 유효성·age를 함께 표시합니다. schema2로 저장하고 schema1은 안전 이관합니다.
+[실제 재순찰·영상 결과](../../docs/door-last-observation.md)를 확인하세요.

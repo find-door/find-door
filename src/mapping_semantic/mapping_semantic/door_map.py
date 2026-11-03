@@ -30,8 +30,9 @@ def _position(value):
 class DoorMap:
     """세 번의 연속 상태 근거를 확인하며 위치 anchor와 ID는 고정한다.
 
-    snapshot은 시각 watermark를 진행시킨다. load는 마지막 표시 상태만 복원하며
-    투표 근거는 복원하지 않아 새 관측에서 다시 연속 근거를 모아야 한다.
+    snapshot은 시각 watermark를 진행시킨다. 현재 state는 TTL과 판단 불가에서
+    unknown이 되지만 last_confirmed_*는 마지막 실제 확정 관측을 보존한다.
+    load는 투표 근거를 복원하지 않아 새 관측에서 다시 연속 근거를 모아야 한다.
     """
 
     def __init__(self, map_id, frame='map', association_distance=.25,
@@ -98,7 +99,9 @@ class DoorMap:
             if self.next_id > MAX_ID:
                 raise ValueError('문 ID 공간이 소진됐습니다')
             record = dict(id=f'door_{self.next_id:06d}', position=position, state='unknown',
-                          last_stamp_ns=stamp, observations=0, _candidate=None, _votes=0)
+                          last_stamp_ns=stamp, observations=0,
+                          last_confirmed_state='unknown', last_confirmed_stamp_ns=None,
+                          _candidate=None, _votes=0)
             self.next_id += 1
             self._objects.append(record)
         self._expire(stamp)
@@ -110,6 +113,9 @@ class DoorMap:
                 record['_candidate'] = state
             record['_votes'] += 1
             record['state'] = state if record['_votes'] >= self.config['minimum_observations'] else 'unknown'
+            if record['state'] != 'unknown':
+                record['last_confirmed_state'] = state
+                record['last_confirmed_stamp_ns'] = stamp
         record['last_stamp_ns'] = stamp
         record['observations'] += 1
         self._watermark = stamp
@@ -126,7 +132,7 @@ class DoorMap:
         self._watermark = 0
 
     def dump(self, now_ns):
-        return dict(door_map_schema_version=1, map_id=self.map_id, frame=self.frame,
+        return dict(door_map_schema_version=2, map_id=self.map_id, frame=self.frame,
                     config=self.config.copy(), next_id=self.next_id, watermark_ns=now_ns,
                     objects=self.snapshot(now_ns))
 
@@ -135,7 +141,7 @@ class DoorMap:
         now = self._time(now_ns)
         keys = {'door_map_schema_version', 'map_id', 'frame', 'config', 'next_id', 'watermark_ns', 'objects'}
         if (not isinstance(document, dict) or set(document) != keys
-                or type(document['door_map_schema_version']) is not int or document['door_map_schema_version'] != 1
+                or type(document['door_map_schema_version']) is not int or document['door_map_schema_version'] not in (1, 2)
                 or document['map_id'] != self.map_id or document['frame'] != self.frame
                 or document['config'] != self.config
                 or not isinstance(document['config'], dict)
@@ -150,7 +156,10 @@ class DoorMap:
             raise ValueError('next_id 범위 오류')
         loaded, ids, numbers = [], set(), []
         for source in document['objects']:
-            if not isinstance(source, dict) or set(source) != {'id', 'position', 'state', 'last_stamp_ns', 'observations'}:
+            fields = {'id', 'position', 'state', 'last_stamp_ns', 'observations'}
+            if document['door_map_schema_version'] == 2:
+                fields |= {'last_confirmed_state', 'last_confirmed_stamp_ns'}
+            if not isinstance(source, dict) or set(source) != fields:
                 raise ValueError('문 객체 필드 오류')
             identifier = source['id']
             if not isinstance(identifier, str) or not re.fullmatch(r'door_[0-9]{6,10}', identifier):
@@ -165,7 +174,26 @@ class DoorMap:
                 raise ValueError('관측 횟수 오류')
             if source['state'] != 'unknown' and source['observations'] < self.config['minimum_observations']:
                 raise ValueError('확정 상태의 관측 횟수가 부족합니다')
-            item = dict(source, position=_position(source['position']), _candidate=None, _votes=0)
+            if document['door_map_schema_version'] == 1:
+                historical_state = source['state']
+                historical_stamp = stamp if historical_state != 'unknown' else None
+            else:
+                historical_state = source['last_confirmed_state']
+                historical_stamp = source['last_confirmed_stamp_ns']
+                if historical_state not in STATES:
+                    raise ValueError('마지막 확정 상태 오류')
+                if historical_state == 'unknown':
+                    if historical_stamp is not None:
+                        raise ValueError('확정 이력 없는 상태에 시각이 있습니다')
+                elif (_stamp(historical_stamp) > stamp
+                      or source['observations'] < self.config['minimum_observations']):
+                    raise ValueError('마지막 확정 시각 또는 관측 횟수 오류')
+                if source['state'] != 'unknown' and (historical_state != source['state'] or historical_stamp != stamp):
+                    raise ValueError('현재 확정 상태와 마지막 확정 이력이 다릅니다')
+            item = dict(source, position=_position(source['position']),
+                        last_confirmed_state=historical_state,
+                        last_confirmed_stamp_ns=historical_stamp,
+                        _candidate=None, _votes=0)
             if now - stamp > self._ttl_ns:
                 self._forget(item)
             loaded.append(item)

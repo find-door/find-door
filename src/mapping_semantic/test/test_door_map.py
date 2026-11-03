@@ -160,3 +160,133 @@ def test_ttl_boundary_and_id_exhaustion():
     with pytest.raises(ValueError, match='소진'):
         m.observe([1, 0, 0], 'open', 1_000_000_003)
     assert m.dump(1_000_000_002) == before
+
+
+def _confirmed_map():
+    m = DoorMap('room')
+    for stamp in (1, 2, 3):
+        m.observe([0, 0, 0], 'closed', stamp)
+    return m
+
+
+def test_last_confirmation_survives_unknown_transition_and_ttl():
+    m = _confirmed_map()
+    current = m.observe([0, 0, 0], 'unknown', 4)
+    assert current['state'] == 'unknown'
+    assert (current['last_confirmed_state'], current['last_confirmed_stamp_ns']) == ('closed', 3)
+    for stamp in (5, 6):
+        current = m.observe([0, 0, 0], 'open', stamp)
+        assert current['state'] == 'unknown'
+        assert (current['last_confirmed_state'], current['last_confirmed_stamp_ns']) == ('closed', 3)
+    current = m.observe([0, 0, 0], 'open', 7)
+    assert (current['state'], current['last_confirmed_state'], current['last_confirmed_stamp_ns']) == ('open', 'open', 7)
+    current = m.snapshot(3_000_000_000)[0]
+    assert current['state'] == 'unknown'
+    assert (current['last_confirmed_state'], current['last_confirmed_stamp_ns']) == ('open', 7)
+
+
+def test_first_uncertain_has_no_invented_history_and_reset_erases_history():
+    m = DoorMap('room')
+    for stamp, state in ((1, 'closed'), (2, 'open'), (3, 'unknown')):
+        row = m.observe([0, 0, 0], state, stamp)
+        assert row['last_confirmed_state'] == 'unknown'
+        assert row['last_confirmed_stamp_ns'] is None
+    m = _confirmed_map()
+    m.reset()
+    row = m.observe([0, 0, 0], 'closed', 1)
+    assert row['id'] == 'door_000002'
+    assert row['last_confirmed_state'] == 'unknown'
+    assert row['last_confirmed_stamp_ns'] is None
+
+
+def test_same_confirmed_observation_advances_history_but_duplicate_does_not():
+    m = _confirmed_map()
+    row = m.observe([0, 0, 0], 'closed', 4)
+    assert row['last_confirmed_stamp_ns'] == 4
+    duplicate = m.observe([0, 0, 0], 'open', 4)
+    assert duplicate == row
+    unknown = m.observe([0, 0, 0], 'unknown', 5)
+    assert unknown['last_confirmed_stamp_ns'] == 4
+
+
+def test_schema2_roundtrip_preserves_expired_history_without_votes():
+    m = _confirmed_map()
+    document = json.loads(json.dumps(m.dump(4)))
+    assert document['door_map_schema_version'] == 2
+    other = DoorMap('room')
+    other.load(document, 3_000_000_000)
+    row = other.snapshot(3_000_000_000)[0]
+    assert row['state'] == 'unknown'
+    assert (row['last_confirmed_state'], row['last_confirmed_stamp_ns']) == ('closed', 3)
+    row = other.observe([0, 0, 0], 'closed', 3_000_000_001)
+    assert row['state'] == 'unknown'
+    assert row['last_confirmed_stamp_ns'] == 3
+    assert other.dump(3_000_000_002)['objects'][0]['last_confirmed_stamp_ns'] == 3
+
+
+@pytest.mark.parametrize('known', [True, False])
+def test_schema1_migration_only_infers_known_state(known):
+    m = _confirmed_map()
+    if not known:
+        m.observe([0, 0, 0], 'unknown', 4)
+    document = m.dump(5)
+    document['door_map_schema_version'] = 1
+    for row in document['objects']:
+        row.pop('last_confirmed_state')
+        row.pop('last_confirmed_stamp_ns')
+    other = DoorMap('room')
+    other.load(document, 3_000_000_000)
+    row = other.snapshot(3_000_000_000)[0]
+    assert row['state'] == 'unknown'
+    assert row['last_confirmed_state'] == ('closed' if known else 'unknown')
+    assert row['last_confirmed_stamp_ns'] == (3 if known else None)
+    assert other.dump(3_000_000_000)['door_map_schema_version'] == 2
+
+
+@pytest.mark.parametrize('change', [
+    lambda row: row.pop('last_confirmed_state'),
+    lambda row: row.update(extra_history='open'),
+    lambda row: row.update(last_confirmed_state='half'),
+    lambda row: row.update(last_confirmed_state='unknown'),
+    lambda row: row.update(last_confirmed_stamp_ns=None),
+    lambda row: row.update(last_confirmed_stamp_ns=True),
+    lambda row: row.update(last_confirmed_stamp_ns=3.0),
+    lambda row: row.update(last_confirmed_stamp_ns=0),
+    lambda row: row.update(last_confirmed_stamp_ns=5),
+    lambda row: row.update(last_confirmed_stamp_ns=2),
+    lambda row: row.update(last_confirmed_state='open'),
+    lambda row: row.update(observations=2),
+])
+def test_bad_schema2_history_is_atomic(change):
+    m = _confirmed_map()
+    before = m.dump(4)
+    document = deepcopy(before)
+    change(document['objects'][0])
+    with pytest.raises(ValueError):
+        m.load(document, 5)
+    assert m.dump(4) == before
+
+
+def test_unknown_history_requires_null_and_historical_stamp_not_after_observation():
+    m = DoorMap('room')
+    m.observe([0, 0, 0], 'unknown', 1)
+    before = m.dump(2)
+    document = deepcopy(before)
+    document['objects'][0]['last_confirmed_stamp_ns'] = 1
+    with pytest.raises(ValueError):
+        m.load(document, 3)
+    assert m.dump(2) == before
+    m = _confirmed_map()
+    m.observe([0, 0, 0], 'unknown', 4)
+    document = m.dump(6)
+    document['objects'][0]['last_confirmed_stamp_ns'] = 5
+    with pytest.raises(ValueError):
+        m.load(document, 6)
+
+
+def test_schema1_rejects_history_fields_instead_of_silently_accepting_them():
+    m = _confirmed_map()
+    document = m.dump(4)
+    document['door_map_schema_version'] = 1
+    with pytest.raises(ValueError):
+        m.load(document, 4)
